@@ -1,0 +1,27 @@
+# Este archivo indica a Git qué archivos o carpetas no debe seguir ni subir al repositorio.
+# Se usa para evitar subir archivos temporales, credenciales, dependencias,
+# archivos del sistema y archivos subidos por usuarios.
+
+# Archivos de log (registros) que no hace falta guardar en Git
+*.log
+
+# Archivos del sistema que Windows o macOS pueden crear automáticamente
+Thumbs.db
+.DS_Store
+
+# Carpetas de dependencias instaladas automáticamente
+# No se suben porque se pueden volver a instalar o generar
+/vendor/
+/node_modules/
+
+# Archivo local de configuración sensible de cada entorno
+# Aquí van credenciales o datos propios de cada PC o servidor
+config/env.php
+
+# Ignora todo el contenido de la carpeta uploads
+# para no subir archivos de usuarios al repositorio de GitHub
+/uploads/*
+
+# Excepción: este archivo vacío sí se guarda
+# para que Git mantenga la carpeta uploads aunque esté vacía
+!/uploads/.gitkeep

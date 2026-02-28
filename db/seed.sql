@@ -1,0 +1,7 @@
+-- Datos iniciales de la base de datos JobSpot
+-- Aquí se insertarán datos base o de prueba una vez creadas las tablas.
+-- Ejemplos futuros:
+-- - categorías
+-- - usuario administrador
+-- - empresas de prueba
+-- - ofertas de ejemplo

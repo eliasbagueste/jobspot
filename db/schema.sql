@@ -1,0 +1,3 @@
+-- Estructura inicial de la base de datos JobSpot
+-- Aquí se crearán las tablas y relaciones del proyecto.
+-- El nombre de la base de datos puede variar según el entorno.

@@ -1,0 +1,15 @@
+# Este archivo indica a Git cómo tratar los archivos del proyecto.
+# Se usa para que los archivos de texto (PHP, CSS, JS, HTML, MD, SQL)
+# se manejen de forma consistente y no haya problemas de saltos de línea
+# entre Windows (CRLF) y Linux/QNAP (LF).
+
+# Detecta automáticamente archivos de texto y normaliza finales de línea
+* text=auto
+
+# Estos tipos de archivo se tratan siempre como texto
+*.php text
+*.css text
+*.js text
+*.html text
+*.md text
+*.sql text
