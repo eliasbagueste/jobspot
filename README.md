@@ -29,6 +29,14 @@ a partir de:
 - Fátima
 - Sufian
 
+## Reglas técnicas críticas del proyecto
+- `BASE_URL` debe permanecer en `''`.
+- No usar rutas hardcodeadas con subcarpeta (`/jobspot/...`).
+- La aplicación debe colgar de la raíz del host (`jobspot.local`, `dev.jobspot.es`, `jobspot.es`).
+- `config/env.php` **no** se sube al repositorio.
+- `config/env.example.php` **sí** se sube al repositorio.
+- `config/database.php` es único para local, desarrollo y producción.
+
 ## Puesta en marcha en local (XAMPP) + reglas de GitHub
 
 ### 1) Montar el proyecto en XAMPP (en tu PC)
@@ -120,6 +128,19 @@ Ejemplos:
 5) Se revisa y se fusiona a `develop`
 
 Regla: nadie mete cosas “a lo bruto” en `develop` o `main`.
+
+#### Si no te aparece ningún PR en GitHub
+Revisa esto en orden:
+1) Has hecho `push` de tu rama `feature/...` al remoto.
+2) La rama existe en GitHub y contiene commits nuevos.
+3) Has creado el PR manualmente desde **New pull request** comparando `feature/...` contra `develop`.
+4) Si no existe remoto `origin` en local, añádelo antes de hacer push.
+
+Comandos típicos:
+```bash
+git remote -v
+git push -u origin feature/tu-rama
+```
 
 ---
 
