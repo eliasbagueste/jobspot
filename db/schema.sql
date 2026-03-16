@@ -94,9 +94,10 @@ CREATE TABLE jobs (
         FOREIGN KEY (company_id) REFERENCES companies(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
+    -- Usamos RESTRICT para impedir borrar una categoría si hay ofertas que la usan
     CONSTRAINT fk_jobs_category
         FOREIGN KEY (category_id) REFERENCES categories(id)
-        ON DELETE RESTRICT COMMENT 'Usamos RESTRICT en vez de CASCADE porque esta manera no se borra una categoria si hay ofertas que la usan',
+        ON DELETE RESTRICT
         ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
