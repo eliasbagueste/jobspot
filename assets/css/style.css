@@ -80,3 +80,91 @@ body {
   color: #6b7280;
   font-size: 14px;
 }
+
+/* =========================
+   Formularios de acceso
+   ========================= */
+
+.auth-box {
+  max-width: 480px;
+  margin: 32px auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.auth-box h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.auth-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #0f172a;
+}
+
+.btn-primary {
+  display: inline-block;
+  border: 0;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.alert-error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.info-list p {
+  margin: 8px 0;
+}
+
+.btn-link {
+  color: #0f172a;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
