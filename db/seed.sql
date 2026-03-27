@@ -20,7 +20,7 @@
 -- =========================================================
 -- Credenciales de prueba:
 -- Email: admin@jobspot.local
--- Password: Admin1234
+-- Password: GalwayDAW
 --
 -- Se borra antes por si ya existia en una importacion previa.
 -- =========================================================
@@ -37,7 +37,7 @@ INSERT INTO users (
 ) VALUES (
     'Administrador JobSpot',
     'admin@jobspot.local',
-    '$2y$12$sPntFrOzJGWGyX81VQMIiOl8P.BHsKnC4QSlK2ALW6cog6.rm6smm',
+    '$2y$10$Mblltfy.5ml6.UuQ8/pG.OC/QRvxa1xhIjk9f4W5CBW.bloEw88PG',
     'admin',
     1
 );
