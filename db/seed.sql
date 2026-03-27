@@ -14,10 +14,7 @@
 -- - Este archivo si se puede subir a GitHub
 -- - Solo debe contener datos de prueba o iniciales
 -- - No debe contener datos reales de produccion
--- =========================================================
-
-USE jobspot;
-
+--
 -- =========================================================
 -- USUARIO ADMINISTRADOR INICIAL
 -- =========================================================
