@@ -6,7 +6,7 @@ require_once __DIR__ . '/includes/header.php';
 <section class="hero">
     <h1>Bienvenido a <?= APP_NAME; ?></h1>
     <p>Bolsa de empleo local para conectar candidatos y empresas.</p>
-    <p>Proyecto DAW - Equipo formado por: Fátima, Sufian y Elías.</p>
+    <p>Proyecto DAW - Elías.</p>
 </section>
 
 <section class="grid">
