@@ -6,16 +6,18 @@ require_once __DIR__ . '/includes/header.php';
 <section class="hero">
     <h1>Bienvenido a <?= APP_NAME; ?></h1>
     <p>Bolsa de empleo local para conectar candidatos y empresas.</p>
-    <p>Proyecto DAW - Elías.</p>
+    <p>Proyecto DAW - Elías Bagüeste Amate</p>
 </section>
 
 <section class="grid">
     <div class="card">
+        <img src="/assets/img/candidato-index.png" alt="Candidatos" class="card-image">
         <h2>Para candidatos</h2>
         <p>Crea tu perfil, guarda ofertas y envía candidaturas.</p>
     </div>
 
     <div class="card">
+        <img src="/assets/img/empresa-index.png" alt="Empresas" class="card-image">
         <h2>Para empresas</h2>
         <p>Publica ofertas, gestiona candidaturas y encuentra talento local.</p>
     </div>
@@ -27,7 +29,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <div class="card">
         <h2>Siguiente paso</h2>
-        <p>Crear base de datos, login/registro y listado de ofertas.</p>
+        <p>Actividad 3</p>
     </div>
 </section>
 
