@@ -170,8 +170,9 @@ body {
 }
 
 .card-image {
-    width: 400%;
-    max-width: 400px;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
     display: block;
-    margin: auto 0;
+    margin: 12px auto 0;
 }
