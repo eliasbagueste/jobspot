@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Cargamos los datos actuales del usuario
-$stmt = $pdo->prepare("SELECT id, full_name, email, role FROM users WHERE id = :id");
+$stmt = $pdo->prepare("SELECT id, full_name, email, role, updated_at FROM users WHERE id = :id");
 $stmt->execute(['id' => $id]);
 $user = $stmt->fetch();
 
@@ -98,6 +98,11 @@ require_once __DIR__ . '/../includes/header.php';
         <button type="submit" class="btn-primary">Guardar cambios</button>
         <a href="<?= BASE_URL; ?>/admin/users.php" class="btn-link btn-cancel">Cancelar</a>
     </form>
+
+    <!-- Muestra la fecha de última modificación del usuario -->
+    <p style="margin-top: 20px; color: #64748B; font-size: 0.85rem;">
+        Última modificación: <?= htmlspecialchars(date('d/m/Y H:i', strtotime($user['updated_at']))); ?>
+    </p>
 </section>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
