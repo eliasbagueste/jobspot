@@ -8,16 +8,20 @@
  */
 require_once __DIR__ . '/config/database.php';
 
-/**
- * Si el usuario ya ha iniciado sesión,
- * no tiene sentido volver a mostrarle el login.
- * Lo redirigimos directamente al panel de prueba.
- */
+// Si el usuario ya tiene sesión activa, redirige según su rol
+// (no tiene sentido volver a mostrar el login)
 if (isset($_SESSION['user'])) {
-    header('Location: ' . BASE_URL . '/admin/index.php');
+    if ($_SESSION['user']['role'] === 'admin') {
+        header('Location: ' . BASE_URL . '/admin/index.php');
+    } elseif ($_SESSION['user']['role'] === 'candidate') {
+        header('Location: ' . BASE_URL . '/candidate/index.php');
+    } elseif ($_SESSION['user']['role'] === 'company') {
+        header('Location: ' . BASE_URL . '/company/index.php');
+    } else {
+        header('Location: ' . BASE_URL . '/index.php');
+    }
     exit;
 }
-
 /**
  * Variables para controlar errores y valores del formulario.
  * Así podemos volver a mostrar el email si falla el login.
@@ -95,10 +99,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'role' => $user['role'],
                 ];
 
-                /**
-                 * Redirige al panel privado de prueba.
-                 */
-                header('Location: ' . BASE_URL . '/admin/index.php');
+                // Redirige al panel correspondiente según el rol del usuario
+                if ($_SESSION['user']['role'] === 'admin') {
+                    header('Location: ' . BASE_URL . '/admin/index.php');
+                } elseif ($_SESSION['user']['role'] === 'candidate') {
+                    header('Location: ' . BASE_URL . '/candidate/index.php');
+                } elseif ($_SESSION['user']['role'] === 'company') {
+                    header('Location: ' . BASE_URL . '/company/index.php');
+                } else {
+                    header('Location: ' . BASE_URL . '/index.php');
+                }
                 exit;
             }
         } catch (PDOException $e) {
@@ -115,9 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-/**
- * Carga la cabecera HTML común del proyecto.
- */
+// HTML DE LA PAGINA DE LOGIN
 require_once __DIR__ . '/includes/header.php';
 ?>
 
@@ -125,6 +133,14 @@ require_once __DIR__ . '/includes/header.php';
     <h1>Iniciar sesión</h1>
     <p>Accede a JobSpot con tu correo electrónico y contraseña.</p>
 
+    <!-- Si viene de registrarse, muestra mensaje de éxito -->
+    <?php if (isset($_GET['registered'])): ?>
+        <div class="alert alert-success">
+            Gracias por registrarte. Ya puedes iniciar sesión.
+        </div>
+    <?php endif; ?>
+
+    <!-- Si $error no está vacío, muestra el mensaje. htmlspecialchars evita que se inyecte HTML malicioso -->
     <?php if ($error !== ''): ?>
         <div class="alert alert-error">
             <?= htmlspecialchars($error); ?>
