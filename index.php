@@ -11,11 +11,13 @@ require_once __DIR__ . '/includes/header.php';
 
 <section class="grid">
     <div class="card">
+        <img src="/assets/img/candidato-index.png" alt="Candidatos" class="card-image">
         <h2>Para candidatos</h2>
         <p>Crea tu perfil, guarda ofertas y envía candidaturas.</p>
     </div>
 
     <div class="card">
+        <img src="/assets/img/empresa-index.png" alt="Empresas" class="card-image">
         <h2>Para empresas</h2>
         <p>Publica ofertas, gestiona candidaturas y encuentra talento local.</p>
     </div>
