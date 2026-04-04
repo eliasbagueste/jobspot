@@ -68,6 +68,7 @@ require_once __DIR__ . '/../includes/header.php';
 <section class="auth-box">
     <h1>Editar usuario</h1>
 
+<!-- Muestra el mensaje de error si algo ha fallado al guardar -->
     <?php if ($error !== ''): ?>
         <div class="alert alert-error">
             <?= htmlspecialchars($error); ?>

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/eliasbagueste/.claude/projects/c--xampp-htdocs-jobspot/memory/**)"
+    ]
+  }
+}
