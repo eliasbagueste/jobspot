@@ -25,3 +25,7 @@ config/env.php
 # Excepción: este archivo vacío sí se guarda
 # para que Git mantenga la carpeta uploads aunque esté vacía
 !/uploads/.gitkeep
+
+# Carpeta de memoria y contexto de Claude Code (herramienta de desarrollo local)
+# No es parte del código de la aplicación
+.claude/
