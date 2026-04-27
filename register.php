@@ -1,6 +1,16 @@
 <?php
 require_once __DIR__ . '/config/database.php';
 
+// Si ya hay sesión activa, redirigimos al panel correspondiente
+if (isset($_SESSION['user'])) {
+    $role = $_SESSION['user']['role'];
+    if ($role === 'admin')         header('Location: ' . BASE_URL . '/admin/index.php');
+    elseif ($role === 'candidate') header('Location: ' . BASE_URL . '/candidate/index.php');
+    elseif ($role === 'company')   header('Location: ' . BASE_URL . '/company/index.php');
+    else                           header('Location: ' . BASE_URL . '/index.php');
+    exit;
+}
+
 // Variable para guardar el mensaje de error y los valores del formulario. Empiezan vacías.
 $error    = '';
 $fullName = '';
@@ -25,6 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Comprobamos que el email tenga formato válido
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'El correo electrónico no es válido.';
+
+    // Comprobamos que la contraseña cumpla los requisitos de seguridad
+    } elseif (strlen($password) < 8) {
+        $error = 'La contraseña debe tener al menos 8 caracteres.';
+    } elseif (!preg_match('/[A-Z]/', $password)) {
+        $error = 'La contraseña debe contener al menos una letra mayúscula.';
+    } elseif (!preg_match('/[0-9]/', $password)) {
+        $error = 'La contraseña debe contener al menos un número.';
 
     // Comprobamos que las dos contraseñas coincidan
     } elseif ($password !== $confirmPassword) {
@@ -127,5 +145,59 @@ require_once __DIR__ . '/includes/header.php';
         <button type="submit" class="btn-primary">Registrate</button>
     </form>
 </section>
+
+<script>
+document.querySelector('.auth-form').addEventListener('submit', function (e) {
+    document.querySelectorAll('.field-error').forEach(el => el.remove());
+    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+    let valid = true;
+
+    function error(input, msg) {
+        valid = false;
+        input.classList.add('input-error');
+        const span = document.createElement('span');
+        span.className = 'field-error';
+        span.textContent = msg;
+        input.closest('.form-group').appendChild(span);
+    }
+
+    const fullName        = document.getElementById('full_name');
+    const email           = document.getElementById('email');
+    const role            = document.getElementById('role');
+    const password        = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm_password');
+
+    if (!fullName.value.trim())
+        error(fullName, 'El nombre completo es obligatorio.');
+
+    if (!email.value.trim()) {
+        error(email, 'El correo electrónico es obligatorio.');
+    } else if (!email.value.includes('@') || !email.value.includes('.')) {
+        error(email, 'Introduce un correo electrónico válido.');
+    }
+
+    if (!role.value)
+        error(role, 'Debes seleccionar un tipo de cuenta.');
+
+    if (!password.value) {
+        error(password, 'La contraseña es obligatoria.');
+    } else if (password.value.length < 8) {
+        error(password, 'La contraseña debe tener al menos 8 caracteres.');
+    } else if (!/[A-Z]/.test(password.value)) {
+        error(password, 'La contraseña debe contener al menos una letra mayúscula.');
+    } else if (!/[0-9]/.test(password.value)) {
+        error(password, 'La contraseña debe contener al menos un número.');
+    }
+
+    if (!confirmPassword.value) {
+        error(confirmPassword, 'Debes confirmar la contraseña.');
+    } else if (password.value && confirmPassword.value !== password.value) {
+        error(confirmPassword, 'Las contraseñas no coinciden.');
+    }
+
+    if (!valid) e.preventDefault();
+});
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

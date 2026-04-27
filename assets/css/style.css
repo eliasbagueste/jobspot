@@ -1,13 +1,16 @@
-/* Incluye padding y borde dentro del ancho declarado */
+/* =====================================================
+   BASE
+   ===================================================== */
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   background: #F5F7FB;
   color: #1E293B;
+  line-height: 1.5;
 }
 
 .container {
@@ -16,47 +19,228 @@ body {
   margin: 0 auto;
 }
 
+/* =====================================================
+   CABECERA
+   ===================================================== */
 .site-header {
   background: #0B132B;
   color: #fff;
-  padding: 14px 0;
+  padding: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .site-header .container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   gap: 16px;
+  height: 58px;
+  max-width: none;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
 }
 
 .brand a {
   color: #fff;
   text-decoration: none;
-  font-weight: bold;
-  font-size: 22px;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.5px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
 }
 
 .nav a {
-  color: #e5e7eb;
+  color: #94a3b8;
   text-decoration: none;
-  margin-left: 14px;
-  font-size: 14px;
+  margin-left: 4px;
+  padding: 0 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s, background 0.15s;
+  border-bottom: 2px solid transparent;
 }
 
 .nav a:hover {
   color: #fff;
+  background: rgba(255,255,255,0.04);
 }
 
+.nav-btn-register {
+  background: #818cf8;
+  color: #fff !important;
+  border-radius: 8px;
+  margin-left: 8px !important;
+  padding: 0 16px !important;
+  height: 34px !important;
+  align-self: center;
+  font-weight: 600 !important;
+  transition: background 0.15s !important;
+}
+
+.nav-btn-register:hover {
+  background: #6366f1 !important;
+  color: #fff !important;
+}
+
+.nav-btn-logout {
+  color: #f87171 !important;
+}
+
+.nav-btn-logout:hover {
+  color: #fca5a5 !important;
+  background: rgba(248,113,113,0.06) !important;
+}
+
+/* =====================================================
+   MAIN — espacio superior bajo la cabecera
+   ===================================================== */
+main.container {
+  padding-top: 24px;
+  padding-bottom: 56px;
+}
+
+/* =====================================================
+   PIE DE PÁGINA
+   ===================================================== */
+.site-footer {
+  margin-top: 60px;
+  background: #0b132b;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px 0 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.footer-brand p {
+  width: 100%;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: #64748b;
+  margin: 6px 0 0;
+}
+
+.footer-links {
+  display: flex;
+  gap: 48px;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-col-title {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.footer-col a {
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.15s;
+}
+
+.footer-col a:hover {
+  color: #cbd5e1;
+}
+
+.footer-social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #1e293b;
+  color: #e2e8f0;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.social-icon:hover {
+  background: #818cf8;
+  color: #fff;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  font-size: 0.78rem;
+  color: #475569;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* =====================================================
+   TARJETA GENÉRICA
+   ===================================================== */
+.card {
+  background: #FFFFFF;
+  border: 1px solid #E5EAF2;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 1.25rem;
+}
+
+/* =====================================================
+   HERO (portada)
+   ===================================================== */
 .hero {
   background: #FFFFFF;
   border: 1px solid #E5EAF2;
-  border-radius: 10px;
-  padding: 24px;
-  margin-top: 24px;
+  border-radius: 12px;
+  padding: 32px 28px;
+  margin-bottom: 24px;
 }
 
 .hero h1 {
   margin-top: 0;
+  margin-bottom: 6px;
+  font-size: 1.6rem;
 }
 
 .grid {
@@ -66,88 +250,185 @@ body {
   margin-top: 16px;
 }
 
-.card {
+/* =====================================================
+   TARJETAS DE OFERTA
+   ===================================================== */
+.job-card {
   background: #FFFFFF;
   border: 1px solid #E5EAF2;
-  border-radius: 10px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 1.25rem;
+  transition: box-shadow 0.2s;
 }
 
-.site-footer {
-  margin-top: 30px;
-  padding: 18px 0;
-  border-top: 1px solid #E5EAF2;
-  background: #FFFFFF;
-  color: #64748B;
-  font-size: 14px;
+.job-card:hover {
+  box-shadow: 0 4px 16px rgba(11, 19, 43, 0.07);
 }
 
-/* =========================
-   Formularios de acceso
-   ========================= */
-
-.auth-box {
-  max-width: 480px;
-  margin: 32px auto;
-  background: #FFFFFF;
-  border: 1px solid #E5EAF2;
-  border-radius: 10px;
-  padding: 24px;
-}
-
-.auth-box h1 {
-  margin-top: 0;
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 10px;
 }
 
-.auth-form {
-  margin-top: 20px;
+.job-title {
+  margin: 0 0 2px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0B132B;
 }
 
-.form-group {
-  margin-bottom: 16px;
+.job-company {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 8px;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #fff;
+.job-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
 }
 
-.form-group input:focus {
-  outline: none;
-  border-color: #0f172a;
+/* =====================================================
+   BADGES (etiquetas de estado)
+   ===================================================== */
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
+.badge-admin     { background: #fef9c3; color: #854d0e; }
+.badge-candidate { background: #dbeafe; color: #1e40af; }
+.badge-company   { background: #dcfce7; color: #166534; }
+.badge-active    { background: #d1fae5; color: #065f46; }
+.badge-rejected  { background: #fee2e2; color: #991b1b; }
+
+/* =====================================================
+   BOTONES
+   ===================================================== */
+
+/* Botón principal (oscuro) */
 .btn-primary {
   display: inline-block;
-  border: 0;
+  border: none;
   border-radius: 8px;
   background: #0f172a;
   color: #ffffff;
-  padding: 10px 16px;
+  padding: 9px 18px;
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s;
 }
 
 .btn-primary:hover {
-  opacity: 0.90;
+  opacity: 0.85;
+  color: #ffffff;
 }
 
+/* Botón de edición (azul claro) */
+.btn-edit {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  background: #dbeafe;
+  color: #1e40af;
+  transition: background 0.15s;
+}
+
+.btn-edit:hover {
+  background: #bfdbfe;
+  color: #1e3a8a;
+}
+
+/* Botón de acción destructiva (rojo) */
+.btn-delete {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-delete:hover {
+  background: #fee2e2;
+  border-color: #f87171;
+}
+
+.btn-accept {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  color: #16a34a;
+  border: 1px solid #86efac;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-accept:hover {
+  background: #dcfce7;
+  border-color: #4ade80;
+}
+
+/* Enlace discreto (volver atrás, cancelar…) */
+.btn-link {
+  color: #475569;
+  font-size: 0.9rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.btn-link:hover {
+  color: #0f172a;
+}
+
+.btn-cancel {
+  margin-left: 12px;
+}
+
+/* =====================================================
+   ALERTAS
+   ===================================================== */
 .alert {
   border-radius: 8px;
-  padding: 12px 14px;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  padding: 12px 16px;
+  font-size: 0.9rem;
 }
 
 .alert-error {
@@ -157,35 +438,92 @@ body {
 }
 
 .alert-success {
-  background: #dcfce7;
+  background: #f0fdf4;
   color: #166534;
   border: 1px solid #bbf7d0;
 }
 
-.info-list p {
-  margin: 8px 0;
+.field-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #dc2626;
 }
 
-.btn-link {
-  color: #0f172a;
-  font-weight: bold;
-  text-decoration: none;
+.input-error {
+  border-color: #dc2626 !important;
 }
 
-.btn-link:hover {
-  text-decoration: underline;
+/* =====================================================
+   FORMULARIOS
+   ===================================================== */
+.auth-box {
+  max-width: 520px;
+  margin: 32px auto;
+  background: #FFFFFF;
+  border: 1px solid #E5EAF2;
+  border-radius: 12px;
+  padding: 32px;
 }
 
-.btn-cancel {
-  margin-left: 12px;
+.auth-box h1 {
+  margin-top: 0;
+  margin-bottom: 6px;
+  font-size: 1.4rem;
 }
 
-/* Tabla de usuarios admin */
+.auth-box > p {
+  margin: 0 0 24px;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.auth-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  color: #1e293b;
+  transition: border-color 0.15s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* =====================================================
+   TABLA DE USUARIOS (admin)
+   ===================================================== */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 16px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 thead {
@@ -200,8 +538,8 @@ thead th {
 }
 
 tbody tr {
-  border-bottom: 1px solid #E5EAF2;
-  transition: background 0.15s;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.12s;
 }
 
 tbody tr:hover {
@@ -211,76 +549,51 @@ tbody tr:hover {
 tbody td {
   padding: 12px 16px;
   color: #1E293B;
+  vertical-align: middle;
 }
 
-.badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
+tbody td:last-child { text-align: right; }
 
-.badge-admin     { background: #F4E7A1; color: #7A5D00; }
-.badge-candidate { background: #DCE8FF; color: #3A57C4; }
-.badge-company   { background: #DCEFE2; color: #2F6B45; }
-
-.btn-edit, .btn-delete {
-  display: inline-block;
-  padding: 5px 14px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-
-.btn-edit   { background: #BEDDF5; color: #1A4A7A; margin-right: 6px; }
-.btn-delete { background: #FFFFFF; color: #D95353; border: 1px solid #E8A3A3; }
-.btn-edit:hover   { background: #A8CEF0; }
-.btn-delete:hover { background: #FFF5F5; border-color: #DE8D8D; color: #C94242; }
-
-tbody td:last-child,
-tbody td:nth-child(4),
-tbody td:nth-child(5),
-tbody td:nth-child(6) { text-align: center; }
-
-/* Panel de administración */
+/* =====================================================
+   PANEL DE ADMINISTRACIÓN
+   ===================================================== */
 .admin-welcome {
   background: #0B132B;
   color: #fff;
   border-radius: 12px;
   padding: 28px 32px;
-  margin-top: 24px;
+  margin-bottom: 28px;
 }
 
 .admin-welcome h1 {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   font-size: 1.6rem;
 }
 
 .admin-welcome p {
   margin: 0;
-  color: #cbd5e1;
+  color: #94a3b8;
   font-size: 0.95rem;
 }
 
+/* Grid compartido por stats y cards de acción */
 .admin-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
-  margin-top: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
 }
 
+/* Tarjeta de acción (clicable) */
 .admin-card {
   display: block;
   background: #FFFFFF;
   border: 1px solid #E5EAF2;
   border-radius: 12px;
-  padding: 28px 24px;
+  padding: 24px 20px;
   text-decoration: none;
   color: #1E293B;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: box-shadow 0.2s, transform 0.15s;
 }
 
 .admin-card:hover {
@@ -289,29 +602,650 @@ tbody td:nth-child(6) { text-align: center; }
 }
 
 .admin-card-icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
 }
 
 .admin-card h2 {
-  margin: 0 0 6px;
-  font-size: 1.1rem;
+  margin: 0 0 4px;
+  font-size: 1rem;
   color: #0B132B;
 }
 
 .admin-card p {
   margin: 0;
   color: #64748B;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
 }
 
-/* =========================
-   Imagenes en tarjetas
-   ========================= */
+/* Fila fija de 3 estadísticas en una sola línea */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+/* Tarjeta de estadística (no clicable, más compacta) */
+.admin-stat {
+  background: #FFFFFF;
+  border: 1px solid #E5EAF2;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-stat-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.admin-stat-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-stat-value {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #0B132B;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.admin-stat-label {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.3;
+  border-left: 2px solid #e5e7eb;
+  padding-left: 10px;
+}
+
+/* =====================================================
+   PORTADA — HERO
+   ===================================================== */
+.home-hero {
+  position: relative;
+  background: linear-gradient(135deg, #0b132b 0%, #1a2a5e 60%, #0f3460 100%);
+  border-radius: 16px;
+  padding: 72px 48px;
+  margin-bottom: 0;
+  overflow: hidden;
+  color: #fff;
+}
+
+.home-hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+}
+
+.home-hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  padding: 4px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: #a5b4fc;
+}
+
+.home-hero-title {
+  margin: 0 0 16px;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.home-hero-accent {
+  color: #818cf8;
+}
+
+.home-hero-sub {
+  margin: 0 0 32px;
+  font-size: 1.05rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.home-hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+  display: inline-block;
+  background: #818cf8;
+  color: #fff;
+  padding: 13px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.btn-hero-primary:hover {
+  background: #6366f1;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-hero-secondary {
+  display: inline-block;
+  background: rgba(255,255,255,0.1);
+  color: #e2e8f0;
+  padding: 13px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.15s;
+}
+
+.btn-hero-secondary:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+/* Imagen derecha del hero */
+.home-hero-image {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 42%;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 0 16px 16px 0;
+}
+
+/* Degradado para fundir la foto con el texto del hero */
+.home-hero-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #0b132b 0%, transparent 40%);
+  z-index: 3;
+}
+
+.home-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+  opacity: 0.85;
+}
+
+@media (max-width: 860px) {
+  .home-hero-image { display: none; }
+}
+
+/* Círculos decorativos del hero */
+.home-hero-deco {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.deco-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.08;
+  background: #818cf8;
+}
+
+.deco-1 { width: 400px; height: 400px; top: -120px; right: -80px; }
+.deco-2 { width: 220px; height: 220px; bottom: -60px; right: 200px; opacity: 0.05; }
+.deco-3 { width: 120px; height: 120px; top: 40px;   right: 300px; opacity: 0.06; }
+
+/* =====================================================
+   PORTADA — ESTADÍSTICAS
+   ===================================================== */
+.home-stats {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 28px 32px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.home-stat {
+  text-align: center;
+}
+
+.home-stat-num {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0b132b;
+  line-height: 1;
+}
+
+.home-stat-label {
+  display: block;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.home-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: #e5e7eb;
+}
+
+/* =====================================================
+   PORTADA — SECCIONES GENÉRICAS
+   ===================================================== */
+.home-section {
+  padding: 56px 0 20px;
+}
+
+.home-section--gray {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 48px 40px;
+  margin: 20px 0;
+}
+
+.home-section-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0b132b;
+  margin: 0 0 10px;
+  letter-spacing: -0.5px;
+}
+
+.home-section-sub {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0 0 36px;
+}
+
+/* =====================================================
+   PORTADA — TARJETAS DE PERFIL (candidato / empresa)
+   ===================================================== */
+.home-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.home-feature-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 32px 28px;
+}
+
+.home-feature-card--dark {
+  background: #0b132b;
+  border-color: #0b132b;
+  color: #e2e8f0;
+}
+
+.home-feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 18px;
+}
+
+/* Imagen dentro de las tarjetas de perfil */
+.home-feature-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.home-feature-img--dark {
+  opacity: 0.9;
+}
+
+.home-feature-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0b132b;
+}
+
+.home-feature-card p {
+  margin: 0 0 16px;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Estos van DESPUÉS de los estilos base para ganar en especificidad de orden */
+.home-feature-card--dark h3 { color: #f8fafc; }
+.home-feature-card--dark p  { color: #94a3b8; }
+
+.home-feature-list {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  font-size: 0.88rem;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home-feature-card--dark .home-feature-list { color: #94a3b8; }
+
+.btn-feature {
+  display: inline-block;
+  background: #0b132b;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.btn-feature:hover { opacity: 0.85; color: #fff; }
+
+.btn-feature--light {
+  background: #818cf8;
+  color: #fff;
+}
+
+/* =====================================================
+   PORTADA — PASOS
+   ===================================================== */
+.home-steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.home-step {
+  flex: 1;
+  min-width: 180px;
+  max-width: 240px;
+  text-align: center;
+}
+
+.home-step-num {
+  width: 44px;
+  height: 44px;
+  background: #0b132b;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 auto 14px;
+}
+
+.home-step h4 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0b132b;
+}
+
+.home-step p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.home-step-arrow {
+  font-size: 1.5rem;
+  color: #cbd5e1;
+  padding-top: 10px;
+  flex-shrink: 0;
+}
+
+/* =====================================================
+   PORTADA — CTA FINAL
+   ===================================================== */
+.home-cta {
+  background: linear-gradient(135deg, #0b132b, #1a2a5e);
+  border-radius: 16px;
+  text-align: center;
+  padding: 56px 32px;
+  margin: 20px 0;
+  color: #fff;
+}
+
+.home-cta h2 {
+  margin: 0 0 10px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.home-cta p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+/* Responsive portada */
+@media (max-width: 700px) {
+  .home-hero         { padding: 48px 24px; }
+  .home-hero-title   { font-size: 2rem; }
+  .home-cards        { grid-template-columns: 1fr; }
+  .home-stat-divider { display: none; }
+  .home-section--gray { padding: 32px 20px; }
+  .home-step-arrow   { display: none; }
+}
+
+/* =====================================================
+   DETALLE DE OFERTA (layout dos columnas)
+   ===================================================== */
+.job-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.job-detail-main  { min-width: 0; }
+.job-detail-aside { position: sticky; top: 20px; }
+
+/* En móvil pasan a una sola columna */
+@media (max-width: 700px) {
+  .job-detail-layout {
+    grid-template-columns: 1fr;
+  }
+  .job-detail-aside {
+    position: static;
+  }
+}
+
+/* =====================================================
+   FILTROS DEL LISTADO DE OFERTAS
+   ===================================================== */
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.filter-form .form-group {
+  margin: 0;
+  flex: 1;
+  min-width: 160px;
+}
+
+/* =====================================================
+   AVATAR DE EMPRESA (círculo con logo o inicial)
+   ===================================================== */
+.company-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #ede9fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #6d28d9;
+  font-size: 1.1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.company-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Versión grande para el panel de bienvenida */
+.company-avatar--lg {
+  width: 88px;
+  height: 88px;
+  font-size: 2rem;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* Admin-welcome con avatar alineado en fila */
+.admin-welcome--avatar {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+/* =====================================================
+   TABLA DE PANEL (cabecera violeta redondeada)
+   ===================================================== */
+.panel-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.panel-table thead th {
+  padding: 0.6rem 1rem;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #818cf8;
+}
+
+.panel-table thead th:first-child { border-radius: 8px 0 0 8px; }
+.panel-table thead th:last-child  { border-radius: 0 8px 8px 0; text-align: right; }
+
+.panel-table tbody tr   { border-bottom: 1px solid #f1f5f9; }
+.panel-table tbody tr:hover { background: #f8fafc; }
+
+.panel-table tbody td {
+  padding: 0.75rem 1rem;
+  color: #64748b;
+}
+
+.panel-table tbody td:last-child { text-align: right; }
+
+/* =====================================================
+   NOTIFICACIÓN CIRCULAR (número sobre icono)
+   ===================================================== */
+.notif-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+/* =====================================================
+   CABECERA DE TARJETA (título + acción a la derecha)
+   ===================================================== */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-header h2 { margin: 0; }
+
+/* Botón píldora violeta (acción inline junto a títulos) */
+.btn-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #818cf8;
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.btn-pill:hover {
+  background: #6366f1;
+  color: #fff;
+}
+
+/* =====================================================
+   MISCELÁNEA
+   ===================================================== */
+.info-list p {
+  margin: 8px 0;
+}
 
 .card-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 12px auto 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 12px auto 0;
 }

@@ -63,7 +63,7 @@ if ($host === 'jobspot.es' || $host === 'www.jobspot.es') {
  *
  * Aquí se guardan las credenciales de la base de datos
  * y cualquier otro secreto o configuración sensible.
- * __DIR__ es la variable mágica que apunta al directorio actual
+ * __DIR__ es la variable mágica que apunta al directorio actual y concatenamos con env.php
  */
 $envFile = __DIR__ . '/env.php';
 

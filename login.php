@@ -155,7 +155,6 @@ require_once __DIR__ . '/includes/header.php';
                 id="email"
                 name="email"
                 value="<?= htmlspecialchars($email); ?>"
-                required
             >
         </div>
 
@@ -165,12 +164,40 @@ require_once __DIR__ . '/includes/header.php';
                 type="password"
                 id="password"
                 name="password"
-                required
             >
         </div>
 
         <button type="submit" class="btn-primary">Entrar</button>
     </form>
 </section>
+
+<script>
+document.querySelector('.auth-form').addEventListener('submit', function (e) {
+    document.querySelectorAll('.field-error').forEach(el => el.remove());
+    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+    let valid = true;
+
+    function error(input, msg) {
+        valid = false;
+        input.classList.add('input-error');
+        const span = document.createElement('span');
+        span.className = 'field-error';
+        span.textContent = msg;
+        input.closest('.form-group').appendChild(span);
+    }
+
+    const email    = document.getElementById('email');
+    const password = document.getElementById('password');
+
+    if (!email.value.trim())
+        error(email, 'El correo electrónico es obligatorio.');
+
+    if (!password.value)
+        error(password, 'La contraseña es obligatoria.');
+
+    if (!valid) e.preventDefault();
+});
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

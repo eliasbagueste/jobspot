@@ -79,17 +79,17 @@ require_once __DIR__ . '/../includes/header.php';
 
         <div class="form-group">
             <label for="full_name">Nombre completo</label>
-            <input type="text" id="full_name" name="full_name" value="<?= htmlspecialchars($user['full_name']); ?>" required>
+            <input type="text" id="full_name" name="full_name" value="<?= htmlspecialchars($user['full_name']); ?>">
         </div>
 
         <div class="form-group">
             <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']); ?>" required>
+            <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']); ?>">
         </div>
 
         <div class="form-group">
             <label for="role">Rol</label>
-            <select id="role" name="role" required>
+            <select id="role" name="role">
                 <option value="admin"     <?= $user['role'] === 'admin'     ? 'selected' : ''; ?>>Admin</option>
                 <option value="candidate" <?= $user['role'] === 'candidate' ? 'selected' : ''; ?>>Candidato</option>
                 <option value="company"   <?= $user['role'] === 'company'   ? 'selected' : ''; ?>>Empresa</option>
@@ -99,6 +99,42 @@ require_once __DIR__ . '/../includes/header.php';
         <button type="submit" class="btn-primary">Guardar cambios</button>
         <a href="<?= BASE_URL; ?>/admin/users.php" class="btn-link btn-cancel">Cancelar</a>
     </form>
+
+    <script>
+    document.querySelector('.auth-form').addEventListener('submit', function (e) {
+        document.querySelectorAll('.field-error').forEach(el => el.remove());
+        document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+        let valid = true;
+
+        function error(input, msg) {
+            valid = false;
+            input.classList.add('input-error');
+            const span = document.createElement('span');
+            span.className = 'field-error';
+            span.textContent = msg;
+            input.closest('.form-group').appendChild(span);
+        }
+
+        const fullName = document.getElementById('full_name');
+        const email    = document.getElementById('email');
+        const role     = document.getElementById('role');
+
+        if (!fullName.value.trim())
+            error(fullName, 'El nombre completo es obligatorio.');
+
+        if (!email.value.trim()) {
+            error(email, 'El correo electrónico es obligatorio.');
+        } else if (!email.value.includes('@') || !email.value.includes('.')) {
+            error(email, 'Introduce un correo electrónico válido.');
+        }
+
+        if (!role.value)
+            error(role, 'Debes seleccionar un rol.');
+
+        if (!valid) e.preventDefault();
+    });
+    </script>
 
     <!-- Muestra la fecha de última modificación del usuario -->
     <p style="margin-top: 20px; color: #64748B; font-size: 0.85rem;">

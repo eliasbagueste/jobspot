@@ -1,0 +1,292 @@
+<?php
+// candidate/apply.php — Formulario para aplicar a una oferta de trabajo
+
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/auth.php';
+
+// Solo candidatos autenticados pueden acceder a esta página
+requireLogin();
+requireRole('candidate');
+
+$user   = $_SESSION['user'];
+$pdo    = getPDO();
+
+// =========================================================
+// OBTENEMOS EL ID DE LA OFERTA DESDE LA URL
+// =========================================================
+// Convertimos a entero para evitar valores inesperados.
+// Si no viene el parámetro o es 0, redirigimos a las ofertas.
+$jobId = (int) ($_GET['job'] ?? 0);
+
+if ($jobId === 0) {
+    header('Location: ' . BASE_URL . '/jobs.php');
+    exit;
+}
+
+// =========================================================
+// CARGAMOS LOS DATOS DE LA OFERTA
+// =========================================================
+// Solo permitimos aplicar a ofertas publicadas (status = 'published').
+// Si la oferta no existe o no está publicada, redirigimos.
+$stmt = $pdo->prepare("
+    SELECT
+        j.id,
+        j.title,
+        j.description,
+        j.location,
+        j.contract_type,
+        j.workday,
+        j.modality,
+        j.salary_min,
+        j.salary_max,
+        co.brand_name AS company_name
+    FROM jobs j
+    JOIN companies co ON co.id = j.company_id
+    WHERE j.id = :id AND j.status = 'published'
+");
+$stmt->execute(['id' => $jobId]);
+$job = $stmt->fetch();
+
+// Si la oferta no existe o no está publicada, volvemos al listado
+if (!$job) {
+    header('Location: ' . BASE_URL . '/jobs.php');
+    exit;
+}
+
+// =========================================================
+// COMPROBAMOS SI EL CANDIDATO YA HA APLICADO A ESTA OFERTA
+// =========================================================
+// La tabla applications tiene una restricción UNIQUE sobre
+// (candidate_user_id, job_id), así que prevenimos el duplicado
+// también a nivel de aplicación.
+$stmtCheck = $pdo->prepare("
+    SELECT id FROM applications
+    WHERE candidate_user_id = :uid AND job_id = :jid
+");
+$stmtCheck->execute(['uid' => $user['id'], 'jid' => $jobId]);
+$alreadyApplied = (bool) $stmtCheck->fetch();
+
+$error   = '';
+$success = '';
+
+// Cargamos el perfil del candidato para usar su CV si tiene uno subido
+$stmtProfile = $pdo->prepare("SELECT cv_pdf_path FROM candidate_profiles WHERE user_id = :uid");
+$stmtProfile->execute(['uid' => $user['id']]);
+$candidateProfile = $stmtProfile->fetch();
+$profileCvPath = $candidateProfile['cv_pdf_path'] ?? null;
+
+// =========================================================
+// PROCESAMOS EL ENVÍO DEL FORMULARIO
+// =========================================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$alreadyApplied) {
+
+    $message = trim($_POST['message'] ?? '');
+    // Por defecto usamos el CV del perfil; si sube uno nuevo lo sobreescribimos
+    $cvPath  = $profileCvPath;
+
+    if ($message === '') {
+        $error = 'Debes explicar por qué eres el candidato ideal para este puesto.';
+    } else {
+        // Si el candidato sube un CV nuevo, lo usamos en lugar del del perfil
+        if (isset($_FILES['cv']) && $_FILES['cv']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $file = $_FILES['cv'];
+
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                $error = 'Error al subir el archivo. Inténtalo de nuevo.';
+            } elseif ($file['type'] !== 'application/pdf') {
+                $error = 'Solo se aceptan archivos en formato PDF.';
+            } elseif ($file['size'] > 5 * 1024 * 1024) {
+                $error = 'El archivo no puede superar los 5 MB.';
+            } else {
+                $uploadsDir = __DIR__ . '/../uploads/cvs/';
+                if (!is_dir($uploadsDir)) mkdir($uploadsDir, 0755, true);
+                $filename   = 'cv_' . $user['id'] . '_' . $jobId . '_' . time() . '.pdf';
+                move_uploaded_file($file['tmp_name'], $uploadsDir . $filename);
+                $cvPath = 'uploads/cvs/' . $filename;
+            }
+        }
+
+        if ($error === '') {
+            try {
+                $stmtInsert = $pdo->prepare("
+                    INSERT INTO applications (job_id, candidate_user_id, message, cv_pdf_path, status)
+                    VALUES (:job_id, :candidate_user_id, :message, :cv_pdf_path, 'sent')
+                ");
+                $stmtInsert->execute([
+                    'job_id'            => $jobId,
+                    'candidate_user_id' => $user['id'],
+                    'message'           => $message,
+                    'cv_pdf_path'       => $cvPath,
+                ]);
+
+                $alreadyApplied = true;
+                $success = '¡Candidatura enviada correctamente! La empresa revisará tu solicitud pronto.';
+
+            } catch (PDOException $e) {
+                if ($e->getCode() === '23000') {
+                    $error = 'Ya has enviado una candidatura para esta oferta.';
+                } else {
+                    $error = 'Error al enviar la candidatura. Por favor, inténtalo de nuevo.';
+                }
+            }
+        }
+    }
+}
+
+// Etiquetas legibles para los ENUM de la base de datos
+$modalityLabels = [
+    'onsite' => 'Presencial',
+    'hybrid' => 'Híbrido',
+    'remote' => 'Remoto',
+];
+
+$contractLabels = [
+    'permanent'  => 'Indefinido',
+    'temporary'  => 'Temporal',
+    'internship' => 'Prácticas',
+    'freelance'  => 'Freelance',
+];
+
+$workdayLabels = [
+    'full_time' => 'Jornada completa',
+    'part_time' => 'Media jornada',
+];
+
+require_once __DIR__ . '/../includes/header.php';
+?>
+
+<?php if ($success !== '' || ($alreadyApplied && $success === '')): ?>
+<section class="card">
+    <?php if ($success !== ''): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($success); ?></div>
+    <?php else: ?>
+        <div class="alert alert-error">Ya has enviado una candidatura para esta oferta.</div>
+    <?php endif; ?>
+    <a href="<?= BASE_URL; ?>/candidate/my-applications.php" class="btn-primary" style="display:inline-block; margin-top:1rem;">
+        Ver mis candidaturas
+    </a>
+</section>
+<?php endif; ?>
+
+<a href="<?= BASE_URL; ?>/jobs.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
+    ← Volver a ofertas
+</a>
+
+<!-- Detalles de la oferta -->
+<section class="card">
+    <h1><?= htmlspecialchars($job['title']); ?></h1>
+    <p class="job-company" style="font-size: 1.1rem; margin-bottom: 1rem;">
+        <?= htmlspecialchars($job['company_name']); ?>
+    </p>
+
+    <!-- Metadatos de la oferta -->
+    <div class="job-meta" style="margin-bottom: 1.5rem;">
+        <span>📍 <?= htmlspecialchars($job['location']); ?></span>
+        <span>📋 <?= $contractLabels[$job['contract_type']] ?? $job['contract_type']; ?></span>
+        <span>🕐 <?= $workdayLabels[$job['workday']] ?? $job['workday']; ?></span>
+        <span>💻 <?= $modalityLabels[$job['modality']] ?? $job['modality']; ?></span>
+        <?php if ($job['salary_min'] !== null && $job['salary_max'] !== null): ?>
+            <span>
+                💶 <?= number_format((float)$job['salary_min'], 0, ',', '.'); ?>€
+                – <?= number_format((float)$job['salary_max'], 0, ',', '.'); ?>€
+            </span>
+        <?php endif; ?>
+    </div>
+
+    <!-- Descripción completa de la oferta -->
+    <h2 style="margin-bottom: 0.5rem;">Descripción del puesto</h2>
+    <p style="white-space: pre-line; color: #374151;">
+        <?= htmlspecialchars($job['description']); ?>
+    </p>
+</section>
+
+<!-- =========================================================
+     FORMULARIO DE CANDIDATURA
+     Solo se muestra si el candidato todavía no ha aplicado.
+========================================================= -->
+<?php if ($success === '' && !$alreadyApplied): ?>
+<section class="card" style="margin-top: 1.5rem;">
+    <h2>Enviar candidatura</h2>
+    <p>Puedes adjuntar un mensaje personalizado para la empresa.</p>
+
+    <?php if ($error !== ''): ?>
+        <div class="alert alert-error"><?= htmlspecialchars($error); ?></div>
+    <?php endif; ?>
+
+    <form method="post" action="<?= BASE_URL; ?>/candidate/apply.php?job=<?= $jobId; ?>"
+          class="auth-form" enctype="multipart/form-data" novalidate id="form-apply">
+
+        <div class="form-group">
+            <label for="message">¿Por qué eres el candidato ideal? *</label>
+            <textarea
+                id="message"
+                name="message"
+                rows="5"
+                placeholder="Explica tu motivación, experiencia relevante y por qué encajas en este puesto..."
+                style="width:100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-family: inherit; font-size: 0.95rem;"
+            ><?= htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="cv">Currículum en PDF</label>
+            <?php if ($profileCvPath): ?>
+                <p style="margin: 0.25rem 0 0.5rem; font-size:0.875rem; color:#374151;">
+                    Se usará tu CV del perfil.
+                    <a href="<?= BASE_URL . '/' . htmlspecialchars($profileCvPath); ?>" target="_blank" class="btn-link">
+                        Ver CV actual
+                    </a>
+                </p>
+                <p style="margin:0 0 0.4rem; font-size:0.8rem; color:#64748b;">
+                    Opcional: sube otro PDF para usar solo en esta candidatura.
+                </p>
+            <?php else: ?>
+                <p style="margin: 0.25rem 0 0.5rem; font-size:0.875rem; color:#64748b;">
+                    No tienes ningún CV en tu perfil.
+                    <a href="<?= BASE_URL; ?>/candidate/profile-edit.php" class="btn-link">Añadir CV al perfil</a>
+                </p>
+            <?php endif; ?>
+            <input type="file" id="cv" name="cv" accept=".pdf"
+                   style="display:block; margin-top:4px;">
+        </div>
+
+        <button type="submit" class="btn-primary">Enviar candidatura</button>
+        <a href="<?= BASE_URL; ?>/jobs.php" class="btn-link btn-cancel">Cancelar</a>
+    </form>
+
+    <script>
+    document.getElementById('form-apply').addEventListener('submit', function (e) {
+        document.querySelectorAll('.field-error').forEach(el => el.remove());
+        document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+        let valid = true;
+
+        function error(input, msg) {
+            valid = false;
+            input.classList.add('input-error');
+            const span = document.createElement('span');
+            span.className = 'field-error';
+            span.textContent = msg;
+            input.closest('.form-group').appendChild(span);
+        }
+
+        const message = document.getElementById('message');
+        const cv      = document.getElementById('cv');
+
+        if (!message.value.trim())
+            error(message, 'Debes explicar por qué eres el candidato ideal para este puesto.');
+
+        if (cv.files.length > 0) {
+            const file = cv.files[0];
+            if (file.type !== 'application/pdf')
+                error(cv, 'Solo se aceptan archivos en formato PDF.');
+            else if (file.size > 5 * 1024 * 1024)
+                error(cv, 'El archivo no puede superar los 5 MB.');
+        }
+
+        if (!valid) e.preventDefault();
+    });
+    </script>
+</section>
+<?php endif; ?>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

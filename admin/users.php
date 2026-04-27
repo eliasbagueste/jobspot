@@ -19,6 +19,10 @@ $users = $stmt->fetchAll();
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
+<a href="<?= BASE_URL; ?>/admin/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
+    ← Volver al panel
+</a>
+
 <section class="card">
     <h1>Usuarios</h1>
 
@@ -45,7 +49,11 @@ require_once __DIR__ . '/../includes/header.php';
                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($u['created_at']))); ?></td>
                     <td>
                         <a href="<?= BASE_URL; ?>/admin/user-edit.php?id=<?= $u['id']; ?>" class="btn-edit">Editar</a>
-                        <a href="<?= BASE_URL; ?>/admin/user-delete.php?id=<?= $u['id']; ?>" class="btn-delete">Borrar</a>
+                        <form method="post" action="<?= BASE_URL; ?>/admin/user-delete.php" style="display:inline;"
+                              onsubmit="return confirm('¿Eliminar al usuario <?= htmlspecialchars(addslashes($u['full_name'])); ?>? Esta acción no se puede deshacer.');">
+                            <input type="hidden" name="id" value="<?= $u['id']; ?>">
+                            <button type="submit" class="btn-delete">Borrar</button>
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>
