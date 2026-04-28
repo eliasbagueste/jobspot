@@ -55,7 +55,7 @@ require_once __DIR__ . '/../includes/header.php';
 </a>
 
 <section class="card">
-    <h1>Empresas</h1>
+    <h1 style="margin-top:0;">Empresas</h1>
     <p style="color:#64748b; margin-bottom:1.5rem;">
         Las empresas deben estar verificadas para poder publicar ofertas.
     </p>
@@ -96,7 +96,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <?php if ($co['is_verified']): ?>
                                 <span class="badge badge-active">Verificada</span>
                             <?php else: ?>
-                                <span class="badge badge-company">Pendiente</span>
+                                <span class="badge badge-admin">No verificada</span>
                             <?php endif; ?>
                         </td>
                         <td style="font-size:0.85rem; color:#64748b;">

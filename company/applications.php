@@ -30,7 +30,7 @@ if ($jobId === 0) {
 
 // Verificamos que la oferta pertenece a esta empresa
 $stmtJob = $pdo->prepare("
-    SELECT id, title FROM jobs WHERE id = :id AND company_id = :cid
+    SELECT id, title, status FROM jobs WHERE id = :id AND company_id = :cid
 ");
 $stmtJob->execute(['id' => $jobId, 'cid' => $company['id']]);
 $job = $stmtJob->fetch();
@@ -165,7 +165,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php endif; ?>
 
             <!-- Formulario para cambiar el estado de la candidatura -->
-            <?php if ($app['status'] !== 'accepted' && $app['status'] !== 'rejected'): ?>
+            <?php if ($job['status'] === 'published' && $app['status'] !== 'accepted' && $app['status'] !== 'rejected'): ?>
                 <form method="post"
                       action="<?= BASE_URL; ?>/company/applications.php?job=<?= $jobId; ?>"
                       style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">

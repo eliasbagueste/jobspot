@@ -88,6 +88,14 @@ $jobs = $stmt->fetchAll();
 $catStmt = $pdo->query("SELECT slug, name FROM categories WHERE is_active = 1 ORDER BY name ASC");
 $categories = $catStmt->fetchAll();
 
+// IDs de ofertas favoritas del candidato actual (para mostrar el corazón relleno)
+$favoriteIds = [];
+if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'candidate') {
+    $favStmt = $pdo->prepare("SELECT job_id FROM favorite_jobs WHERE candidate_user_id = :uid");
+    $favStmt->execute(['uid' => $_SESSION['user']['id']]);
+    $favoriteIds = $favStmt->fetchAll(PDO::FETCH_COLUMN);
+}
+
 // =========================================================
 // ETIQUETAS LEGIBLES PARA LOS ENUMS DE LA BASE DE DATOS
 // =========================================================
@@ -115,7 +123,7 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="card">
-    <h1>Ofertas de empleo</h1>
+    <h1 style="margin-top:0;">Ofertas de empleo</h1>
 
     <!-- =====================================================
          FORMULARIO DE FILTROS
@@ -233,15 +241,23 @@ require_once __DIR__ . '/includes/header.php';
                           – <?= number_format((float)$job['salary_max'], 0, ',', '.'); ?>
                           <?= htmlspecialchars($job['currency']); ?></span>
                 <?php endif; ?>
+                <span style="margin-left:auto; white-space:nowrap;">
+                    Publicada: <?= date('d/m/Y', strtotime($job['published_at'])); ?>
+                </span>
             </div>
 
             <div class="job-actions">
                 <a href="<?= BASE_URL; ?>/job-detail.php?id=<?= $job['id']; ?>" class="btn-primary">
                     Ver oferta
                 </a>
-                <span style="margin-left:auto; color:#94a3b8; font-size:0.82rem; align-self:center;">
-                    <?= date('d/m/Y', strtotime($job['published_at'])); ?>
-                </span>
+                <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'candidate'): ?>
+                    <button class="btn-favorite" data-job-id="<?= $job['id']; ?>"
+                            data-favorited="<?= in_array($job['id'], $favoriteIds) ? '1' : '0'; ?>"
+                            title="<?= in_array($job['id'], $favoriteIds) ? 'Quitar de favoritos' : 'Añadir a favoritos'; ?>"
+                            style="background:none; border:none; cursor:pointer; font-size:1.2rem; color:<?= in_array($job['id'], $favoriteIds) ? '#ef4444' : '#cbd5e1'; ?>; padding:0; line-height:1; margin-left:auto;">
+                        <i class="<?= in_array($job['id'], $favoriteIds) ? 'fas' : 'far'; ?> fa-heart"></i>
+                    </button>
+                <?php endif; ?>
             </div>
         </div>
     <?php endforeach; ?>

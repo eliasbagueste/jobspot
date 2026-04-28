@@ -139,8 +139,9 @@ require_once __DIR__ . '/../includes/header.php';
     ← Volver al panel
 </a>
 
-<section class="card">
-    <h1>Categorías</h1>
+<section class="card" style="padding:16px 24px;">
+    <h1 style="margin:0 0 0.25rem;">Categorías</h1>
+    <p style="color:#64748b; margin:0;">Gestiona las categorías disponibles para las ofertas de trabajo.</p>
 </section>
 
 <?php if ($success !== ''): ?>
@@ -154,8 +155,8 @@ require_once __DIR__ . '/../includes/header.php';
 <!-- ────────────────────────────────────────────────────── -->
 <!-- Formulario para crear una nueva categoría             -->
 <!-- ────────────────────────────────────────────────────── -->
-<section class="card" style="margin-top:1rem;">
-    <h2 style="margin-bottom:1rem;">Nueva categoría</h2>
+<section class="card" style="padding:16px 24px;">
+    <h2 style="margin:0 0 1rem;">Nueva categoría</h2>
     <form method="post" action="<?= BASE_URL; ?>/admin/categories.php"
           id="form-category" novalidate
           style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:flex-end;">

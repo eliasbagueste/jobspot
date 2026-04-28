@@ -387,6 +387,44 @@ main.container {
   border-color: #f87171;
 }
 
+.btn-warning {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  color: #d97706;
+  border: 1px solid #fcd34d;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-warning:hover {
+  background: #fef9c3;
+  border-color: #fbbf24;
+}
+
+.btn-success {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  color: #16a34a;
+  border: 1px solid #86efac;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-success:hover {
+  background: #dcfce7;
+  border-color: #4ade80;
+}
+
 .btn-accept {
   display: inline-block;
   padding: 6px 14px;

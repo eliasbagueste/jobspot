@@ -25,6 +25,7 @@ require_once __DIR__ . '/../config/config.php';
                     <?php elseif ($_SESSION['user']['role'] === 'candidate'): ?>
                         <a href="<?= BASE_URL; ?>/candidate/index.php">Panel</a>
                         <a href="<?= BASE_URL; ?>/candidate/my-applications.php">Mis candidaturas</a>
+                        <a href="<?= BASE_URL; ?>/candidate/favorites.php">Favoritos</a>
                     <?php elseif ($_SESSION['user']['role'] === 'company'): ?>
                         <a href="<?= BASE_URL; ?>/company/index.php">Mi empresa</a>
                         <a href="<?= BASE_URL; ?>/company/jobs.php">Mis ofertas</a>

@@ -131,7 +131,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <span>📍 <?= htmlspecialchars($job['location']); ?></span>
                     <span>📋 <?= $contractLabels[$job['contract_type']] ?? $job['contract_type']; ?></span>
                     <span>💻 <?= $modalityLabels[$job['modality']] ?? $job['modality']; ?></span>
-                    <span>👥 <?= $job['total_applications']; ?> candidatura<?= $job['total_applications'] != 1 ? 's' : ''; ?><?php if ($job['pending_applications'] > 0): ?> <span style="color:#ef4444; font-weight:600;">(<?= $job['pending_applications']; ?> pendiente<?= $job['pending_applications'] != 1 ? 's' : ''; ?> de decisión)</span><?php endif; ?></span>
+                    <span>👥 <?= $job['total_applications']; ?> candidatura<?= $job['total_applications'] != 1 ? 's' : ''; ?><?php if ($job['pending_applications'] > 0 && $job['status'] === 'published'): ?> <span style="color:#ef4444; font-weight:600;">(<?= $job['pending_applications']; ?> pendiente<?= $job['pending_applications'] != 1 ? 's' : ''; ?> de decisión)</span><?php endif; ?></span>
                 </div>
             </div>
 
@@ -156,6 +156,13 @@ require_once __DIR__ . '/../includes/header.php';
                            class="btn-delete"
                            onclick="return confirm('¿Cerrar esta oferta? Los candidatos ya no podrán aplicar.');">
                             Cerrar
+                        </a>
+                    <?php endif; ?>
+                    <?php if ($job['status'] === 'closed'): ?>
+                        <a href="<?= BASE_URL; ?>/company/job-delete.php?id=<?= $job['id']; ?>&action=reopen"
+                           class="btn-edit"
+                           onclick="return confirm('¿Reabrir esta oferta? Volverá a estar visible para los candidatos.');">
+                            Reabrir
                         </a>
                     <?php endif; ?>
                     <?php if (in_array($job['status'], ['draft', 'rejected'])): ?>

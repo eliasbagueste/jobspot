@@ -29,7 +29,7 @@ $jobId = (int) ($_GET['id']     ?? 0);
 $action = trim($_GET['action']  ?? '');
 
 // Si falta algún parámetro, redirigimos sin hacer nada
-if ($jobId === 0 || !in_array($action, ['close', 'delete'])) {
+if ($jobId === 0 || !in_array($action, ['close', 'reopen', 'delete'])) {
     header('Location: ' . BASE_URL . '/company/jobs.php');
     exit;
 }
@@ -55,12 +55,25 @@ if (!$job) {
 // =========================================================
 
 if ($action === 'close' && $job['status'] === 'published') {
-    // Cerrar = marcar como 'closed'. Los datos se conservan.
-    // Los candidatos ya no podrán aplicar, pero el historial queda.
+    // Cerrar la oferta y rechazar automáticamente las candidaturas pendientes
     $stmtClose = $pdo->prepare("
         UPDATE jobs SET status = 'closed' WHERE id = :id AND company_id = :cid
     ");
     $stmtClose->execute(['id' => $jobId, 'cid' => $company['id']]);
+
+    // Las candidaturas que aún no tenían decisión pasan a rechazadas
+    $stmtReject = $pdo->prepare("
+        UPDATE applications
+        SET status = 'rejected'
+        WHERE job_id = :jid AND status IN ('sent', 'reviewed')
+    ");
+    $stmtReject->execute(['jid' => $jobId]);
+
+} elseif ($action === 'reopen' && $job['status'] === 'closed') {
+    $stmtReopen = $pdo->prepare("
+        UPDATE jobs SET status = 'published', published_at = NOW() WHERE id = :id AND company_id = :cid
+    ");
+    $stmtReopen->execute(['id' => $jobId, 'cid' => $company['id']]);
 
 } elseif ($action === 'delete' && in_array($job['status'], ['draft', 'rejected'])) {
     // Eliminar = borrar físicamente la oferta.

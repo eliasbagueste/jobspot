@@ -39,7 +39,7 @@ require_once __DIR__ . '/../includes/header.php';
 <!-- Resumen estadístico rápido -->
 <div class="admin-grid">
     <div class="admin-stat">
-        <div class="admin-stat-icon">👥</div>
+        <div class="admin-stat-icon">👤</div>
         <div class="admin-stat-text">
             <div class="admin-stat-value"><?= $totalUsers; ?></div>
             <div class="admin-stat-label">Usuarios registrados</div>
@@ -53,10 +53,10 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     </div>
     <div class="admin-stat" <?= $pendingCompanies > 0 ? 'style="border-left:3px solid #f59e0b;"' : ''; ?>>
-        <div class="admin-stat-icon">🏢</div>
+        <div class="admin-stat-icon">🏬</div>
         <div class="admin-stat-text">
             <div class="admin-stat-value"><?= $pendingCompanies; ?></div>
-            <div class="admin-stat-label">Empresas pendientes</div>
+            <div class="admin-stat-label">Empresas pendientes de verificar</div>
         </div>
     </div>
     <div class="admin-stat">
@@ -85,11 +85,11 @@ require_once __DIR__ . '/../includes/header.php';
     <a href="<?= BASE_URL; ?>/admin/companies.php" class="admin-card"
        style="<?= $pendingCompanies > 0 ? 'border-left:4px solid #f59e0b;' : ''; ?>">
         <div class="admin-card-icon">🏢</div>
-        <h2>
+        <h2 style="display:flex; align-items:center; gap:0.5rem; flex-wrap:nowrap;">
             Empresas
             <?php if ($pendingCompanies > 0): ?>
-                <span class="badge badge-company" style="font-size:0.75rem; vertical-align:middle;">
-                    <?= $pendingCompanies; ?> pendiente<?= $pendingCompanies !== 1 ? 's' : ''; ?>
+                <span class="badge badge-company" style="font-size:0.75rem;">
+                    <?= $pendingCompanies; ?> por verificar
                 </span>
             <?php endif; ?>
         </h2>

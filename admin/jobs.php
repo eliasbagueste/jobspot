@@ -11,28 +11,6 @@ requireRole('admin');
 $user = $_SESSION['user'];
 $pdo  = getPDO();
 
-$success = '';
-$error   = '';
-
-// =========================================================
-// ACCIÓN: CERRAR UNA OFERTA PUBLICADA
-// =========================================================
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $jobId  = (int) ($_POST['job_id'] ?? 0);
-    $action = trim($_POST['action'] ?? '');
-
-    if ($jobId > 0 && $action === 'close') {
-        $stmt = $pdo->prepare("UPDATE jobs SET status = 'closed' WHERE id = :id AND status = 'published'");
-        $stmt->execute(['id' => $jobId]);
-        $success = 'Oferta cerrada correctamente.';
-    }
-
-    $qs = $success !== '' ? '?ok=1' : '';
-    header('Location: ' . BASE_URL . '/admin/jobs.php' . $qs);
-    exit;
-}
-
-if (isset($_GET['ok'])) $success = 'Oferta cerrada correctamente.';
 
 // =========================================================
 // FILTRO DE ESTADO
@@ -113,10 +91,6 @@ require_once __DIR__ . '/../includes/header.php';
     <p style="color:#64748b; margin:0;">Consulta y gestiona todas las ofertas de la plataforma.</p>
 </section>
 
-<?php if ($success !== ''): ?>
-    <div class="alert alert-success"><?= htmlspecialchars($success); ?></div>
-<?php endif; ?>
-
 <!-- Filtros por estado -->
 <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">
     <a href="?filter=all"
@@ -146,7 +120,11 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="job-card">
             <div class="job-card-header">
                 <div>
-                    <h2 class="job-title"><?= htmlspecialchars($job['title']); ?></h2>
+                    <h2 class="job-title">
+                        <a href="<?= BASE_URL; ?>/admin/job-detail.php?id=<?= $job['id']; ?>" style="color:inherit; text-decoration:none;">
+                            <?= htmlspecialchars($job['title']); ?>
+                        </a>
+                    </h2>
                     <p class="job-company"><?= htmlspecialchars($job['company_name']); ?></p>
                 </div>
                 <span class="badge <?= $statusClass[$job['status']] ?? 'badge-candidate'; ?>">
@@ -159,20 +137,16 @@ require_once __DIR__ . '/../includes/header.php';
                 <span>📍 <?= htmlspecialchars($job['location']); ?></span>
                 <span>📋 <?= $contractLabels[$job['contract_type']] ?? $job['contract_type']; ?></span>
                 <span>💻 <?= $modalityLabels[$job['modality']] ?? $job['modality']; ?></span>
-                <span>👥 <?= $job['total_applications']; ?> candidatura<?= $job['total_applications'] != 1 ? 's' : ''; ?></span>
                 <span>📅 <?= date('d/m/Y', strtotime($job['created_at'])); ?></span>
             </div>
 
-            <?php if ($job['status'] === 'published'): ?>
-                <form method="post" action="<?= BASE_URL; ?>/admin/jobs.php" style="margin-top:0.75rem;">
-                    <input type="hidden" name="job_id" value="<?= $job['id']; ?>">
-                    <button type="submit" name="action" value="close" class="btn-delete"
-                            style="font-size:0.85rem; padding:0.3rem 0.8rem;"
-                            onclick="return confirm('¿Cerrar esta oferta? Los candidatos ya no podrán aplicar.');">
-                        Cerrar oferta
-                    </button>
-                </form>
-            <?php endif; ?>
+            <div style="border-top:1px solid #f1f5f9; margin-top:0.75rem; padding-top:0.75rem; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.85rem; color:#64748b;">
+                    👥 <?= $job['total_applications']; ?> candidatura<?= $job['total_applications'] != 1 ? 's' : ''; ?> recibida<?= $job['total_applications'] != 1 ? 's' : ''; ?>
+                </span>
+                <a href="<?= BASE_URL; ?>/admin/job-detail.php?id=<?= $job['id']; ?>" class="btn-primary" style="font-size:0.85rem; padding:0.35rem 0.9rem;">Ver</a>
+            </div>
+
         </div>
     <?php endforeach; ?>
 <?php endif; ?>

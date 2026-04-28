@@ -30,5 +30,43 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.querySelectorAll('.btn-favorite').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const jobId = btn.dataset.jobId;
+                const icon  = btn.querySelector('i');
+                const label = btn.querySelector('span');
+
+                fetch('/candidate/favorite-toggle.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'job_id=' + jobId
+                })
+                .then(r => r.json())
+                .then(function (data) {
+                    if (data.favorited) {
+                        btn.dataset.favorited = '1';
+                        icon.className        = 'fas fa-heart';
+                        btn.style.color       = '#ef4444';
+                        btn.title             = 'Quitar de favoritos';
+                        if (label) label.textContent = 'Guardada en favoritos';
+                    } else {
+                        btn.dataset.favorited = '0';
+                        icon.className        = 'far fa-heart';
+                        btn.style.color       = '#cbd5e1';
+                        btn.title             = 'Añadir a favoritos';
+                        if (label) label.textContent = 'Guardar en favoritos';
+                        const card = btn.closest('.job-card');
+                        if (card && window.location.pathname.includes('favorites')) {
+                            card.style.transition = 'opacity 0.3s';
+                            card.style.opacity    = '0';
+                            setTimeout(() => card.remove(), 300);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

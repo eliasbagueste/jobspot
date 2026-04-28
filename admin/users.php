@@ -11,8 +11,19 @@ requireLogin();
 // Si el usuario no es admin → error 403
 requireRole('admin');
 
-// Obtenemos todos los usuarios de la base de datos
-$pdo  = getPDO();
+$pdo = getPDO();
+
+// Activar / desactivar usuario
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_active'])) {
+    $toggleId = (int) $_POST['toggle_id'];
+    if ($toggleId !== (int) $_SESSION['user']['id']) {
+        $stmt = $pdo->prepare("UPDATE users SET is_active = NOT is_active WHERE id = ?");
+        $stmt->execute([$toggleId]);
+    }
+    header('Location: ' . BASE_URL . '/admin/users.php');
+    exit;
+}
+
 $stmt = $pdo->query("SELECT id, full_name, email, role, is_active, created_at FROM users ORDER BY id ASC");
 $users = $stmt->fetchAll();
 
@@ -24,7 +35,7 @@ require_once __DIR__ . '/../includes/header.php';
 </a>
 
 <section class="card">
-    <h1>Usuarios</h1>
+    <h1 style="margin-top:0;">Usuarios</h1>
 
     <table>
         <thead>
@@ -47,8 +58,17 @@ require_once __DIR__ . '/../includes/header.php';
                     <td><span class="badge badge-<?= htmlspecialchars($u['role']); ?>"><?= htmlspecialchars($u['role']); ?></span></td>
                     <td><?= $u['is_active'] ? 'Sí' : 'No'; ?></td>
                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($u['created_at']))); ?></td>
-                    <td>
+                    <td style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
                         <a href="<?= BASE_URL; ?>/admin/user-edit.php?id=<?= $u['id']; ?>" class="btn-edit">Editar</a>
+                        <?php if ($u['id'] !== (int) $_SESSION['user']['id']): ?>
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="toggle_id" value="<?= $u['id']; ?>">
+                                <button type="submit" name="toggle_active"
+                                        class="<?= $u['is_active'] ? 'btn-warning' : 'btn-success'; ?>">
+                                    <?= $u['is_active'] ? 'Desactivar' : 'Activar'; ?>
+                                </button>
+                            </form>
+                        <?php endif; ?>
                         <form method="post" action="<?= BASE_URL; ?>/admin/user-delete.php" style="display:inline;"
                               onsubmit="return confirm('¿Eliminar al usuario <?= htmlspecialchars(addslashes($u['full_name'])); ?>? Esta acción no se puede deshacer.');">
                             <input type="hidden" name="id" value="<?= $u['id']; ?>">
