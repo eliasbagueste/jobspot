@@ -22,9 +22,13 @@ config/env.php
 # para no subir archivos de usuarios al repositorio de GitHub
 /uploads/*
 
-# Excepción: este archivo vacío sí se guarda
-# para que Git mantenga la carpeta uploads aunque esté vacía
+# Excepciones: los .gitkeep mantienen la estructura de carpetas en git
+# para que las subcarpetas ya existan al desplegar (sin depender de mkdir)
 !/uploads/.gitkeep
+!/uploads/cvs/
+!/uploads/cvs/.gitkeep
+!/uploads/logos/
+!/uploads/logos/.gitkeep
 
 # Carpeta de memoria y contexto de Claude Code (herramienta de desarrollo local)
 # No es parte del código de la aplicación
