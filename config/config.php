@@ -27,8 +27,8 @@ if ($host === 'jobspot.es' || $host === 'www.jobspot.es') {
     define('APP_ENV', 'dev');
 }
 
-// En local mostramos errores para depurar; en cualquier otro entorno los ocultamos
-if (APP_ENV === 'local') {
+// En local y dev mostramos errores para depurar; en prod los ocultamos
+if (APP_ENV === 'local' || APP_ENV === 'dev') {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 } else {

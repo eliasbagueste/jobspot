@@ -56,8 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $filename   = 'logo_' . $company['id'] . '_' . time() . '.' . $ext;
                 $uploadsDir = __DIR__ . '/../uploads/logos/';
                 if (!is_dir($uploadsDir)) mkdir($uploadsDir, 0755, true);
-                move_uploaded_file($_FILES['logo']['tmp_name'], $uploadsDir . $filename);
-                $logoPath = 'uploads/logos/' . $filename;
+                if (move_uploaded_file($_FILES['logo']['tmp_name'], $uploadsDir . $filename)) {
+                    $logoPath = 'uploads/logos/' . $filename;
+                } else {
+                    $error = 'No se pudo guardar el logo. Comprueba los permisos de la carpeta uploads/logos/.';
+                }
             }
         }
 

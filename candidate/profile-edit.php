@@ -46,8 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // time() en el nombre evita sobrescribir si sube varios CVs seguidos
             $filename   = 'profile_cv_' . $user['id'] . '_' . time() . '.pdf';
             // Mueve el archivo del directorio temporal del servidor a nuestra carpeta
-            move_uploaded_file($file['tmp_name'], $uploadsDir . $filename);
-            $cvPath = 'uploads/cvs/' . $filename;
+            if (move_uploaded_file($file['tmp_name'], $uploadsDir . $filename)) {
+                $cvPath = 'uploads/cvs/' . $filename;
+            } else {
+                $error = 'No se pudo guardar el archivo. Comprueba los permisos de la carpeta uploads/cvs/.';
+            }
         }
     }
 
