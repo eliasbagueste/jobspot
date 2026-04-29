@@ -10,6 +10,9 @@ requireRole('candidate');
 $user = $_SESSION['user'];
 $pdo  = getPDO();
 
+// Cargo los favoritos del candidato con todos los datos de la oferta.
+// Necesito los JOIN para obtener el nombre de la empresa y la categoría,
+// que están en tablas separadas.
 $stmt = $pdo->prepare("
     SELECT
         j.id,
@@ -88,6 +91,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <img src="<?= BASE_URL . '/' . htmlspecialchars($job['company_logo']); ?>"
                                  alt="<?= htmlspecialchars($job['company_name']); ?>">
                         <?php else: ?>
+                            <!-- Sin logo mostramos la primera letra del nombre (mb_ soporta tildes y ñ) -->
                             <?= mb_strtoupper(mb_substr($job['company_name'], 0, 1, 'UTF-8'), 'UTF-8'); ?>
                         <?php endif; ?>
                     </div>

@@ -1,11 +1,7 @@
 <?php
-// login.php
+// login.php — Formulario de inicio de sesión
 
-/**
- * Carga la conexión a base de datos.
- * database.php a su vez carga config.php,
- * que inicia sesión y carga la configuración general.
- */
+// database.php también carga config.php, que inicia la sesión PHP
 require_once __DIR__ . '/config/database.php';
 
 // Si el usuario ya tiene sesión activa, redirige según su rol
@@ -22,84 +18,53 @@ if (isset($_SESSION['user'])) {
     }
     exit;
 }
-/**
- * Variables para controlar errores y valores del formulario.
- * Así podemos volver a mostrar el email si falla el login.
- */
+// Variables para el mensaje de error y para repopular el email si el login falla
 $error = '';
 $email = '';
 
-/**
- * Procesa el formulario solo cuando llega por POST.
- */
+// Solo procesamos el formulario cuando llega por POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    /**
-     * Recoge y limpia los datos enviados por el formulario.
-     */
-    $email = trim($_POST['email'] ?? '');
+    $email    = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    /**
-     * Validación básica.
-     * Si falta algún campo, mostramos error.
-     */
     if ($email === '' || $password === '') {
         $error = 'Debes introducir tu correo electrónico y tu contraseña.';
     } else {
         try {
-            /**
-             * Obtiene la conexión PDO.
-             */
             $pdo = getPDO();
 
-            /**
-             * Busca al usuario por email.
-             * Solo necesitamos un registro, por eso LIMIT 1.
-             */
+            // Buscamos el usuario por email (LIMIT 1 porque el email es único)
             $stmt = $pdo->prepare("
                 SELECT id, full_name, email, password_hash, role, is_active
                 FROM users
                 WHERE email = :email
                 LIMIT 1
             ");
-
-            $stmt->execute([
-                'email' => $email,
-            ]);
-
+            $stmt->execute(['email' => $email]);
             $user = $stmt->fetch();
 
-            /**
-             * Comprobaciones:
-             * 1. que el usuario exista
-             * 2. que esté activo
-             * 3. que la contraseña coincida con el hash almacenado
-             */
             if (!$user) {
+                // No decimos "el email no existe" para no dar pistas a posibles atacantes
                 $error = 'El correo electrónico o la contraseña no son correctos.';
             } elseif (!(bool) $user['is_active']) {
                 $error = 'Tu cuenta está desactivada.';
             } elseif (!password_verify($password, $user['password_hash'])) {
+                // password_verify compara la contraseña con el hash almacenado en la BD
                 $error = 'El correo electrónico o la contraseña no son correctos.';
             } else {
-                /**
-                 * Regenera el ID de sesión por seguridad
-                 * para evitar fijación de sesión.
-                 */
+                // Regeneramos el ID de sesión por seguridad al hacer login
+                // Esto evita ataques de "session fixation" (fijación de sesión)
                 session_regenerate_id(true);
 
-                /**
-                 * Guarda en sesión solo los datos mínimos necesarios.
-                 * No guardamos password_hash ni información innecesaria.
-                 */
+                // Guardamos en sesión solo lo imprescindible (nunca el hash de contraseña)
                 $_SESSION['user'] = [
-                    'id' => (int) $user['id'],
+                    'id'        => (int) $user['id'],
                     'full_name' => $user['full_name'],
-                    'email' => $user['email'],
-                    'role' => $user['role'],
+                    'email'     => $user['email'],
+                    'role'      => $user['role'],
                 ];
 
-                // Redirige al panel correspondiente según el rol del usuario
+                // Redirigimos al panel que corresponde según el rol del usuario
                 if ($_SESSION['user']['role'] === 'admin') {
                     header('Location: ' . BASE_URL . '/admin/index.php');
                 } elseif ($_SESSION['user']['role'] === 'candidate') {
@@ -112,10 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
         } catch (PDOException $e) {
-            /**
-             * En producción no conviene mostrar errores técnicos.
-             * En local y desarrollo sí puede ayudar durante las pruebas.
-             */
+            // En producción ocultamos el mensaje técnico; en local lo mostramos para depurar
             if (APP_ENV === 'prod') {
                 $error = 'Se ha producido un error al iniciar sesión.';
             } else {
@@ -125,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// HTML DE LA PAGINA DE LOGIN
 require_once __DIR__ . '/includes/header.php';
 ?>
 
@@ -168,10 +129,28 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <button type="submit" class="btn-primary">Entrar</button>
+
+        <!-- Enlace de recuperación de contraseña: funcionalidad pendiente por tiempo -->
+        <p style="margin-top:1rem; text-align:center; font-size:0.9rem;">
+            <a href="#" id="forgot-link" style="color:#6366f1; text-decoration:none;">
+                ¿Olvidaste tu contraseña?
+            </a>
+        </p>
     </form>
+
+    <!-- Modal informativo: se muestra al pulsar el enlace de recuperación -->
+    <div id="forgot-modal"
+         style="display:none; margin-top:1rem; padding:1rem 1.25rem;
+                background:#f0f4ff; border:1px solid #c7d2fe; border-radius:8px;
+                color:#3730a3; font-size:0.9rem; line-height:1.5;">
+        <strong>Recuperación de contraseña</strong><br>
+        Esta funcionalidad quedó pendiente de implementar por limitaciones de tiempo.
+        Si has olvidado tu contraseña, contacta con el administrador de la plataforma.
+    </div>
 </section>
 
 <script>
+// Validación en el cliente para mostrar errores sin necesitar recargar la página
 document.querySelector('.auth-form').addEventListener('submit', function (e) {
     document.querySelectorAll('.field-error').forEach(el => el.remove());
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
@@ -197,6 +176,13 @@ document.querySelector('.auth-form').addEventListener('submit', function (e) {
         error(password, 'La contraseña es obligatoria.');
 
     if (!valid) e.preventDefault();
+});
+
+// Al pulsar "¿Olvidaste tu contraseña?" muestra u oculta el aviso informativo
+document.getElementById('forgot-link').addEventListener('click', function (e) {
+    e.preventDefault(); // evita que el enlace # haga scroll al inicio de la página
+    const modal = document.getElementById('forgot-modal');
+    modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
 });
 </script>
 

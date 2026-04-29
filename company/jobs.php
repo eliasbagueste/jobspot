@@ -10,9 +10,7 @@ requireRole('company');
 $user = $_SESSION['user'];
 $pdo  = getPDO();
 
-// =========================================================
-// VERIFICAMOS QUE LA EMPRESA TIENE PERFIL CREADO
-// =========================================================
+// Verificamos que la empresa tiene perfil creado antes de mostrar sus ofertas
 $stmt = $pdo->prepare("SELECT * FROM companies WHERE owner_user_id = :uid");
 $stmt->execute(['uid' => $user['id']]);
 $company = $stmt->fetch();
@@ -23,11 +21,8 @@ if (!$company) {
     exit;
 }
 
-// =========================================================
-// OBTENEMOS TODAS LAS OFERTAS DE ESTA EMPRESA
-// =========================================================
-// Hacemos JOIN con categories para mostrar el nombre de categoría.
-// Incluimos también el conteo de candidaturas por oferta.
+// Cargamos todas las ofertas de esta empresa con su categoría y el número de candidaturas
+// COUNT y SUM con CASE nos permiten calcular totales y pendientes en una sola consulta
 $stmtJobs = $pdo->prepare("
     SELECT
         j.id,

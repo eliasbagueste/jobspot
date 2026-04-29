@@ -1,11 +1,14 @@
 <?php
+// admin/user-delete.php — Elimina un usuario de la base de datos
+// Solo acepta peticiones POST para evitar borrados accidentales con un simple enlace.
+
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/auth.php';
 
 requireLogin();
 requireRole('admin');
 
-// Solo aceptamos POST para evitar borrados accidentales por URL
+// Rechazamos GET: el borrado siempre debe venir de un formulario POST con confirmación
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . BASE_URL . '/admin/users.php');
     exit;

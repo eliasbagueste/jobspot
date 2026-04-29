@@ -9,32 +9,33 @@ requireRole('admin');
 
 $pdo = getPDO();
 
+// Recogemos el ID de la oferta desde la URL
 $jobId = (int) ($_GET['id'] ?? 0);
 if ($jobId === 0) {
     header('Location: ' . BASE_URL . '/admin/jobs.php');
     exit;
 }
 
-// =========================================================
-// ACCIÓN: CERRAR O REABRIR DESDE ESTA PÁGINA
-// =========================================================
+// Si el admin pulsa "Cerrar" o "Reabrir", procesamos la acción
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = trim($_POST['action'] ?? '');
 
     if ($action === 'close') {
+        // Cerramos la oferta y rechazamos automáticamente las candidaturas pendientes
         $pdo->prepare("UPDATE jobs SET status = 'closed' WHERE id = :id AND status = 'published'")->execute(['id' => $jobId]);
         $pdo->prepare("UPDATE applications SET status = 'rejected' WHERE job_id = :jid AND status IN ('sent', 'reviewed')")->execute(['jid' => $jobId]);
     } elseif ($action === 'reopen') {
+        // Reabrimos la oferta y actualizamos la fecha de publicación a ahora
         $pdo->prepare("UPDATE jobs SET status = 'published', published_at = NOW() WHERE id = :id AND status = 'closed'")->execute(['id' => $jobId]);
     }
 
+    // Redirigimos a la misma página para evitar reenvío del formulario (POST-Redirect-GET)
     header('Location: ' . BASE_URL . '/admin/job-detail.php?id=' . $jobId);
     exit;
 }
 
-// =========================================================
-// CARGAMOS LA OFERTA (cualquier estado)
-// =========================================================
+// Cargamos la oferta con empresa, categoría y número de candidaturas
+// El admin puede ver cualquier oferta, independientemente de su estado
 $stmt = $pdo->prepare("
     SELECT
         j.id,
@@ -71,6 +72,7 @@ if (!$job) {
     exit;
 }
 
+// Etiquetas legibles para los ENUM de la base de datos
 $modalityLabels = [
     'onsite' => 'Presencial',
     'hybrid' => 'Híbrido',
@@ -89,6 +91,7 @@ $workdayLabels = [
     'part_time' => 'Media jornada',
 ];
 
+// Etiquetas y clases CSS para el estado de la oferta
 $statusLabels = [
     'published' => 'Publicada',
     'closed'    => 'Cerrada',
@@ -97,10 +100,10 @@ $statusLabels = [
 ];
 
 $statusClass = [
-    'published' => 'badge-active',
-    'closed'    => 'badge-admin',
-    'draft'     => 'badge-candidate',
-    'rejected'  => 'badge-rejected',
+    'published' => 'badge-active',   // verde
+    'closed'    => 'badge-admin',    // gris
+    'draft'     => 'badge-candidate', // azul
+    'rejected'  => 'badge-rejected', // rojo
 ];
 
 require_once __DIR__ . '/../includes/header.php';
@@ -207,6 +210,8 @@ require_once __DIR__ . '/../includes/header.php';
                             <img src="<?= BASE_URL . '/' . htmlspecialchars($job['company_logo']); ?>"
                                  alt="<?= htmlspecialchars($job['company_name']); ?>">
                         <?php else: ?>
+                            <!-- mb_substr saca la primera letra del nombre; mb_strtoupper la pone en mayúscula -->
+                            <!-- Las funciones mb_ trabajan bien con caracteres especiales (tildes, ñ...) -->
                             <?= mb_strtoupper(mb_substr($job['company_name'], 0, 1, 'UTF-8'), 'UTF-8'); ?>
                         <?php endif; ?>
                     </div>

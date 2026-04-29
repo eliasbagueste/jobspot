@@ -40,11 +40,8 @@ if (!$job) {
     exit;
 }
 
-// =========================================================
-// PROCESAMOS EL CAMBIO DE ESTADO DE UNA CANDIDATURA
-// =========================================================
-// La empresa puede cambiar el estado de cada candidatura:
-// sent → reviewed → accepted / rejected
+// Si la empresa pulsa un botón de acción, procesamos el cambio de estado
+// Flujo posible: sent → reviewed → accepted / rejected
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $applicationId = (int) ($_POST['application_id'] ?? 0);
     $newStatus     = trim($_POST['status']           ?? '');
@@ -73,9 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// =========================================================
-// OBTENEMOS LAS CANDIDATURAS DE ESTA OFERTA
-// =========================================================
+// Cargamos todas las candidaturas recibidas para esta oferta
 $stmtApps = $pdo->prepare("
     SELECT
         a.id,

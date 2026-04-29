@@ -12,12 +12,12 @@ $user = $_SESSION['user'];
 $pdo  = getPDO();
 
 
-// =========================================================
-// FILTRO DE ESTADO
-// =========================================================
+// Filtro por estado: solo permitimos valores conocidos para evitar inyección SQL
 $validFilters = ['all', 'published', 'closed'];
 $filter = in_array($_GET['filter'] ?? '', $validFilters) ? $_GET['filter'] : 'all';
 
+// Aquí usamos $pdo->quote() en vez de un parámetro preparado porque el valor
+// ya está validado contra una lista cerrada, y lo necesitamos dentro de un string SQL dinámico
 $where = $filter !== 'all' ? "WHERE j.status = " . $pdo->quote($filter) : '';
 
 $stmtJobs = $pdo->query("

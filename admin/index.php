@@ -10,10 +10,7 @@ requireRole('admin');
 $user = $_SESSION['user'];
 $pdo  = getPDO();
 
-// =========================================================
-// ESTADÍSTICAS RÁPIDAS PARA EL PANEL
-// =========================================================
-
+// Estadísticas rápidas para el panel de administración
 // Total de usuarios registrados en la plataforma
 $totalUsers = (int) $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
 

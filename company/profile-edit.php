@@ -23,9 +23,6 @@ if (!$company) {
 $error   = '';
 $success = '';
 
-// =========================================================
-// PROCESAMOS EL FORMULARIO
-// =========================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $legalName   = trim($_POST['legal_name']  ?? '');
     $brandName   = trim($_POST['brand_name']  ?? '');
@@ -45,6 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Procesamos el logo si se ha subido uno nuevo
         if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            // finfo detecta el tipo real del archivo desde su contenido, no solo por la extensión
+            // Esto es más seguro que fiarse del nombre que manda el navegador
             $finfo    = new finfo(FILEINFO_MIME_TYPE);
             $mimeType = $finfo->file($_FILES['logo']['tmp_name']);
 
@@ -174,6 +173,7 @@ require_once __DIR__ . '/../includes/header.php';
     </form>
 
     <script>
+    // Validación en el cliente: nombre legal, nombre comercial, URL y logo
     document.getElementById('form-profile').addEventListener('submit', function (e) {
         document.querySelectorAll('.field-error').forEach(el => el.remove());
         document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));

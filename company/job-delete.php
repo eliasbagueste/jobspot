@@ -22,23 +22,18 @@ if (!$company) {
     exit;
 }
 
-// =========================================================
-// OBTENEMOS LOS PARÁMETROS DE LA URL
-// =========================================================
-$jobId = (int) ($_GET['id']     ?? 0);
+// Recogemos el ID de la oferta y la acción a ejecutar desde la URL
+$jobId  = (int) ($_GET['id']    ?? 0);
 $action = trim($_GET['action']  ?? '');
 
-// Si falta algún parámetro, redirigimos sin hacer nada
+// Si falta algún parámetro o la acción no es válida, redirigimos sin hacer nada
 if ($jobId === 0 || !in_array($action, ['close', 'reopen', 'delete'])) {
     header('Location: ' . BASE_URL . '/company/jobs.php');
     exit;
 }
 
-// =========================================================
-// VERIFICAMOS QUE LA OFERTA PERTENECE A ESTA EMPRESA
-// =========================================================
-// Esto es crítico para la seguridad: una empresa no puede
-// cerrar ni borrar ofertas de otras empresas.
+// Verificamos que la oferta pertenece a ESTA empresa — seguridad importante:
+// sin esta comprobación, cualquier empresa podría borrar ofertas de otras
 $stmtJob = $pdo->prepare("
     SELECT id, status FROM jobs WHERE id = :id AND company_id = :cid
 ");
@@ -50,10 +45,7 @@ if (!$job) {
     exit;
 }
 
-// =========================================================
-// EJECUTAMOS LA ACCIÓN CORRESPONDIENTE
-// =========================================================
-
+// Ejecutamos la acción según lo que llegue en la URL
 if ($action === 'close' && $job['status'] === 'published') {
     // Cerrar la oferta y rechazar automáticamente las candidaturas pendientes
     $stmtClose = $pdo->prepare("

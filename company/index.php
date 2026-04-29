@@ -11,12 +11,8 @@ requireRole('company');
 $user = $_SESSION['user'];
 $pdo  = getPDO();
 
-// =========================================================
-// COMPROBAMOS SI LA EMPRESA YA TIENE PERFIL CREADO
-// =========================================================
-// Un usuario con rol 'company' puede existir sin tener todavía
-// un registro en la tabla companies. En ese caso mostramos
-// el formulario de configuración inicial.
+// Un usuario con rol 'company' puede existir sin tener todavía un registro en
+// la tabla companies. En ese caso mostramos el formulario de configuración inicial.
 $stmtCompany = $pdo->prepare("
     SELECT * FROM companies WHERE owner_user_id = :uid
 ");
@@ -26,9 +22,7 @@ $company = $stmtCompany->fetch();
 $error   = '';
 $success = '';
 
-// =========================================================
-// FORMULARIO DE CONFIGURACIÓN INICIAL (si no tiene perfil)
-// =========================================================
+// Si el usuario envía el formulario de creación de perfil y aún no tiene empresa
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$company) {
 
     $legalName   = trim($_POST['legal_name']  ?? '');
@@ -64,7 +58,14 @@ if (isset($_GET['created'])) {
     $success = 'Perfil de empresa creado correctamente. El administrador lo revisará pronto.';
 }
 
-// Si ya tiene perfil, cargamos las estadísticas del panel
+// Inicializamos las variables del panel por si $company es false (empresa sin perfil todavía)
+// Así el analizador y PHP saben que siempre existen, aunque el bloque if no se ejecute
+$publishedJobs        = 0;
+$totalApplications    = 0;
+$pendingDecisionCount = 0;
+$appsPendingReview    = [];
+
+// Si ya tiene perfil, sobreescribimos esas variables con los datos reales de la BD
 if ($company) {
 
     // Total de ofertas publicadas por esta empresa
@@ -118,11 +119,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <?php if (!$company): ?>
-    <!-- =====================================================
-         FORMULARIO DE CONFIGURACIÓN INICIAL
-         Se muestra cuando el usuario company aún no tiene
-         un perfil de empresa registrado.
-    ====================================================== -->
+    <!-- Formulario de configuración inicial: se muestra cuando aún no hay perfil de empresa -->
     <section class="card">
         <h1>Configura tu empresa</h1>
         <p>Para poder publicar ofertas primero debes completar el perfil de tu empresa.</p>
@@ -164,6 +161,7 @@ require_once __DIR__ . '/../includes/header.php';
             </form>
 
             <script>
+            // Validación en el cliente antes de enviar el formulario de creación de empresa
             document.querySelector('.auth-form').addEventListener('submit', function (e) {
                 document.querySelectorAll('.field-error').forEach(el => el.remove());
                 document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
@@ -197,9 +195,7 @@ require_once __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <?php if ($company): ?>
-    <!-- =====================================================
-         PANEL PRINCIPAL — visible solo si ya tiene perfil
-    ====================================================== -->
+    <!-- Panel principal: visible solo cuando la empresa ya tiene perfil creado -->
     <?php if ($success !== ''): ?>
         <div class="alert alert-success" style="margin-bottom:1rem;"><?= htmlspecialchars($success); ?></div>
     <?php endif; ?>
@@ -209,6 +205,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php if (!empty($company['logo_path'])): ?>
                 <img src="<?= BASE_URL . '/' . htmlspecialchars($company['logo_path']); ?>" alt="Logo">
             <?php else: ?>
+                <!-- Sin logo mostramos la primera letra del nombre (mb_ soporta tildes y ñ) -->
                 <?= mb_strtoupper(mb_substr($company['brand_name'], 0, 1, 'UTF-8'), 'UTF-8'); ?>
             <?php endif; ?>
         </div>

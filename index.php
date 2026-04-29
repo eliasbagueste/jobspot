@@ -11,9 +11,7 @@ $totalCandidates = (int) $pdo->query("SELECT COUNT(*) FROM users   WHERE role = 
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- =====================================================
-     HERO
-====================================================== -->
+<!-- Sección hero: titular principal y botones de llamada a la acción -->
 <section class="home-hero">
     <div class="home-hero-inner">
         <h1 class="home-hero-title">
@@ -49,9 +47,7 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<!-- =====================================================
-     ESTADÍSTICAS
-====================================================== -->
+<!-- Estadísticas en tiempo real extraídas de la base de datos -->
 <section class="home-stats">
     <div class="home-stat">
         <span class="home-stat-num"><?= $totalJobs; ?></span>
@@ -69,9 +65,7 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<!-- =====================================================
-     PARA QUIÉN ES
-====================================================== -->
+<!-- Sección "¿Quién usa JobSpot?" con las tarjetas de candidato y empresa -->
 <section class="home-section">
     <h2 class="home-section-title">¿Quién usa JobSpot?</h2>
     <p class="home-section-sub">Una plataforma pensada para dos perfiles con un objetivo común.</p>
@@ -125,9 +119,7 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<!-- =====================================================
-     CÓMO FUNCIONA
-====================================================== -->
+<!-- Sección "¿Cómo funciona?" con los tres pasos del proceso -->
 <section class="home-section home-section--gray">
     <h2 class="home-section-title">¿Cómo funciona?</h2>
     <p class="home-section-sub">Tres pasos para encontrar trabajo o cubrir una vacante.</p>
@@ -153,9 +145,7 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<!-- =====================================================
-     CTA FINAL
-====================================================== -->
+<!-- CTA final: solo se muestra si el usuario no tiene sesión iniciada -->
 <?php if (!isset($_SESSION['user'])): ?>
 <section class="home-cta">
     <h2>¿Listo para empezar?</h2>

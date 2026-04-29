@@ -9,9 +9,7 @@ requireRole('admin');
 
 $pdo = getPDO();
 
-// =========================================================
-// ACCIONES POST: verificar o revocar verificación
-// =========================================================
+// Procesamos las acciones de verificar o revocar verificación de empresa
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $companyId = (int) ($_POST['company_id'] ?? 0);
     $action    = $_POST['action'] ?? '';
@@ -26,9 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// =========================================================
-// LISTADO DE EMPRESAS
-// =========================================================
+// Cargamos todas las empresas con el nombre del responsable y el número de ofertas
+// ORDER BY is_verified ASC pone primero las no verificadas para que el admin las vea antes
 $companies = $pdo->query("
     SELECT
         co.id,

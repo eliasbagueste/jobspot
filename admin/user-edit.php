@@ -1,20 +1,16 @@
 <?php
-// Carga la conexión a la base de datos y la configuración general
+// admin/user-edit.php — Editar nombre, email y rol de un usuario
 require_once __DIR__ . '/../config/database.php';
 
-// Carga las funciones de autenticación
 require_once __DIR__ . '/../includes/auth.php';
 
-// Si no hay sesión → redirige al login
 requireLogin();
-
-// Si el usuario no es admin → error 403
 requireRole('admin');
 
+// Recogemos el ID del usuario a editar desde la URL (?id=X)
 $id    = (int) ($_GET['id'] ?? 0);
 $error = '';
 
-// Si no hay id válido, volvemos a la lista
 if ($id === 0) {
     header('Location: ' . BASE_URL . '/admin/users.php');
     exit;
@@ -101,6 +97,7 @@ require_once __DIR__ . '/../includes/header.php';
     </form>
 
     <script>
+    // Validación en el cliente antes de enviar. El servidor también valida.
     document.querySelector('.auth-form').addEventListener('submit', function (e) {
         document.querySelectorAll('.field-error').forEach(el => el.remove());
         document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));

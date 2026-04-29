@@ -11,11 +11,7 @@ requireRole('candidate');
 $user   = $_SESSION['user'];
 $pdo    = getPDO();
 
-// =========================================================
-// OBTENEMOS EL ID DE LA OFERTA DESDE LA URL
-// =========================================================
-// Convertimos a entero para evitar valores inesperados.
-// Si no viene el parámetro o es 0, redirigimos a las ofertas.
+// Obtenemos el ID de la oferta desde la URL y lo casteamos a entero por seguridad
 $jobId = (int) ($_GET['job'] ?? 0);
 
 if ($jobId === 0) {
@@ -23,11 +19,7 @@ if ($jobId === 0) {
     exit;
 }
 
-// =========================================================
-// CARGAMOS LOS DATOS DE LA OFERTA
-// =========================================================
-// Solo permitimos aplicar a ofertas publicadas (status = 'published').
-// Si la oferta no existe o no está publicada, redirigimos.
+// Cargamos la oferta — solo si está publicada, para que no se pueda aplicar a cerradas
 $stmt = $pdo->prepare("
     SELECT
         j.id,
@@ -53,12 +45,8 @@ if (!$job) {
     exit;
 }
 
-// =========================================================
-// COMPROBAMOS SI EL CANDIDATO YA HA APLICADO A ESTA OFERTA
-// =========================================================
-// La tabla applications tiene una restricción UNIQUE sobre
-// (candidate_user_id, job_id), así que prevenimos el duplicado
-// también a nivel de aplicación.
+// Compruebo si ya ha aplicado antes para no mostrar el formulario de nuevo
+// (la BD también tiene un UNIQUE, pero así lo controlamos desde PHP)
 $stmtCheck = $pdo->prepare("
     SELECT id FROM applications
     WHERE candidate_user_id = :uid AND job_id = :jid
@@ -75,9 +63,7 @@ $stmtProfile->execute(['uid' => $user['id']]);
 $candidateProfile = $stmtProfile->fetch();
 $profileCvPath = $candidateProfile['cv_pdf_path'] ?? null;
 
-// =========================================================
-// PROCESAMOS EL ENVÍO DEL FORMULARIO
-// =========================================================
+// Solo procesamos el formulario si viene por POST y el candidato aún no ha aplicado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$alreadyApplied) {
 
     $message = trim($_POST['message'] ?? '');
@@ -96,10 +82,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$alreadyApplied) {
             } elseif ($file['type'] !== 'application/pdf') {
                 $error = 'Solo se aceptan archivos en formato PDF.';
             } elseif ($file['size'] > 5 * 1024 * 1024) {
+                // 5 * 1024 * 1024 = 5 MB en bytes
                 $error = 'El archivo no puede superar los 5 MB.';
             } else {
                 $uploadsDir = __DIR__ . '/../uploads/cvs/';
+                // Si la carpeta no existe la creamos. 0755 = permisos de lectura para todos,
+                // escritura solo para el propietario. true = crea carpetas intermedias si hacen falta.
                 if (!is_dir($uploadsDir)) mkdir($uploadsDir, 0755, true);
+                // Incluimos time() en el nombre para que dos uploads del mismo candidato
+                // en la misma oferta no se sobreescriban entre sí
                 $filename   = 'cv_' . $user['id'] . '_' . $jobId . '_' . time() . '.pdf';
                 move_uploaded_file($file['tmp_name'], $uploadsDir . $filename);
                 $cvPath = 'uploads/cvs/' . $filename;
@@ -123,6 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$alreadyApplied) {
                 $success = '¡Candidatura enviada correctamente! La empresa revisará tu solicitud pronto.';
 
             } catch (PDOException $e) {
+                // El código SQLSTATE '23000' significa violación de restricción única (UNIQUE)
+                // Lo capturamos por si dos peticiones simultáneas intentan insertar la misma candidatura
                 if ($e->getCode() === '23000') {
                     $error = 'Ya has enviado una candidatura para esta oferta.';
                 } else {
@@ -155,7 +148,11 @@ $workdayLabels = [
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<?php if ($success !== '' || ($alreadyApplied && $success === '')): ?>
+<?php
+// Mostramos el bloque de "candidatura enviada" en dos casos:
+// 1. Acaba de enviarla ahora mismo ($success tiene texto)
+// 2. Ya la había enviado antes y llega a la página sin haber enviado nada ($alreadyApplied y sin $success)
+if ($success !== '' || ($alreadyApplied && $success === '')): ?>
 <section class="card">
     <?php if ($success !== ''): ?>
         <div class="alert alert-success"><?= htmlspecialchars($success); ?></div>
@@ -200,10 +197,7 @@ require_once __DIR__ . '/../includes/header.php';
     </p>
 </section>
 
-<!-- =========================================================
-     FORMULARIO DE CANDIDATURA
-     Solo se muestra si el candidato todavía no ha aplicado.
-========================================================= -->
+<!-- Formulario de candidatura: solo si el candidato todavía no ha aplicado -->
 <?php if ($success === '' && !$alreadyApplied): ?>
 <section class="card" style="margin-top: 1.5rem;">
     <h2>Enviar candidatura</h2>
@@ -224,7 +218,7 @@ require_once __DIR__ . '/../includes/header.php';
                 rows="5"
                 placeholder="Explica tu motivación, experiencia relevante y por qué encajas en este puesto..."
                 style="width:100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-family: inherit; font-size: 0.95rem;"
-            ><?= htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
+            ><?= htmlspecialchars($_POST['message'] ?? ''); /* repopula el textarea si el formulario da error */ ?></textarea>
         </div>
 
         <div class="form-group">
@@ -254,6 +248,8 @@ require_once __DIR__ . '/../includes/header.php';
     </form>
 
     <script>
+    // Validación en el cliente antes de enviar para dar feedback inmediato.
+    // El servidor también valida por si acaso el JS está desactivado.
     document.getElementById('form-apply').addEventListener('submit', function (e) {
         document.querySelectorAll('.field-error').forEach(el => el.remove());
         document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));

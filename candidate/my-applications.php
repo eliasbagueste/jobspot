@@ -10,9 +10,7 @@ requireRole('candidate');
 $user = $_SESSION['user'];
 $pdo  = getPDO();
 
-// =========================================================
-// ACCIÓN: RETIRAR CANDIDATURA
-// =========================================================
+// Si el candidato pulsa "Retirar candidatura", procesamos el borrado aquí
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['withdraw_id'])) {
     $withdrawId = (int) $_POST['withdraw_id'];
 
@@ -27,9 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['withdraw_id'])) {
     exit;
 }
 
-// =========================================================
-// OBTENEMOS TODAS LAS CANDIDATURAS DEL CANDIDATO
-// =========================================================
+// Cargamos todas las candidaturas del candidato con datos de oferta y empresa
 // Hacemos JOIN con jobs para obtener el título de la oferta,
 // y con companies para obtener el nombre de la empresa.
 // Ordenamos de más reciente a más antigua.
@@ -52,11 +48,8 @@ $stmt = $pdo->prepare("
 $stmt->execute(['uid' => $user['id']]);
 $applications = $stmt->fetchAll();
 
-// =========================================================
-// ETIQUETAS Y ESTILOS PARA CADA ESTADO DE CANDIDATURA
-// =========================================================
-// Cada estado tiene un texto legible y una clase CSS para
-// que el usuario identifique visualmente el estado.
+// Etiquetas y clases CSS para cada estado de candidatura
+// Cada estado tiene un texto legible y un color diferente para identificarlo visualmente
 $statusLabels = [
     'sent'     => 'Enviada',
     'reviewed' => 'Revisada',

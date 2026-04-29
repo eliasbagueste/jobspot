@@ -226,6 +226,11 @@ main.container {
   margin-bottom: 1.25rem;
 }
 
+.card > h1:first-child,
+.card > h2:first-child {
+  margin-top: 0;
+}
+
 /* =====================================================
    HERO (portada)
    ===================================================== */
@@ -1286,4 +1291,188 @@ tbody td:last-child { text-align: right; }
   height: auto;
   display: block;
   margin: 12px auto 0;
+}
+
+/* =====================================================
+   BOTONES DE ESTADO (warning / success)
+   ===================================================== */
+.btn-warning {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  color: #d97706;
+  border: 1px solid #fcd34d;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-warning:hover { background: #fef9c3; border-color: #fbbf24; }
+
+.btn-success {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  color: #16a34a;
+  border: 1px solid #86efac;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-success:hover { background: #dcfce7; border-color: #4ade80; }
+
+/* =====================================================
+   MENÚ HAMBURGUESA (visible sólo en móvil)
+   ===================================================== */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 4px;
+  flex-direction: column;
+  gap: 5px;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.22s ease, opacity 0.15s ease;
+}
+
+/* Animación X al abrirse */
+.nav-toggle--open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle--open span:nth-child(2) { opacity: 0; }
+.nav-toggle--open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* =====================================================
+   RESPONSIVE — MÓVIL (≤ 700px)
+   ===================================================== */
+@media (max-width: 700px) {
+
+  /* ── Header ── */
+  .site-header .container {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 54px;
+    padding: 0 1rem;
+    align-items: center;
+    gap: 0;
+  }
+
+  .brand {
+    flex: 1;
+    padding: 14px 0;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* Nav oculto por defecto en móvil */
+  .nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px 0 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    gap: 0;
+  }
+
+  .nav.nav-open {
+    display: flex;
+  }
+
+  .nav a {
+    height: auto;
+    padding: 12px 2px;
+    margin-left: 0;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-radius: 0;
+  }
+
+  .nav-btn-register {
+    margin: 12px 0 0 !important;
+    padding: 11px 0 !important;
+    height: auto !important;
+    text-align: center;
+    border-radius: 8px !important;
+    align-self: flex-start;
+  }
+
+  /* ── Main container ── */
+  main.container {
+    padding-top: 16px;
+    padding-bottom: 40px;
+  }
+
+  /* ── Hero portada ── */
+  .home-hero         { padding: 40px 20px 36px; }
+  .home-hero-title   { font-size: 2rem; }
+  .home-hero-sub     { font-size: 0.95rem; }
+
+  /* ── Tarjetas de perfil ── */
+  .home-cards { grid-template-columns: 1fr; }
+
+  /* ── Divisores de estadísticas ── */
+  .home-stat-divider { display: none; }
+
+  /* ── Sección gris ── */
+  .home-section--gray { padding: 32px 18px; }
+
+  /* ── Pasos "Cómo funciona" ── */
+  .home-step-arrow { display: none; }
+
+  /* ── Stats del panel admin ── */
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Tablas: scroll horizontal ── */
+  .card { overflow-x: auto; }
+  table { min-width: 500px; }
+
+  /* ── Formulario de filtros: columna única ── */
+  .filter-form .form-group {
+    min-width: 100%;
+  }
+
+  /* ── Footer ── */
+  .footer-inner {
+    flex-direction: column;
+    gap: 20px;
+    padding: 28px 0 20px;
+  }
+
+  .footer-brand,
+  .footer-col {
+    width: 100%;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .footer-social-icons {
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.78rem;
+  }
 }

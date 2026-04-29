@@ -16,20 +16,22 @@ $pdo  = getPDO();
 $error   = '';
 $success = '';
 
+// Convierte un nombre de categoría en un slug limpio para usarlo en URLs y filtros
+// Ejemplo: "Tecnología & IT" → "tecnologia-it"
 function makeSlug(string $name): string {
+    // Tabla de sustitución: letras con tilde/acento → letra simple
     $map = ['á'=>'a','é'=>'e','í'=>'i','ó'=>'o','ú'=>'u','à'=>'a','è'=>'e','ì'=>'i',
             'ò'=>'o','ù'=>'u','ä'=>'a','ë'=>'e','ï'=>'i','ö'=>'o','ü'=>'u','â'=>'a',
             'ê'=>'e','î'=>'i','ô'=>'o','û'=>'u','ñ'=>'n','ç'=>'c','ý'=>'y','ÿ'=>'y',
             'Á'=>'a','É'=>'e','Í'=>'i','Ó'=>'o','Ú'=>'u','Ä'=>'a','Ë'=>'e','Ï'=>'i',
             'Ö'=>'o','Ü'=>'u','Ñ'=>'n','Ç'=>'c'];
     $slug = mb_strtolower(strtr($name, $map), 'UTF-8');
+    // Reemplazamos cualquier carácter que no sea letra o número por un guion
     $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
     return trim($slug, '-');
 }
 
-// =========================================================
-// PROCESAMOS ACCIONES POST (crear categoría)
-// =========================================================
+// Procesamos las acciones del formulario: crear, activar/desactivar o eliminar
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $action = trim($_POST['action'] ?? '');
@@ -108,17 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// =========================================================
-// RECOGEMOS MENSAJES DE LA REDIRECCIÓN (GET)
-// =========================================================
-// Los mensajes vienen codificados en la URL tras el POST-Redirect-GET
+// Recogemos los mensajes de éxito o error que vienen codificados en la URL
+// (tras el patrón POST-Redirect-GET para evitar reenvíos del formulario)
 if (isset($_GET['ok']))  $success = htmlspecialchars(urldecode($_GET['ok']));
 if (isset($_GET['err'])) $error   = htmlspecialchars(urldecode($_GET['err']));
 
-// =========================================================
-// OBTENEMOS TODAS LAS CATEGORÍAS CON CONTEO DE OFERTAS
-// =========================================================
-// LEFT JOIN para incluir también las que no tienen ninguna oferta
+// Cargamos todas las categorías con el número de ofertas asociadas
+// Usamos LEFT JOIN para incluir también las categorías sin ninguna oferta
 $stmtCats = $pdo->query("
     SELECT
         c.id,

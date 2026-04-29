@@ -18,9 +18,6 @@ $profile = $stmtProfile->fetch();
 $error   = '';
 $success = '';
 
-// =========================================================
-// PROCESAMOS EL FORMULARIO
-// =========================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fullName = trim($_POST['full_name']       ?? '');
     $phone    = trim($_POST['phone']           ?? '');
@@ -44,20 +41,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'El archivo no puede superar los 5 MB.';
         } else {
             $uploadsDir = __DIR__ . '/../uploads/cvs/';
+            // Si la carpeta no existe la creamos con permisos 0755
             if (!is_dir($uploadsDir)) mkdir($uploadsDir, 0755, true);
+            // time() en el nombre evita sobrescribir si sube varios CVs seguidos
             $filename   = 'profile_cv_' . $user['id'] . '_' . time() . '.pdf';
+            // Mueve el archivo del directorio temporal del servidor a nuestra carpeta
             move_uploaded_file($file['tmp_name'], $uploadsDir . $filename);
             $cvPath = 'uploads/cvs/' . $filename;
         }
     }
 
     if ($error === '') {
-        // Actualizamos el nombre en la tabla users
+        // Actualizamos el nombre en la tabla users (está separado del perfil extendido)
         $stmtName = $pdo->prepare("UPDATE users SET full_name = :name WHERE id = :uid");
         $stmtName->execute(['name' => $fullName, 'uid' => $user['id']]);
+        // También actualizamos la sesión para que el cambio se refleje de inmediato sin relogin
         $_SESSION['user']['full_name'] = $fullName;
         $user['full_name'] = $fullName;
 
+        // Si ya existía un perfil extendido lo actualizamos; si no, lo creamos (INSERT)
         if ($profile) {
             $stmtUpdate = $pdo->prepare("
                 UPDATE candidate_profiles
@@ -68,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 WHERE user_id = :uid
             ");
             $stmtUpdate->execute([
+                // Si el campo viene vacío guardamos NULL en la BD, no una cadena vacía
                 'phone'   => $phone !== '' ? $phone : null,
                 'city'    => $city !== '' ? $city : null,
                 'summary' => $summary !== '' ? $summary : null,
@@ -124,6 +127,7 @@ require_once __DIR__ . '/../includes/header.php';
 
         <div class="form-group">
             <label>Correo electrónico</label>
+            <!-- El email está desactivado (disabled) porque no se puede cambiar desde aquí -->
             <input type="email" value="<?= htmlspecialchars($user['email']); ?>" disabled
                    style="background:#f8fafc; color:#64748b;">
         </div>
@@ -172,6 +176,7 @@ require_once __DIR__ . '/../includes/header.php';
     </form>
 
     <script>
+    // Validación en el cliente: comprobamos nombre y formato del PDF antes de enviar
     document.getElementById('form-profile').addEventListener('submit', function (e) {
         document.querySelectorAll('.field-error').forEach(el => el.remove());
         document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));

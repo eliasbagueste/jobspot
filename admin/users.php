@@ -1,22 +1,20 @@
 <?php
-// Carga la conexión a la base de datos y la configuración general
-require_once __DIR__ . '/../config/database.php';
+// admin/users.php — Gestión de usuarios de la plataforma
 
-// Carga las funciones de autenticación
+require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/auth.php';
 
-// Si no hay sesión → redirige al login
 requireLogin();
-
-// Si el usuario no es admin → error 403
 requireRole('admin');
 
 $pdo = getPDO();
 
-// Activar / desactivar usuario
+// Activar / desactivar usuario (toggle)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_active'])) {
-    $toggleId = (int) $_POST['toggle_id'];
-    if ($toggleId !== (int) $_SESSION['user']['id']) {
+    $toggleId = (int) ($_POST['toggle_id'] ?? 0);
+    // Comprobamos que no sea el propio admin intentando desactivarse a sí mismo
+    if ($toggleId > 0 && $toggleId !== (int) $_SESSION['user']['id']) {
+        // NOT is_active invierte el valor: si era 1 pasa a 0 y viceversa
         $stmt = $pdo->prepare("UPDATE users SET is_active = NOT is_active WHERE id = ?");
         $stmt->execute([$toggleId]);
     }
@@ -24,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_active'])) {
     exit;
 }
 
+// Cargamos todos los usuarios ordenados por ID ascendente
 $stmt = $pdo->query("SELECT id, full_name, email, role, is_active, created_at FROM users ORDER BY id ASC");
 $users = $stmt->fetchAll();
 
@@ -55,25 +54,48 @@ require_once __DIR__ . '/../includes/header.php';
                     <td><?= htmlspecialchars((string) $u['id']); ?></td>
                     <td><?= htmlspecialchars($u['full_name']); ?></td>
                     <td><?= htmlspecialchars($u['email']); ?></td>
-                    <td><span class="badge badge-<?= htmlspecialchars($u['role']); ?>"><?= htmlspecialchars($u['role']); ?></span></td>
-                    <td><?= $u['is_active'] ? 'Sí' : 'No'; ?></td>
-                    <td><?= htmlspecialchars(date('d/m/Y', strtotime($u['created_at']))); ?></td>
-                    <td style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
-                        <a href="<?= BASE_URL; ?>/admin/user-edit.php?id=<?= $u['id']; ?>" class="btn-edit">Editar</a>
-                        <?php if ($u['id'] !== (int) $_SESSION['user']['id']): ?>
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="toggle_id" value="<?= $u['id']; ?>">
-                                <button type="submit" name="toggle_active"
-                                        class="<?= $u['is_active'] ? 'btn-warning' : 'btn-success'; ?>">
-                                    <?= $u['is_active'] ? 'Desactivar' : 'Activar'; ?>
-                                </button>
-                            </form>
+                    <td style="text-align:center">
+                        <!-- El nombre de clase incluye el rol para que CSS lo coloree distinto según el tipo de usuario -->
+                        <span class="badge badge-<?= htmlspecialchars($u['role']); ?>">
+                            <?= htmlspecialchars($u['role']); ?>
+                        </span>
+                    </td>
+                    <td style="text-align:center">
+                        <?php if ($u['is_active']): ?>
+                            <span class="badge badge-active">Activo</span>
+                        <?php else: ?>
+                            <span class="badge badge-rejected">Inactivo</span>
                         <?php endif; ?>
-                        <form method="post" action="<?= BASE_URL; ?>/admin/user-delete.php" style="display:inline;"
-                              onsubmit="return confirm('¿Eliminar al usuario <?= htmlspecialchars(addslashes($u['full_name'])); ?>? Esta acción no se puede deshacer.');">
-                            <input type="hidden" name="id" value="<?= $u['id']; ?>">
-                            <button type="submit" class="btn-delete">Borrar</button>
-                        </form>
+                    </td>
+                    <td style="text-align:center">
+                        <?= htmlspecialchars(date('d/m/Y', strtotime($u['created_at']))); ?>
+                    </td>
+                    <td>
+                        <div style="display:flex; gap:0.5rem; justify-content:flex-end; flex-wrap:wrap;">
+                            <a href="<?= BASE_URL; ?>/admin/user-edit.php?id=<?= $u['id']; ?>"
+                               class="btn-edit">Editar</a>
+
+                            <?php
+                            // No mostramos los botones de acción sobre la propia cuenta del admin
+                            // para evitar que se auto-desactive o se borre a sí mismo
+                            if ($u['id'] !== (int) $_SESSION['user']['id']): ?>
+                                <form method="post" style="display:inline;">
+                                    <input type="hidden" name="toggle_id" value="<?= $u['id']; ?>">
+                                    <button type="submit" name="toggle_active"
+                                            class="<?= $u['is_active'] ? 'btn-warning' : 'btn-success'; ?>">
+                                        <?= $u['is_active'] ? 'Desactivar' : 'Activar'; ?>
+                                    </button>
+                                </form>
+
+                                <form method="post" action="<?= BASE_URL; ?>/admin/user-delete.php"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('¿Eliminar a <?= htmlspecialchars(addslashes($u['full_name'])); ?>? Esta acción no se puede deshacer.');">
+                                      <!-- addslashes escapa las comillas del nombre para que no rompan el confirm() de JS -->
+                                    <input type="hidden" name="id" value="<?= $u['id']; ?>">
+                                    <button type="submit" class="btn-delete">Borrar</button>
+                                </form>
+                            <?php endif; ?>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>

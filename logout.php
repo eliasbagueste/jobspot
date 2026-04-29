@@ -1,24 +1,16 @@
 <?php
-// logout.php
+// logout.php — Cierra la sesión del usuario y redirige al login
 
-/**
- * Carga la configuración general.
- * Esto inicia sesión si todavía no estuviera iniciada.
- */
 require_once __DIR__ . '/config/config.php';
 
-/**
- * Vacía todas las variables de sesión.
- */
+// Vaciamos todos los datos de la sesión
 $_SESSION = [];
 
-/**
- * Si la sesión usa cookies, elimina también la cookie de sesión.
- * Esto ayuda a cerrar la sesión de forma más limpia.
- */
+// Eliminamos también la cookie de sesión del navegador si existe
+// Esto es necesario para que el cierre de sesión sea completo
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();
-
+    // Enviamos la cookie con fecha de expiración pasada para que el navegador la borre
     setcookie(
         session_name(),
         '',
@@ -30,13 +22,8 @@ if (ini_get('session.use_cookies')) {
     );
 }
 
-/**
- * Destruye la sesión actual.
- */
+// Destruimos la sesión en el servidor
 session_destroy();
 
-/**
- * Redirige al login.
- */
 header('Location: ' . BASE_URL . '/login.php');
 exit;

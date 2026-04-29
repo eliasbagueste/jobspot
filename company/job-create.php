@@ -33,9 +33,6 @@ $categories = $stmtCats->fetchAll();
 
 $error = '';
 
-// =========================================================
-// PROCESAMOS EL FORMULARIO
-// =========================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Recogemos y limpiamos todos los campos del formulario
@@ -216,6 +213,7 @@ require_once __DIR__ . '/../includes/header.php';
 </section>
 
 <script>
+// Validación en el cliente antes de enviar. El servidor también valida por si el JS está desactivado.
 document.getElementById('form-job').addEventListener('submit', function (e) {
     // Limpiamos errores anteriores
     document.querySelectorAll('.field-error').forEach(el => el.remove());

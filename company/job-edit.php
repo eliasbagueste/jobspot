@@ -20,11 +20,8 @@ if (!$company) {
     exit;
 }
 
-// =========================================================
-// CARGAMOS LA OFERTA A EDITAR
-// =========================================================
-// Es importante verificar que la oferta pertenece a ESTA empresa.
-// Si no lo comprobamos, cualquier empresa podría editar ofertas ajenas.
+// Cargamos la oferta a editar verificando que pertenece a ESTA empresa
+// Si no lo comprobamos, cualquier empresa podría editar ofertas ajenas
 $jobId = (int) ($_GET['id'] ?? 0);
 
 if ($jobId === 0) {
@@ -56,9 +53,6 @@ $categories = $stmtCats->fetchAll();
 
 $error = '';
 
-// =========================================================
-// PROCESAMOS EL FORMULARIO DE EDICIÓN
-// =========================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $title        = trim($_POST['title']         ?? '');
@@ -232,6 +226,7 @@ require_once __DIR__ . '/../includes/header.php';
 </section>
 
 <script>
+// Validación en el cliente antes de enviar. El servidor también valida por si el JS está desactivado.
 document.getElementById('form-job').addEventListener('submit', function (e) {
     document.querySelectorAll('.field-error').forEach(el => el.remove());
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));

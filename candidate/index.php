@@ -17,9 +17,7 @@ requireRole('candidate');
 $user = $_SESSION['user'];
 $pdo  = getPDO();
 
-// =========================================================
-// ESTADÍSTICAS DEL CANDIDATO
-// =========================================================
+// Estadísticas del candidato para mostrar en el panel
 // Contamos cuántas candidaturas ha enviado en total
 $stmtTotal = $pdo->prepare("
     SELECT COUNT(*) FROM applications WHERE candidate_user_id = :uid
@@ -43,9 +41,7 @@ $stmtAccepted = $pdo->prepare("
 $stmtAccepted->execute(['uid' => $user['id']]);
 $acceptedApplications = (int) $stmtAccepted->fetchColumn();
 
-// =========================================================
-// MIS CANDIDATURAS (últimas 5)
-// =========================================================
+// Últimas 5 candidaturas del candidato (para el resumen del panel)
 $stmtApps = $pdo->prepare("
     SELECT
         a.id,
@@ -66,6 +62,7 @@ $stmtApps = $pdo->prepare("
 $stmtApps->execute(['uid' => $user['id']]);
 $myApplications = $stmtApps->fetchAll();
 
+// Texto legible para cada estado de candidatura (para mostrar en la tabla)
 $statusLabels = [
     'sent'     => 'Enviada',
     'reviewed' => 'Revisada',
@@ -73,13 +70,15 @@ $statusLabels = [
     'rejected' => 'Rechazada',
 ];
 
+// Clase CSS para el badge de color según el estado
 $statusClass = [
-    'sent'     => 'badge-candidate',
-    'reviewed' => 'badge-company',
-    'accepted' => 'badge-active',
-    'rejected' => 'badge-rejected',
+    'sent'     => 'badge-candidate',  // azul
+    'reviewed' => 'badge-company',    // morado
+    'accepted' => 'badge-active',     // verde
+    'rejected' => 'badge-rejected',   // rojo
 ];
 
+// Texto legible para la modalidad de trabajo
 $modalityLabels = [
     'onsite' => 'Presencial',
     'hybrid' => 'Híbrido',
@@ -95,10 +94,7 @@ require_once __DIR__ . '/../includes/header.php';
     <p>Bienvenido, <?= htmlspecialchars($user['full_name']); ?></p>
 </div>
 
-<!-- =========================================================
-     TARJETAS DE ESTADÍSTICAS
-     Resumen rápido de la actividad del candidato.
-========================================================= -->
+<!-- Tarjetas de resumen rápido: candidaturas enviadas, pendientes y aceptadas -->
 <div class="stats-row" style="margin-top:20px;">
 
     <div class="admin-stat">
@@ -127,9 +123,7 @@ require_once __DIR__ . '/../includes/header.php';
 
 </div>
 
-<!-- =========================================================
-     ACCESOS RÁPIDOS
-========================================================= -->
+<!-- Accesos rápidos del candidato -->
 <div class="admin-grid" style="margin-top: 1rem;">
     <a href="<?= BASE_URL; ?>/jobs.php" class="admin-card">
         <div class="admin-card-icon">🔍</div>
@@ -148,9 +142,7 @@ require_once __DIR__ . '/../includes/header.php';
     </a>
 </div>
 
-<!-- =========================================================
-     MIS ÚLTIMAS CANDIDATURAS
-========================================================= -->
+<!-- Últimas candidaturas enviadas por el candidato -->
 <section class="card" style="margin-top: 1.5rem;">
     <div class="card-header">
         <h2>Resumen</h2>
@@ -179,8 +171,10 @@ require_once __DIR__ . '/../includes/header.php';
                     <tr>
                         <td style="font-weight:600; color:#1e293b;"><?= htmlspecialchars($app['job_title']); ?></td>
                         <td><?= htmlspecialchars($app['company_name']); ?></td>
+                        <!-- date() formatea la fecha de la BD a d/m/Y; strtotime() la convierte primero a timestamp -->
                         <td style="color:#94a3b8; font-size:0.85rem;"><?= date('d/m/Y', strtotime($app['applied_at'])); ?></td>
                         <td>
+                            <!-- ?? 'badge-candidate' es el valor por defecto si el estado no está en el array -->
                             <span class="badge <?= $statusClass[$app['status']] ?? 'badge-candidate'; ?>">
                                 <?= $statusLabels[$app['status']] ?? $app['status']; ?>
                             </span>

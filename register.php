@@ -1,4 +1,5 @@
 <?php
+// register.php — Formulario de registro de nuevos usuarios (candidatos y empresas)
 require_once __DIR__ . '/config/database.php';
 
 // Si ya hay sesión activa, redirigimos al panel correspondiente
@@ -40,8 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($password) < 8) {
         $error = 'La contraseña debe tener al menos 8 caracteres.';
     } elseif (!preg_match('/[A-Z]/', $password)) {
+        // preg_match busca si hay alguna letra mayúscula (A-Z) en la contraseña
         $error = 'La contraseña debe contener al menos una letra mayúscula.';
     } elseif (!preg_match('/[0-9]/', $password)) {
+        // preg_match busca si hay algún dígito (0-9) en la contraseña
         $error = 'La contraseña debe contener al menos un número.';
 
     // Comprobamos que las dos contraseñas coincidan
@@ -64,7 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->fetch()) {
                 $error = 'Este correo electrónico ya está registrado.';
             } else {
-                // Hasheamos la contraseña antes de guardarla
+                // Hasheamos la contraseña con bcrypt antes de guardarla
+                // Nunca guardamos contraseñas en texto plano
                 $hash = password_hash($password, PASSWORD_BCRYPT);
 
                 // Insertamos el nuevo usuario en la base de datos
@@ -89,7 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-//HTML DE LA PAGINA DE REGISTRO
 require_once __DIR__ . '/includes/header.php';
 ?>
 
@@ -110,7 +113,8 @@ require_once __DIR__ . '/includes/header.php';
     
         <div class="form-group">
             <label for="full_name">Nombre completo</label>
-            <input type="text" id="full_name" name="full_name" value="<?= htmlspecialchars($fullName); ?>" required>
+            <!-- value repopula el campo con lo que escribió el usuario si el formulario da error -->
+        <input type="text" id="full_name" name="full_name" value="<?= htmlspecialchars($fullName); ?>" required>
         </div>
     
         <div class="form-group">
@@ -147,6 +151,7 @@ require_once __DIR__ . '/includes/header.php';
 </section>
 
 <script>
+// Validación en el cliente: mismo criterio que el PHP para dar feedback inmediato
 document.querySelector('.auth-form').addEventListener('submit', function (e) {
     document.querySelectorAll('.field-error').forEach(el => el.remove());
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
@@ -185,8 +190,10 @@ document.querySelector('.auth-form').addEventListener('submit', function (e) {
     } else if (password.value.length < 8) {
         error(password, 'La contraseña debe tener al menos 8 caracteres.');
     } else if (!/[A-Z]/.test(password.value)) {
+        // /[A-Z]/ es una expresión regular que busca si existe alguna mayúscula
         error(password, 'La contraseña debe contener al menos una letra mayúscula.');
     } else if (!/[0-9]/.test(password.value)) {
+        // /[0-9]/ busca si existe algún dígito numérico
         error(password, 'La contraseña debe contener al menos un número.');
     }
 
