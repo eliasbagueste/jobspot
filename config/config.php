@@ -20,8 +20,20 @@ if ($host === 'jobspot.es' || $host === 'www.jobspot.es') {
     define('APP_ENV', 'prod');
 } elseif ($host === 'dev.jobspot.es') {
     define('APP_ENV', 'dev');
-} else {
+} elseif ($host === 'localhost' || $host === '127.0.0.1') {
     define('APP_ENV', 'local');
+} else {
+    // Cualquier otro host (servidor QNAP, NAS, etc.) se trata como dev
+    define('APP_ENV', 'dev');
+}
+
+// En local mostramos errores para depurar; en cualquier otro entorno los ocultamos
+if (APP_ENV === 'local') {
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+} else {
+    ini_set('display_errors', 0);
+    error_reporting(0);
 }
 
 // env.php contiene las credenciales de la BD y no se sube a GitHub
