@@ -130,23 +130,13 @@ require_once __DIR__ . '/includes/header.php';
 
         <button type="submit" class="btn-primary">Entrar</button>
 
-        <!-- Enlace de recuperación de contraseña: funcionalidad pendiente por tiempo -->
+        <!-- Enlace de recuperación de contraseña (funcionalidad pendiente) -->
         <p style="margin-top:1rem; text-align:center; font-size:0.9rem;">
-            <a href="#" id="forgot-link" style="color:#6366f1; text-decoration:none;">
+            <a href="#" style="color:#6366f1; text-decoration:none;">
                 ¿Olvidaste tu contraseña?
             </a>
         </p>
     </form>
-
-    <!-- Modal informativo: se muestra al pulsar el enlace de recuperación -->
-    <div id="forgot-modal"
-         style="display:none; margin-top:1rem; padding:1rem 1.25rem;
-                background:#f0f4ff; border:1px solid #c7d2fe; border-radius:8px;
-                color:#3730a3; font-size:0.9rem; line-height:1.5;">
-        <strong>Recuperación de contraseña</strong><br>
-        Esta funcionalidad quedó pendiente de implementar por limitaciones de tiempo.
-        Si has olvidado tu contraseña, contacta con el administrador de la plataforma.
-    </div>
 </section>
 
 <script>
@@ -178,12 +168,7 @@ document.querySelector('.auth-form').addEventListener('submit', function (e) {
     if (!valid) e.preventDefault();
 });
 
-// Al pulsar "¿Olvidaste tu contraseña?" muestra u oculta el aviso informativo
-document.getElementById('forgot-link').addEventListener('click', function (e) {
-    e.preventDefault(); // evita que el enlace # haga scroll al inicio de la página
-    const modal = document.getElementById('forgot-modal');
-    modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
-});
+
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
