@@ -12,6 +12,8 @@ require_once __DIR__ . '/../config/config.php';
     <!-- Hace que la página se vea bien en móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= APP_NAME; ?></title>
+    <!-- Favicon: icono que aparece en la pestaña del navegador -->
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL; ?>/assets/img/favicon.svg">
     <!-- Hoja de estilos propia del proyecto -->
     <link rel="stylesheet" href="<?= BASE_URL; ?>/assets/css/style.css">
     <!-- Font Awesome: librería de iconos que usamos para el corazón, las redes sociales, etc. -->
