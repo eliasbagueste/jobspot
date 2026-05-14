@@ -19,8 +19,9 @@ $params     = [];
 
 if ($search !== '') {
     // Buscamos en el título y en la descripción de la oferta
-    $conditions[] = "(j.title LIKE :search OR j.description LIKE :search)";
-    $params['search'] = '%' . $search . '%';
+    $conditions[] = "(j.title LIKE :search_title OR j.description LIKE :search_desc)";
+    $params['search_title'] = '%' . $search . '%';
+    $params['search_desc']  = '%' . $search . '%';
 }
 
 if ($categorySlug !== '') {
