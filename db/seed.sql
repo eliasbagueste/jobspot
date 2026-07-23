@@ -6,10 +6,10 @@
 --
 -- USUARIOS:
 --   admin@jobspot.local           → Administrador
---   tech@jobspot.local            → Empresa (Tech Solutions - verificada)
---   restaurante@jobspot.local     → Empresa (El Rincón - verificada)
---   construccion@jobspot.local    → Empresa (Obras del Norte - verificada)
---   academia@jobspot.local        → Empresa (Academia Progresa - verificada)
+--   atlantic@jobspot.local        → Empresa (Atlantic Digital - verificada)
+--   restaurante@jobspot.local     → Empresa (Grupo El Rincón - verificada)
+--   corrib@jobspot.local          → Empresa (Corrib Construction - verificada)
+--   learning@jobspot.local        → Empresa (Galway Learning Centre - verificada)
 --   sinverificar@jobspot.local    → Empresa (StartupXYZ - SIN verificar, sin ofertas)
 --   ana.garcia@jobspot.local      → Candidata
 --   carlos.lopez@jobspot.local    → Candidato
@@ -42,18 +42,18 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- password_hash('Test1234', PASSWORD_BCRYPT)
 
 INSERT INTO users (id, full_name, email, password_hash, role, is_active) VALUES
-(1,  'Administrador',        'admin@jobspot.local',           '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'admin',     1),
-(2,  'Tech Solutions',       'tech@jobspot.local',            '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
-(3,  'Grupo El Rincón',      'restaurante@jobspot.local',     '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
-(4,  'Obras del Norte',      'construccion@jobspot.local',    '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
-(5,  'Academia Progresa',    'academia@jobspot.local',        '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
-(6,  'StartupXYZ',           'sinverificar@jobspot.local',    '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
-(7,  'Ana García',           'ana.garcia@jobspot.local',      '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
-(8,  'Carlos López',         'carlos.lopez@jobspot.local',    '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
-(9,  'María Martínez',       'maria.martinez@jobspot.local',  '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
-(10, 'Pedro Sánchez',        'pedro.sanchez@jobspot.local',   '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
-(11, 'Lucía Fernández',      'lucia.fernandez@jobspot.local', '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
-(12, 'David Romero',         'david.romero@jobspot.local',    '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1);
+(1,  'Administrador',          'admin@jobspot.local',           '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'admin',     1),
+(2,  'Atlantic Digital',       'atlantic@jobspot.local',        '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
+(3,  'Grupo El Rincón',        'restaurante@jobspot.local',     '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
+(4,  'Corrib Construction',    'corrib@jobspot.local',          '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
+(5,  'Galway Learning Centre', 'learning@jobspot.local',        '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
+(6,  'StartupXYZ',             'sinverificar@jobspot.local',    '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'company',   1),
+(7,  'Ana García',             'ana.garcia@jobspot.local',      '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
+(8,  'Carlos López',           'carlos.lopez@jobspot.local',    '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
+(9,  'María Martínez',         'maria.martinez@jobspot.local',  '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
+(10, 'Pedro Sánchez',          'pedro.sanchez@jobspot.local',   '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
+(11, 'Lucía Fernández',        'lucia.fernandez@jobspot.local', '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1),
+(12, 'David Romero',           'david.romero@jobspot.local',    '$2y$10$QK6iWfO37XsYzRnvD7o/2OVJo5W8of8FUSRRbzXgVd2S8CFtEOCMm', 'candidate', 1);
 
 
 -- =========================================================
@@ -61,12 +61,12 @@ INSERT INTO users (id, full_name, email, password_hash, role, is_active) VALUES
 -- =========================================================
 
 INSERT INTO candidate_profiles (user_id, phone, city, profile_summary) VALUES
-(7,  '612 345 678', 'Barcelona', 'Desarrolladora full-stack con 3 años de experiencia en PHP y Vue.js. Apasionada por el diseño de interfaces limpias y el código bien estructurado.'),
-(8,  '623 456 789', 'Sevilla',   'Profesional de hostelería con 4 años de experiencia en restaurantes de nivel medio-alto. También con formación previa como delineante técnico.'),
-(9,  '634 567 890', 'Madrid',    'Camarera con amplia experiencia en sala y barra. Nivel de inglés B2, carné de manipulador de alimentos en vigor.'),
-(10, '645 678 901', 'Valencia',  'Diseñador UX/UI con portfolio en Behance. Manejo Figma y Adobe XD. También he trabajado en obra como peón durante dos veranos.'),
-(11, '656 789 012', 'Bilbao',    'Profesora de matemáticas con 5 años de experiencia en enseñanza secundaria y academia. Grado en Matemáticas por la UPV.'),
-(12, '667 890 123', 'Zaragoza',  'Aparejador colegiado con 6 años en obra residencial y rehabilitación. Experiencia en dirección de ejecución y coordinación de equipos.');
+(7,  '612 345 678', 'Latin Quarter (Galway)', 'Desarrolladora full-stack con 3 años de experiencia en PHP y Vue.js. Apasionada por el diseño de interfaces limpias y el código bien estructurado.'),
+(8,  '623 456 789', 'Salthill (Galway)',      'Profesional de hostelería con 4 años de experiencia en restaurantes de nivel medio-alto. También con formación previa como delineante técnico.'),
+(9,  '634 567 890', 'Bohermore (Galway)',     'Camarera con amplia experiencia en sala y barra. Nivel de inglés B2, carné de manipulador de alimentos en vigor.'),
+(10, '645 678 901', 'Knocknacarra (Galway)',  'Diseñador UX/UI con portfolio en Behance. Manejo Figma y Adobe XD. También he trabajado en obra como peón durante dos veranos.'),
+(11, '656 789 012', 'Newcastle (Galway)',     'Profesora de matemáticas con 5 años de experiencia en enseñanza secundaria y academia. Grado en Matemáticas por la University of Galway.'),
+(12, '667 890 123', 'Mervue (Galway)',        'Aparejador colegiado con 6 años en obra residencial y rehabilitación. Experiencia en dirección de ejecución y coordinación de equipos.');
 
 
 -- =========================================================
@@ -89,11 +89,11 @@ INSERT INTO categories (id, name, slug, is_active) VALUES
 -- =========================================================
 
 INSERT INTO companies (id, owner_user_id, legal_name, brand_name, tax_id, location, description, is_verified) VALUES
-(1, 2, 'Tech Solutions S.L.',               'Tech Solutions',  'B12345678', 'Barcelona', 'Empresa tecnológica especializada en desarrollo web y soluciones digitales para pymes. Equipo de 15 personas distribuidas por España y México.', 1),
-(2, 3, 'Grupo Gastronómico El Rincón S.L.', 'El Rincón',       'B23456789', 'Sevilla',   'Grupo hostelero con más de 15 años de trayectoria en Sevilla. Restaurante de cocina mediterránea y cafetería de especialidad en el centro de la ciudad.', 1),
-(3, 4, 'Obras del Norte S.A.',              'Obras del Norte', 'A34567890', 'Bilbao',    'Constructora con 20 años de experiencia en obra civil y edificación residencial en el País Vasco y Navarra.', 1),
-(4, 5, 'Academia Progresa S.L.',            'Academia Progresa','B45678901', 'Madrid',   'Centro de formación reglada y extraescolar con más de 800 alumnos. Especialistas en refuerzo escolar y preparación de oposiciones.', 1),
-(5, 6, 'StartupXYZ S.L.',                   'StartupXYZ',      NULL,        'Madrid',   'Startup tecnológica en fase seed dedicada al desarrollo de una app de movilidad urbana sostenible.', 0);
+(1, 2, 'Atlantic Digital Ltd.',              'Atlantic Digital',       'B12345678', 'Latin Quarter (Galway)', 'Empresa tecnológica especializada en desarrollo web y soluciones digitales para pymes. Equipo de 15 personas distribuidas entre Galway, Dublín y Londres.', 1),
+(2, 3, 'Grupo Gastronómico El Rincón S.L.',  'El Rincón',              'B23456789', 'Salthill (Galway)',      'Restaurante español con más de 15 años de trayectoria en Galway. Cocina mediterránea y tapas de autor en el barrio de Salthill, uno de los rincones más animados de la ciudad.', 1),
+(3, 4, 'Corrib Construction Ltd.',           'Corrib Construction',    'A34567890', 'Westside (Galway)',      'Constructora con 20 años de experiencia en obra civil y edificación residencial en Connacht y el oeste de Irlanda.', 1),
+(4, 5, 'Galway Learning Centre Ltd.',        'Galway Learning Centre', 'B45678901', 'Newcastle (Galway)',     'Centro de formación reglada y extraescolar con más de 800 alumnos. Especialistas en refuerzo escolar y preparación de exámenes del estado.', 1),
+(5, 6, 'StartupXYZ S.L.',                    'StartupXYZ',             NULL,        'Eyre Square (Galway)',  'Startup tecnológica en fase seed dedicada al desarrollo de una app de movilidad urbana sostenible.', 0);
 
 
 -- =========================================================
@@ -101,15 +101,15 @@ INSERT INTO companies (id, owner_user_id, legal_name, brand_name, tax_id, locati
 -- =========================================================
 -- Solo estados published y closed, coherentes con el flujo actual.
 --
--- Tech Solutions:     3 publicadas + 1 cerrada
--- El Rincón:          2 publicadas + 1 cerrada
--- Obras del Norte:    2 publicadas
--- Academia Progresa:  1 publicada
--- StartupXYZ:         sin ofertas (empresa sin verificar)
+-- Atlantic Digital:       3 publicadas + 1 cerrada
+-- El Rincón:              2 publicadas + 1 cerrada
+-- Corrib Construction:    2 publicadas
+-- Galway Learning Centre: 1 publicada
+-- StartupXYZ:             sin ofertas (empresa sin verificar)
 
 INSERT INTO jobs (id, company_id, category_id, title, description, location, contract_type, workday, modality, salary_min, salary_max, status, published_at) VALUES
 
--- Tech Solutions
+-- Atlantic Digital
 (1, 1, 1, 'Desarrollador/a PHP',
 'Buscamos un/a Desarrollador/a PHP con experiencia real en proyectos en producción para incorporarse a nuestro equipo de backend.
 
@@ -133,7 +133,7 @@ OFRECEMOS:
 - Flexibilidad horaria
 - 1.000 €/año para formación
 - Hardware a elegir: MacBook Pro M3 o ThinkPad con Linux',
-'Barcelona', 'permanent', 'full_time', 'remote', 26000.00, 34000.00, 'published', '2026-04-01 09:00:00'),
+'Latin Quarter (Galway)', 'permanent', 'full_time', 'remote', 26000.00, 34000.00, 'published', '2026-04-01 09:00:00'),
 
 (2, 1, 1, 'Administrador/a de Sistemas',
 'Empresa de desarrollo de software busca Administrador/a de Sistemas para reforzar su departamento de infraestructura.
@@ -157,7 +157,7 @@ OFRECEMOS:
 - Modalidad híbrida: 3 días remoto, 2 días en oficina
 - 23 días de vacaciones
 - Presupuesto anual para formación y certificaciones',
-'Barcelona', 'permanent', 'full_time', 'hybrid', 28000.00, 36000.00, 'published', '2026-04-05 10:00:00'),
+'Latin Quarter (Galway)', 'permanent', 'full_time', 'hybrid', 28000.00, 36000.00, 'published', '2026-04-05 10:00:00'),
 
 (3, 1, 1, 'Diseñador/a UX/UI',
 'Buscamos un/a Diseñador/a UX/UI para sumarse al equipo de producto y mejorar la experiencia de nuestras aplicaciones.
@@ -177,10 +177,10 @@ REQUISITOS:
 
 OFRECEMOS:
 - Contrato indefinido
-- Trabajo presencial en Barcelona
+- Trabajo presencial en el Latin Quarter
 - Horario flexible
 - Presupuesto para eventos y conferencias de diseño',
-'Barcelona', 'permanent', 'full_time', 'onsite', 24000.00, 30000.00, 'published', '2026-04-10 11:00:00'),
+'Latin Quarter (Galway)', 'permanent', 'full_time', 'onsite', 24000.00, 30000.00, 'published', '2026-04-10 11:00:00'),
 
 (4, 1, 1, 'DevOps Engineer',
 'Oferta cerrada. Posición ya cubierta.
@@ -194,11 +194,11 @@ REQUISITOS:
 - Pipelines CI/CD
 
 Gracias a todos los candidatos que aplicaron.',
-'Barcelona', 'permanent', 'full_time', 'remote', 32000.00, 42000.00, 'closed', '2026-03-01 09:00:00'),
+'Latin Quarter (Galway)', 'permanent', 'full_time', 'remote', 32000.00, 42000.00, 'closed', '2026-03-01 09:00:00'),
 
 -- El Rincón
 (5, 2, 2, 'Camarero/a de sala',
-'Buscamos incorporar un/a Camarero/a de sala para nuestro restaurante en el corazón de Sevilla.
+'Buscamos incorporar un/a Camarero/a de sala para nuestro restaurante en el corazón de Salthill.
 
 FUNCIONES:
 - Atención y asesoramiento a los clientes durante toda su estancia
@@ -218,7 +218,7 @@ OFRECEMOS:
 - Propinas distribuidas equitativamente
 - Comida de personal incluida
 - Dos días libres consecutivos a la semana',
-'Sevilla', 'temporary', 'full_time', 'onsite', 17000.00, 20000.00, 'published', '2026-04-08 09:00:00'),
+'Salthill (Galway)', 'temporary', 'full_time', 'onsite', 17000.00, 20000.00, 'published', '2026-04-08 09:00:00'),
 
 (6, 2, 2, 'Barista — Cafetería de especialidad',
 'Cafetería de especialidad busca un/a Barista apasionado/a por el café de calidad.
@@ -241,15 +241,15 @@ OFRECEMOS:
 - Formación continua a cargo de la empresa
 - Descuento en consumiciones
 - Horario de mañanas: 7:00 – 14:00',
-'Sevilla', 'permanent', 'part_time', 'onsite', 15000.00, 18000.00, 'published', '2026-04-12 10:00:00'),
+'Salthill (Galway)', 'permanent', 'part_time', 'onsite', 15000.00, 18000.00, 'published', '2026-04-12 10:00:00'),
 
 (7, 2, 2, 'Jefe/a de cocina',
 'Oferta cerrada. Posición cubierta internamente.
 
 Buscábamos un/a Jefe/a de cocina con experiencia demostrable en restaurante de cocina mediterránea para liderar nuestro equipo de 6 personas.',
-'Sevilla', 'permanent', 'full_time', 'onsite', 28000.00, 35000.00, 'closed', '2026-03-15 09:00:00'),
+'Salthill (Galway)', 'permanent', 'full_time', 'onsite', 28000.00, 35000.00, 'closed', '2026-03-15 09:00:00'),
 
--- Obras del Norte
+-- Corrib Construction
 (8, 3, 5, 'Aparejador/a de obra',
 'Constructora con 20 años de trayectoria busca Aparejador/a colegiado/a para incorporación inmediata.
 
@@ -271,10 +271,10 @@ OFRECEMOS:
 - Vehículo de empresa para desplazamientos a obra
 - 24 días de vacaciones
 - Proyectos estables con financiación asegurada',
-'Bilbao', 'permanent', 'full_time', 'onsite', 30000.00, 38000.00, 'published', '2026-04-03 09:00:00'),
+'Westside (Galway)', 'permanent', 'full_time', 'onsite', 30000.00, 38000.00, 'published', '2026-04-03 09:00:00'),
 
 (9, 3, 5, 'Peón de construcción',
-'Se necesita peón de construcción para obra en Bilbao con incorporación inmediata.
+'Se necesita peón de construcción para obra en Westside con incorporación inmediata.
 
 FUNCIONES:
 - Apoyo general en tareas de obra: carga y descarga de materiales, limpieza
@@ -291,11 +291,11 @@ OFRECEMOS:
 - Contrato temporal de 3 meses con posibilidad de prórroga
 - Salario según convenio de la construcción
 - Equipo de protección individual a cargo de la empresa',
-'Bilbao', 'temporary', 'full_time', 'onsite', 16000.00, 19000.00, 'published', '2026-04-15 09:00:00'),
+'Westside (Galway)', 'temporary', 'full_time', 'onsite', 16000.00, 19000.00, 'published', '2026-04-15 09:00:00'),
 
--- Academia Progresa
+-- Galway Learning Centre
 (10, 4, 6, 'Profesor/a de Matemáticas',
-'Academia de refuerzo escolar busca profesor/a de matemáticas para clases presenciales en Madrid.
+'Academia de refuerzo escolar busca profesor/a de matemáticas para clases presenciales en Newcastle.
 
 FUNCIONES:
 - Impartir clases de matemáticas a alumnos de ESO, Bachillerato y Universidad
@@ -312,7 +312,7 @@ OFRECEMOS:
 - Contrato indefinido a jornada parcial (tardes: 16:00 – 20:00)
 - Posibilidad de ampliar horas según demanda
 - Buen ambiente de trabajo en equipo consolidado',
-'Madrid', 'permanent', 'part_time', 'onsite', 14000.00, 18000.00, 'published', '2026-04-18 10:00:00');
+'Newcastle (Galway)', 'permanent', 'part_time', 'onsite', 14000.00, 18000.00, 'published', '2026-04-18 10:00:00');
 
 
 -- =========================================================
@@ -336,7 +336,7 @@ INSERT INTO applications (job_id, candidate_user_id, status, message, applied_at
 
 -- Ana García → PHP (reviewed)
 (1, 7, 'reviewed',
-'Hola, me llamo Ana García y llevo 3 años desarrollando con PHP y Laravel en una agencia de Barcelona. He trabajado con MySQL, APIs REST y Vue.js en el frontend. Estoy buscando un proyecto más técnico donde seguir creciendo. Tengo portfolio en GitHub con varios proyectos propios.',
+'Hola, me llamo Ana García y llevo 3 años desarrollando con PHP y Laravel en una agencia del Latin Quarter. He trabajado con MySQL, APIs REST y Vue.js en el frontend. Estoy buscando un proyecto más técnico donde seguir creciendo. Tengo portfolio en GitHub con varios proyectos propios.',
 '2026-04-10 10:30:00'),
 
 -- Ana García → Sysadmin (sent)
@@ -356,7 +356,7 @@ INSERT INTO applications (job_id, candidate_user_id, status, message, applied_at
 
 -- Carlos López → Camarero (sent)
 (5, 8, 'sent',
-'Buenas tardes, tengo 4 años de experiencia en restaurantes de nivel medio-alto en Sevilla. Estoy acostumbrado a trabajar en sala con alto volumen de clientes y tengo el carné de manipulador de alimentos en vigor.',
+'Buenas tardes, tengo 4 años de experiencia en restaurantes de nivel medio-alto en Galway. Estoy acostumbrado a trabajar en sala con alto volumen de clientes y tengo el carné de manipulador de alimentos en vigor.',
 '2026-04-17 12:00:00'),
 
 -- Carlos López → Aparejador (sent)
@@ -366,12 +366,12 @@ INSERT INTO applications (job_id, candidate_user_id, status, message, applied_at
 
 -- María Martínez → Sysadmin (reviewed)
 (2, 9, 'reviewed',
-'Buenos días, soy María Martínez. Tengo 2 años de experiencia administrando servidores Linux en una empresa de logística de Madrid. Gestiono entornos Ubuntu Server, Apache y MySQL. Me estoy formando en Docker y tengo el LPIC-1.',
+'Buenos días, soy María Martínez. Tengo 2 años de experiencia administrando servidores Linux en una empresa de logística de Galway. Gestiono entornos Ubuntu Server, Apache y MySQL. Me estoy formando en Docker y tengo el LPIC-1.',
 '2026-04-08 09:00:00'),
 
 -- María Martínez → Camarero (accepted)
 (5, 9, 'accepted',
-'Hola, llevo 3 años trabajando en sala en diferentes restaurantes de Madrid y Sevilla. Tengo inglés nivel B2, que me ha permitido atender a clientela internacional. Busco estabilidad en Sevilla.',
+'Hola, llevo 3 años trabajando en sala en diferentes restaurantes de Galway y Dublín. Tengo inglés nivel B2, que me ha permitido atender a clientela internacional. Busco estabilidad en Galway.',
 '2026-04-18 14:00:00'),
 
 -- María Martínez → Barista (sent)
@@ -386,7 +386,7 @@ INSERT INTO applications (job_id, candidate_user_id, status, message, applied_at
 
 -- Pedro Sánchez → Barista (reviewed)
 (6, 10, 'reviewed',
-'Hola, llevo 2 años trabajando como barista en una cafetería de Valencia. Manejo máquina espresso La Cimbali y he hecho un curso básico de latte art. Me interesa trabajar en un entorno más profesional.',
+'Hola, llevo 2 años trabajando como barista en una cafetería de Galway. Manejo máquina espresso La Cimbali y he hecho un curso básico de latte art. Me interesa trabajar en un entorno más profesional.',
 '2026-04-16 10:00:00'),
 
 -- Pedro Sánchez → Peón (sent)
@@ -401,7 +401,7 @@ INSERT INTO applications (job_id, candidate_user_id, status, message, applied_at
 
 -- Lucía Fernández → Profesor matemáticas (sent)
 (10, 11, 'sent',
-'Hola, soy Lucía Fernández, profesora de matemáticas con 5 años de experiencia en academia y clases particulares. Tengo el Grado en Matemáticas por la UPV y el Máster de Profesorado. Busco estabilidad en Madrid.',
+'Hola, soy Lucía Fernández, profesora de matemáticas con 5 años de experiencia en academia y clases particulares. Tengo el Grado en Matemáticas por la University of Galway y el Máster de Profesorado. Busco estabilidad en Galway.',
 '2026-04-19 16:00:00'),
 
 -- David Romero → Sysadmin (accepted)
