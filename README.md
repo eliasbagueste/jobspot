@@ -92,16 +92,17 @@ The app detects which environment it's running in from the `Host` header (see `c
    1. `db/schema.sql` — creates the tables
    2. `db/seed.sql` — inserts demo users, companies and jobs
 
-### Demo accounts (seed data)
+### Demo accounts
 
-Password for every seeded account: `Test1234`
+You can log in on the live site to try the candidate and company experience — password `Test1234` for all of these:
 
 | Role | Email |
 |---|---|
-| Admin | `admin@jobspot.local` |
 | Company (verified) | `atlantic@jobspot.local` |
 | Company (unverified, no jobs) | `sinverificar@jobspot.local` |
 | Candidate | `ana.garcia@jobspot.local` |
+
+The admin account is not publicly documented, since it can moderate every listing and account on the platform. Everything else in this table is intentionally open so recruiters can try the app without asking for credentials — if you re-seed a local copy with `db/seed.sql`, the same password also creates a local `admin@jobspot.local` account for testing the admin dashboard.
 
 (Full list in the header comment of `db/seed.sql`.)
 
