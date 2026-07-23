@@ -5,16 +5,16 @@
             <div class="footer-inner">
                 <div class="footer-brand">
                     <?= APP_NAME; ?>
-                    <p>Conectando talento con oportunidades locales.</p>
+                    <p>Connecting talent with local opportunities.</p>
                 </div>
                 <div class="footer-col">
-                    <span class="footer-col-title">Plataforma</span>
-                    <a href="<?= BASE_URL; ?>/jobs.php">Ver ofertas</a>
-                    <a href="<?= BASE_URL; ?>/register.php">Crear cuenta</a>
-                    <a href="<?= BASE_URL; ?>/login.php">Iniciar sesión</a>
+                    <span class="footer-col-title">Platform</span>
+                    <a href="<?= BASE_URL; ?>/jobs.php">View jobs</a>
+                    <a href="<?= BASE_URL; ?>/register.php">Create account</a>
+                    <a href="<?= BASE_URL; ?>/login.php">Log in</a>
                 </div>
                 <div class="footer-col">
-                    <span class="footer-col-title">Síguenos</span>
+                    <span class="footer-col-title">Follow us</span>
                     <div class="footer-social-icons">
                         <a href="#" class="social-icon" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
                         <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -25,8 +25,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <span>&copy; <?= date('Y'); ?> <?= APP_NAME; ?>. Todos los derechos reservados.</span>
-                <span>Proyecto DAW · Elías Bagüeste Amate</span>
+                <span>&copy; <?= date('Y'); ?> <?= APP_NAME; ?>. All rights reserved.</span>
+                <span>DAW Project · Elías Bagüeste Amate</span>
             </div>
         </div>
     </footer>
@@ -53,15 +53,15 @@
                         btn.dataset.favorited = '1';
                         icon.className        = 'fas fa-heart';
                         btn.style.color       = '#ef4444';
-                        btn.title             = 'Quitar de favoritos';
-                        if (label) label.textContent = 'Guardada en favoritos';
+                        btn.title             = 'Remove from favourites';
+                        if (label) label.textContent = 'Saved to favourites';
                     } else {
                         // Ya no es favorito: corazón vacío y gris
                         btn.dataset.favorited = '0';
                         icon.className        = 'far fa-heart';
                         btn.style.color       = '#cbd5e1';
-                        btn.title             = 'Añadir a favoritos';
-                        if (label) label.textContent = 'Guardar en favoritos';
+                        btn.title             = 'Add to favourites';
+                        if (label) label.textContent = 'Save to favourites';
                         // Si estamos en la página de favoritos, animamos y quitamos la tarjeta
                         const card = btn.closest('.job-card');
                         if (card && window.location.pathname.includes('favorites')) {

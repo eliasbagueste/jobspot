@@ -31,29 +31,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Comprobamos que ningún campo esté vacío
     if ($fullName === '' || $email === '' || $role === '' || $password === '' || $confirmPassword === '') {
-        $error = 'Todos los campos son obligatorios.';
+        $error = 'All fields are required.';
 
     // Comprobamos que el email tenga formato válido
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'El correo electrónico no es válido.';
+        $error = 'The email address is not valid.';
 
     // Comprobamos que la contraseña cumpla los requisitos de seguridad
     } elseif (strlen($password) < 8) {
-        $error = 'La contraseña debe tener al menos 8 caracteres.';
+        $error = 'Password must be at least 8 characters long.';
     } elseif (!preg_match('/[A-Z]/', $password)) {
         // preg_match busca si hay alguna letra mayúscula (A-Z) en la contraseña
-        $error = 'La contraseña debe contener al menos una letra mayúscula.';
+        $error = 'Password must contain at least one uppercase letter.';
     } elseif (!preg_match('/[0-9]/', $password)) {
         // preg_match busca si hay algún dígito (0-9) en la contraseña
-        $error = 'La contraseña debe contener al menos un número.';
+        $error = 'Password must contain at least one number.';
 
     // Comprobamos que las dos contraseñas coincidan
     } elseif ($password !== $confirmPassword) {
-        $error = 'Las contraseñas no coinciden.';
+        $error = 'Passwords do not match.';
 
     // Comprobamos que el rol sea uno de los valores permitidos
     } elseif (!in_array($role, ['candidate', 'company'])) {
-        $error = 'El tipo de cuenta no es válido.';
+        $error = 'The account type is not valid.';
 
     } else {
         try {
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute(['email' => $email]);
 
             if ($stmt->fetch()) {
-                $error = 'Este correo electrónico ya está registrado.';
+                $error = 'This email address is already registered.';
             } else {
                 // Hasheamos la contraseña con bcrypt antes de guardarla
                 // Nunca guardamos contraseñas en texto plano
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
         } catch (PDOException $e) {
-            $error = 'Error al registrar el usuario: ' . $e->getMessage();
+            $error = 'Error registering user: ' . $e->getMessage();
         }
     }
 }
@@ -97,8 +97,8 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="auth-box">
-    <h1>Registrate</h1>
-    <p>Ingresa tus datos para crear una cuenta.</p>
+    <h1>Sign up</h1>
+    <p>Enter your details to create an account.</p>
 
     <!-- Si $error no está vacío, muestra el mensaje de las validacios en rojo.
         htmlspecialchars convierte caracteres especiales en su versión segura,
@@ -112,27 +112,27 @@ require_once __DIR__ . '/includes/header.php';
     <form action="<?= BASE_URL; ?>/register.php" method="post" class="auth-form" novalidate>
     
         <div class="form-group">
-            <label for="full_name">Nombre completo</label>
+            <label for="full_name">Full name</label>
             <!-- value repopula el campo con lo que escribió el usuario si el formulario da error -->
         <input type="text" id="full_name" name="full_name" value="<?= htmlspecialchars($fullName); ?>" required>
         </div>
-    
+
         <div class="form-group">
-            <label for="email">Correo electrónico</label>
+            <label for="email">Email address</label>
             <input type="email" id="email" name="email" value="<?= htmlspecialchars($email); ?>" required>
         </div>
 
         <div class="form-group">
-            <label for="role">Tipo de cuenta</label>
+            <label for="role">Account type</label>
             <select id="role" name="role" required>
-                <option value="">Selecciona una opción</option>
-                <option value="candidate" <?= $role === 'candidate' ? 'selected' : ''; ?>>Candidato</option>
-                <option value="company"   <?= $role === 'company'   ? 'selected' : ''; ?>>Empresa</option>
+                <option value="">Select an option</option>
+                <option value="candidate" <?= $role === 'candidate' ? 'selected' : ''; ?>>Candidate</option>
+                <option value="company"   <?= $role === 'company'   ? 'selected' : ''; ?>>Company</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="password">Contraseña</label>
+            <label for="password">Password</label>
             <input
                 type="password"
                 id="password"
@@ -142,11 +142,11 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <div class="form-group">
-            <label for="confirm_password">Confirmar contraseña</label>
+            <label for="confirm_password">Confirm password</label>
             <input type="password" id="confirm_password" name="confirm_password" required>
         </div>
 
-        <button type="submit" class="btn-primary">Registrate</button>
+        <button type="submit" class="btn-primary">Sign up</button>
     </form>
 </section>
 
@@ -174,33 +174,33 @@ document.querySelector('.auth-form').addEventListener('submit', function (e) {
     const confirmPassword = document.getElementById('confirm_password');
 
     if (!fullName.value.trim())
-        error(fullName, 'El nombre completo es obligatorio.');
+        error(fullName, 'Full name is required.');
 
     if (!email.value.trim()) {
-        error(email, 'El correo electrónico es obligatorio.');
+        error(email, 'Email address is required.');
     } else if (!email.value.includes('@') || !email.value.includes('.')) {
-        error(email, 'Introduce un correo electrónico válido.');
+        error(email, 'Enter a valid email address.');
     }
 
     if (!role.value)
-        error(role, 'Debes seleccionar un tipo de cuenta.');
+        error(role, 'You must select an account type.');
 
     if (!password.value) {
-        error(password, 'La contraseña es obligatoria.');
+        error(password, 'Password is required.');
     } else if (password.value.length < 8) {
-        error(password, 'La contraseña debe tener al menos 8 caracteres.');
+        error(password, 'Password must be at least 8 characters long.');
     } else if (!/[A-Z]/.test(password.value)) {
         // /[A-Z]/ es una expresión regular que busca si existe alguna mayúscula
-        error(password, 'La contraseña debe contener al menos una letra mayúscula.');
+        error(password, 'Password must contain at least one uppercase letter.');
     } else if (!/[0-9]/.test(password.value)) {
         // /[0-9]/ busca si existe algún dígito numérico
-        error(password, 'La contraseña debe contener al menos un número.');
+        error(password, 'Password must contain at least one number.');
     }
 
     if (!confirmPassword.value) {
-        error(confirmPassword, 'Debes confirmar la contraseña.');
+        error(confirmPassword, 'You must confirm your password.');
     } else if (password.value && confirmPassword.value !== password.value) {
-        error(confirmPassword, 'Las contraseñas no coinciden.');
+        error(confirmPassword, 'Passwords do not match.');
     }
 
     if (!valid) e.preventDefault();

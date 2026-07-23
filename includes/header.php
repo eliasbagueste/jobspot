@@ -6,7 +6,7 @@
 require_once __DIR__ . '/../config/config.php';
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <!-- Hace que la página se vea bien en móviles -->
@@ -29,39 +29,39 @@ require_once __DIR__ . '/../config/config.php';
 
             <!-- Botón hamburguesa: solo visible en móvil (CSS lo muestra/oculta) -->
             <!-- Las tres líneas se animan a una X cuando el menú está abierto -->
-            <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+            <button class="nav-toggle" id="navToggle" aria-label="Open menu">
                 <span></span><span></span><span></span>
             </button>
 
             <!-- Menú de navegación principal -->
             <!-- Los enlaces que se muestran dependen del rol del usuario o de si tiene sesión -->
             <nav class="nav" id="mainNav">
-                <a href="<?= BASE_URL; ?>/index.php">Inicio</a>
-                <a href="<?= BASE_URL; ?>/jobs.php">Ofertas</a>
+                <a href="<?= BASE_URL; ?>/index.php">Home</a>
+                <a href="<?= BASE_URL; ?>/jobs.php">Jobs</a>
 
                 <?php if (isset($_SESSION['user'])): ?>
                     <?php if ($_SESSION['user']['role'] === 'admin'): ?>
                         <!-- El admin ve solo el enlace a su panel -->
-                        <a href="<?= BASE_URL; ?>/admin/index.php">Panel admin</a>
+                        <a href="<?= BASE_URL; ?>/admin/index.php">Admin dashboard</a>
 
                     <?php elseif ($_SESSION['user']['role'] === 'candidate'): ?>
                         <!-- El candidato ve su panel, candidaturas y favoritos -->
-                        <a href="<?= BASE_URL; ?>/candidate/index.php">Panel</a>
-                        <a href="<?= BASE_URL; ?>/candidate/my-applications.php">Mis candidaturas</a>
-                        <a href="<?= BASE_URL; ?>/candidate/favorites.php">Favoritos</a>
+                        <a href="<?= BASE_URL; ?>/candidate/index.php">Dashboard</a>
+                        <a href="<?= BASE_URL; ?>/candidate/my-applications.php">My applications</a>
+                        <a href="<?= BASE_URL; ?>/candidate/favorites.php">Favourites</a>
 
                     <?php elseif ($_SESSION['user']['role'] === 'company'): ?>
                         <!-- La empresa ve su panel y sus ofertas -->
-                        <a href="<?= BASE_URL; ?>/company/index.php">Mi empresa</a>
-                        <a href="<?= BASE_URL; ?>/company/jobs.php">Mis ofertas</a>
+                        <a href="<?= BASE_URL; ?>/company/index.php">My company</a>
+                        <a href="<?= BASE_URL; ?>/company/jobs.php">My jobs</a>
                     <?php endif; ?>
 
-                    <a href="<?= BASE_URL; ?>/logout.php" class="nav-btn-logout">Cerrar sesión</a>
+                    <a href="<?= BASE_URL; ?>/logout.php" class="nav-btn-logout">Log out</a>
 
                 <?php else: ?>
                     <!-- Si no hay sesión activa mostramos login y registro -->
-                    <a href="<?= BASE_URL; ?>/login.php">Iniciar sesión</a>
-                    <a href="<?= BASE_URL; ?>/register.php" class="nav-btn-register">Registro</a>
+                    <a href="<?= BASE_URL; ?>/login.php">Log in</a>
+                    <a href="<?= BASE_URL; ?>/register.php" class="nav-btn-register">Sign up</a>
                 <?php endif; ?>
             </nav>
         </div>

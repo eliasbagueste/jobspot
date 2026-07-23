@@ -51,11 +51,11 @@ $counts = $pdo->query("
 $totalJobs = array_sum($counts);
 
 $statusLabels = [
-    'draft'     => 'Borrador',
-    'pending'   => 'Pendiente',
-    'published' => 'Publicada',
-    'closed'    => 'Cerrada',
-    'rejected'  => 'Rechazada',
+    'draft'     => 'Draft',
+    'pending'   => 'Pending',
+    'published' => 'Published',
+    'closed'    => 'Closed',
+    'rejected'  => 'Rejected',
 ];
 
 $statusClass = [
@@ -67,53 +67,53 @@ $statusClass = [
 ];
 
 $contractLabels = [
-    'permanent'  => 'Indefinido',
-    'temporary'  => 'Temporal',
-    'internship' => 'Prácticas',
+    'permanent'  => 'Permanent',
+    'temporary'  => 'Temporary',
+    'internship' => 'Internship',
     'freelance'  => 'Freelance',
 ];
 
 $modalityLabels = [
-    'onsite' => 'Presencial',
-    'hybrid' => 'Híbrido',
-    'remote' => 'Remoto',
+    'onsite' => 'On-site',
+    'hybrid' => 'Hybrid',
+    'remote' => 'Remote',
 ];
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/admin/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver al panel
+    ← Back to dashboard
 </a>
 
 <section class="card" style="padding: 16px 24px;">
-    <h1 style="margin:0 0 0.25rem;">Ofertas</h1>
-    <p style="color:#64748b; margin:0;">Consulta y gestiona todas las ofertas de la plataforma.</p>
+    <h1 style="margin:0 0 0.25rem;">Jobs</h1>
+    <p style="color:#64748b; margin:0;">View and manage all job listings on the platform.</p>
 </section>
 
 <!-- Filtros por estado -->
 <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">
     <a href="?filter=all"
        class="<?= $filter === 'all' ? 'btn-primary' : 'btn-edit'; ?>">
-        Todas (<?= $totalJobs; ?>)
+        All (<?= $totalJobs; ?>)
     </a>
     <a href="?filter=published"
        class="<?= $filter === 'published' ? 'btn-primary' : 'btn-edit'; ?>">
-        Publicadas (<?= $counts['published'] ?? 0; ?>)
+        Published (<?= $counts['published'] ?? 0; ?>)
     </a>
     <a href="?filter=closed"
        class="<?= $filter === 'closed' ? 'btn-primary' : 'btn-edit'; ?>">
-        Cerradas (<?= $counts['closed'] ?? 0; ?>)
+        Closed (<?= $counts['closed'] ?? 0; ?>)
     </a>
 </div>
 
 <?php if (empty($jobs)): ?>
     <section class="card">
-        <p>No hay ofertas en esta categoría.</p>
+        <p>No jobs in this category.</p>
     </section>
 <?php else: ?>
     <p style="margin-bottom:1rem; color:#64748b;">
-        <?= count($jobs); ?> oferta<?= count($jobs) !== 1 ? 's' : ''; ?>
+        <?= count($jobs); ?> job<?= count($jobs) !== 1 ? 's' : ''; ?>
     </p>
 
     <?php foreach ($jobs as $job): ?>
@@ -142,9 +142,9 @@ require_once __DIR__ . '/../includes/header.php';
 
             <div style="border-top:1px solid #f1f5f9; margin-top:0.75rem; padding-top:0.75rem; display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-size:0.85rem; color:#64748b;">
-                    👥 <?= $job['total_applications']; ?> candidatura<?= $job['total_applications'] != 1 ? 's' : ''; ?> recibida<?= $job['total_applications'] != 1 ? 's' : ''; ?>
+                    👥 <?= $job['total_applications']; ?> application<?= $job['total_applications'] != 1 ? 's' : ''; ?> received
                 </span>
-                <a href="<?= BASE_URL; ?>/admin/job-detail.php?id=<?= $job['id']; ?>" class="btn-primary" style="font-size:0.85rem; padding:0.35rem 0.9rem;">Ver</a>
+                <a href="<?= BASE_URL; ?>/admin/job-detail.php?id=<?= $job['id']; ?>" class="btn-primary" style="font-size:0.85rem; padding:0.35rem 0.9rem;">View</a>
             </div>
 
         </div>

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cvPath   = $profile['cv_pdf_path'] ?? null;
 
     if ($fullName === '') {
-        $error = 'El nombre completo es obligatorio.';
+        $error = 'Full name is required.';
     }
 
     // Procesamos el PDF si el candidato lo ha subido
@@ -34,11 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $file = $_FILES['cv'];
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            $error = 'Error al subir el archivo. Inténtalo de nuevo.';
+            $error = 'Error uploading the file. Please try again.';
         } elseif ($file['type'] !== 'application/pdf') {
-            $error = 'Solo se aceptan archivos en formato PDF.';
+            $error = 'Only PDF files are accepted.';
         } elseif ($file['size'] > 5 * 1024 * 1024) {
-            $error = 'El archivo no puede superar los 5 MB.';
+            $error = 'The file cannot exceed 5 MB.';
         } else {
             $uploadsDir = __DIR__ . '/../uploads/cvs/';
             // Si la carpeta no existe la creamos con permisos 0755
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (move_uploaded_file($file['tmp_name'], $uploadsDir . $filename)) {
                 $cvPath = 'uploads/cvs/' . $filename;
             } else {
-                $error = 'No se pudo guardar el archivo. Comprueba los permisos de la carpeta uploads/cvs/.';
+                $error = 'Could not save the file. Check the permissions on the uploads/cvs/ folder.';
             }
         }
     }
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Recargamos el perfil actualizado
         $stmtProfile->execute(['uid' => $user['id']]);
         $profile = $stmtProfile->fetch();
-        $success = 'Perfil actualizado correctamente.';
+        $success = 'Profile updated successfully.';
     }
 }
 
@@ -105,11 +105,11 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/candidate/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver al panel
+    ← Back to dashboard
 </a>
 
 <section class="auth-box">
-    <h1>Mi perfil</h1>
+    <h1>My profile</h1>
 
     <?php if ($success !== ''): ?>
         <div class="alert alert-success"><?= htmlspecialchars($success); ?></div>
@@ -123,59 +123,59 @@ require_once __DIR__ . '/../includes/header.php';
           class="auth-form" enctype="multipart/form-data" novalidate id="form-profile">
 
         <div class="form-group">
-            <label for="full_name">Nombre completo *</label>
+            <label for="full_name">Full name *</label>
             <input type="text" id="full_name" name="full_name"
                    value="<?= htmlspecialchars($user['full_name']); ?>">
         </div>
 
         <div class="form-group">
-            <label>Correo electrónico</label>
+            <label>Email address</label>
             <!-- El email está desactivado (disabled) porque no se puede cambiar desde aquí -->
             <input type="email" value="<?= htmlspecialchars($user['email']); ?>" disabled
                    style="background:#f8fafc; color:#64748b;">
         </div>
 
         <div class="form-group">
-            <label for="phone">Teléfono</label>
+            <label for="phone">Phone</label>
             <input type="tel" id="phone" name="phone"
-                   placeholder="Ej: 600 123 456"
+                   placeholder="e.g. 600 123 456"
                    value="<?= htmlspecialchars($profile['phone'] ?? ''); ?>">
         </div>
 
         <div class="form-group">
-            <label for="city">Ciudad</label>
+            <label for="city">City</label>
             <input type="text" id="city" name="city"
-                   placeholder="Ej: Barcelona, Madrid..."
+                   placeholder="e.g. Dublin, Cork..."
                    value="<?= htmlspecialchars($profile['city'] ?? ''); ?>">
         </div>
 
         <div class="form-group">
-            <label for="profile_summary">Sobre mí</label>
+            <label for="profile_summary">About me</label>
             <textarea id="profile_summary" name="profile_summary" rows="5"
                       style="width:100%; padding:0.5rem; border:1px solid #d1d5db; border-radius:6px; font-family:inherit;"
-                      placeholder="Cuéntanos sobre tu experiencia, habilidades y objetivos profesionales..."><?= htmlspecialchars($profile['profile_summary'] ?? ''); ?></textarea>
+                      placeholder="Tell us about your experience, skills and career goals..."><?= htmlspecialchars($profile['profile_summary'] ?? ''); ?></textarea>
         </div>
 
         <div class="form-group">
-            <label for="cv">Currículum en PDF</label>
+            <label for="cv">CV in PDF format</label>
             <?php if (!empty($profile['cv_pdf_path'])): ?>
                 <p style="margin-bottom:0.5rem; font-size:0.9rem; color:#374151;">
-                    CV actual:
+                    Current CV:
                     <a href="<?= BASE_URL . '/' . htmlspecialchars($profile['cv_pdf_path']); ?>"
                        target="_blank" class="btn-link">
-                        📄 Ver CV
+                        📄 View CV
                     </a>
                 </p>
             <?php endif; ?>
             <input type="file" id="cv" name="cv" accept=".pdf"
                    style="display:block; margin-top:4px;">
             <small style="color:#64748b; display:block; margin-top:4px;">
-                Máximo 5 MB. Sube un nuevo PDF para reemplazar el actual.
+                Maximum 5 MB. Upload a new PDF to replace the current one.
             </small>
         </div>
 
-        <button type="submit" class="btn-primary">Guardar cambios</button>
-        <a href="<?= BASE_URL; ?>/candidate/index.php" class="btn-link btn-cancel">Cancelar</a>
+        <button type="submit" class="btn-primary">Save changes</button>
+        <a href="<?= BASE_URL; ?>/candidate/index.php" class="btn-link btn-cancel">Cancel</a>
     </form>
 
     <script>
@@ -197,15 +197,15 @@ require_once __DIR__ . '/../includes/header.php';
 
         const fullName = document.getElementById('full_name');
         if (!fullName.value.trim())
-            fieldError(fullName, 'El nombre completo es obligatorio.');
+            fieldError(fullName, 'Full name is required.');
 
         const cv = document.getElementById('cv');
         if (cv.files.length > 0) {
             const file = cv.files[0];
             if (file.type !== 'application/pdf')
-                fieldError(cv, 'Solo se aceptan archivos en formato PDF.');
+                fieldError(cv, 'Only PDF files are accepted.');
             else if (file.size > 5 * 1024 * 1024)
-                fieldError(cv, 'El archivo no puede superar los 5 MB.');
+                fieldError(cv, 'The file cannot exceed 5 MB.');
         }
 
         if (!valid) e.preventDefault();

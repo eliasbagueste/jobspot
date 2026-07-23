@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     if ($email === '' || $password === '') {
-        $error = 'Debes introducir tu correo electrónico y tu contraseña.';
+        $error = 'You must enter your email address and password.';
     } else {
         try {
             $pdo = getPDO();
@@ -45,12 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (!$user) {
                 // No decimos "el email no existe" para no dar pistas a posibles atacantes
-                $error = 'El correo electrónico o la contraseña no son correctos.';
+                $error = 'The email address or password is incorrect.';
             } elseif (!(bool) $user['is_active']) {
-                $error = 'Tu cuenta está desactivada.';
+                $error = 'Your account has been deactivated.';
             } elseif (!password_verify($password, $user['password_hash'])) {
                 // password_verify compara la contraseña con el hash almacenado en la BD
-                $error = 'El correo electrónico o la contraseña no son correctos.';
+                $error = 'The email address or password is incorrect.';
             } else {
                 // Regeneramos el ID de sesión por seguridad al hacer login
                 // Esto evita ataques de "session fixation" (fijación de sesión)
@@ -79,9 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             // En producción ocultamos el mensaje técnico; en local lo mostramos para depurar
             if (APP_ENV === 'prod') {
-                $error = 'Se ha producido un error al iniciar sesión.';
+                $error = 'An error occurred while logging in.';
             } else {
-                $error = 'Error al iniciar sesión: ' . $e->getMessage();
+                $error = 'Error logging in: ' . $e->getMessage();
             }
         }
     }
@@ -91,13 +91,13 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="auth-box">
-    <h1>Iniciar sesión</h1>
-    <p>Accede a JobSpot con tu correo electrónico y contraseña.</p>
+    <h1>Log in</h1>
+    <p>Access JobSpot with your email address and password.</p>
 
     <!-- Si viene de registrarse, muestra mensaje de éxito -->
     <?php if (isset($_GET['registered'])): ?>
         <div class="alert alert-success">
-            Gracias por registrarte. Ya puedes iniciar sesión.
+            Thank you for signing up. You can now log in.
         </div>
     <?php endif; ?>
 
@@ -110,7 +110,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <form action="<?= BASE_URL; ?>/login.php" method="post" class="auth-form" novalidate>
         <div class="form-group">
-            <label for="email">Correo electrónico</label>
+            <label for="email">Email address</label>
             <input
                 type="email"
                 id="email"
@@ -120,7 +120,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <div class="form-group">
-            <label for="password">Contraseña</label>
+            <label for="password">Password</label>
             <input
                 type="password"
                 id="password"
@@ -128,12 +128,12 @@ require_once __DIR__ . '/includes/header.php';
             >
         </div>
 
-        <button type="submit" class="btn-primary">Entrar</button>
+        <button type="submit" class="btn-primary">Log in</button>
 
         <!-- Enlace de recuperación de contraseña (funcionalidad pendiente) -->
         <p style="margin-top:1rem; text-align:center; font-size:0.9rem;">
             <a href="#" style="color:#6366f1; text-decoration:none;">
-                ¿Olvidaste tu contraseña?
+                Forgot your password?
             </a>
         </p>
     </form>
@@ -160,10 +160,10 @@ document.querySelector('.auth-form').addEventListener('submit', function (e) {
     const password = document.getElementById('password');
 
     if (!email.value.trim())
-        error(email, 'El correo electrónico es obligatorio.');
+        error(email, 'Email address is required.');
 
     if (!password.value)
-        error(password, 'La contraseña es obligatoria.');
+        error(password, 'Password is required.');
 
     if (!valid) e.preventDefault();
 });

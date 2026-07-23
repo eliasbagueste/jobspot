@@ -30,22 +30,22 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/admin/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver al panel
+    ← Back to dashboard
 </a>
 
 <section class="card">
-    <h1 style="margin-top:0;">Usuarios</h1>
+    <h1 style="margin-top:0;">Users</h1>
 
     <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
+                <th>Name</th>
                 <th>Email</th>
-                <th style="text-align:center">Rol</th>
-                <th style="text-align:center">Activo</th>
-                <th style="text-align:center">Antigüedad</th>
-                <th style="text-align:center">Acciones</th>
+                <th style="text-align:center">Role</th>
+                <th style="text-align:center">Active</th>
+                <th style="text-align:center">Joined</th>
+                <th style="text-align:center">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -62,9 +62,9 @@ require_once __DIR__ . '/../includes/header.php';
                     </td>
                     <td style="text-align:center">
                         <?php if ($u['is_active']): ?>
-                            <span class="badge badge-active">Activo</span>
+                            <span class="badge badge-active">Active</span>
                         <?php else: ?>
-                            <span class="badge badge-rejected">Inactivo</span>
+                            <span class="badge badge-rejected">Inactive</span>
                         <?php endif; ?>
                     </td>
                     <td style="text-align:center">
@@ -73,7 +73,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <td>
                         <div style="display:flex; gap:0.5rem; justify-content:flex-end; flex-wrap:wrap;">
                             <a href="<?= BASE_URL; ?>/admin/user-edit.php?id=<?= $u['id']; ?>"
-                               class="btn-edit">Editar</a>
+                               class="btn-edit">Edit</a>
 
                             <?php
                             // No mostramos los botones de acción sobre la propia cuenta del admin
@@ -83,16 +83,16 @@ require_once __DIR__ . '/../includes/header.php';
                                     <input type="hidden" name="toggle_id" value="<?= $u['id']; ?>">
                                     <button type="submit" name="toggle_active"
                                             class="<?= $u['is_active'] ? 'btn-warning' : 'btn-success'; ?>">
-                                        <?= $u['is_active'] ? 'Desactivar' : 'Activar'; ?>
+                                        <?= $u['is_active'] ? 'Deactivate' : 'Activate'; ?>
                                     </button>
                                 </form>
 
                                 <form method="post" action="<?= BASE_URL; ?>/admin/user-delete.php"
                                       style="display:inline;"
-                                      onsubmit="return confirm('¿Eliminar a <?= htmlspecialchars(addslashes($u['full_name'])); ?>? Esta acción no se puede deshacer.');">
+                                      onsubmit="return confirm('Delete <?= htmlspecialchars(addslashes($u['full_name'])); ?>? This action cannot be undone.');">
                                       <!-- addslashes escapa las comillas del nombre para que no rompan el confirm() de JS -->
                                     <input type="hidden" name="id" value="<?= $u['id']; ?>">
-                                    <button type="submit" class="btn-delete">Borrar</button>
+                                    <button type="submit" class="btn-delete">Delete</button>
                                 </form>
                             <?php endif; ?>
                         </div>

@@ -48,28 +48,28 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/admin/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver al panel
+    ← Back to dashboard
 </a>
 
 <section class="card">
-    <h1 style="margin-top:0;">Empresas</h1>
+    <h1 style="margin-top:0;">Companies</h1>
     <p style="color:#64748b; margin-bottom:1.5rem;">
-        Las empresas deben estar verificadas para poder publicar ofertas.
+        Companies must be verified before they can publish job listings.
     </p>
 
     <?php if (empty($companies)): ?>
-        <p>No hay empresas registradas todavía.</p>
+        <p>No companies registered yet.</p>
     <?php else: ?>
         <table>
             <thead>
                 <tr>
-                    <th>Empresa</th>
-                    <th>Responsable</th>
-                    <th>Ubicación</th>
-                    <th>Ofertas</th>
-                    <th>Estado</th>
-                    <th>Registro</th>
-                    <th>Acción</th>
+                    <th>Company</th>
+                    <th>Owner</th>
+                    <th>Location</th>
+                    <th>Jobs</th>
+                    <th>Status</th>
+                    <th>Registered</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -91,9 +91,9 @@ require_once __DIR__ . '/../includes/header.php';
                         <td><?= (int) $co['total_jobs']; ?></td>
                         <td>
                             <?php if ($co['is_verified']): ?>
-                                <span class="badge badge-active">Verificada</span>
+                                <span class="badge badge-active">Verified</span>
                             <?php else: ?>
-                                <span class="badge badge-admin">No verificada</span>
+                                <span class="badge badge-admin">Not verified</span>
                             <?php endif; ?>
                         </td>
                         <td style="font-size:0.85rem; color:#64748b;">
@@ -104,10 +104,10 @@ require_once __DIR__ . '/../includes/header.php';
                                 <input type="hidden" name="company_id" value="<?= $co['id']; ?>">
                                 <?php if ($co['is_verified']): ?>
                                     <input type="hidden" name="action" value="unverify">
-                                    <button type="submit" class="btn-delete">Revocar</button>
+                                    <button type="submit" class="btn-delete">Revoke</button>
                                 <?php else: ?>
                                     <input type="hidden" name="action" value="verify">
-                                    <button type="submit" class="btn-edit">Verificar</button>
+                                    <button type="submit" class="btn-edit">Verify</button>
                                 <?php endif; ?>
                             </form>
                         </td>

@@ -70,25 +70,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validModalities = ['onsite', 'hybrid', 'remote'];
 
     if ($title === '') {
-        $error = 'El título es obligatorio.';
+        $error = 'The title is required.';
     } elseif ($description === '') {
-        $error = 'La descripción es obligatoria.';
+        $error = 'The description is required.';
     } elseif ($location === '') {
-        $error = 'La ubicación es obligatoria.';
+        $error = 'The location is required.';
     } elseif ($categoryId === 0) {
-        $error = 'Debes seleccionar una categoría.';
+        $error = 'You must select a category.';
     } elseif (!in_array($contractType, $validContracts)) {
-        $error = 'El tipo de contrato no es válido.';
+        $error = 'The contract type is not valid.';
     } elseif (!in_array($workday, $validWorkdays)) {
-        $error = 'La jornada no es válida.';
+        $error = 'The working hours are not valid.';
     } elseif (!in_array($modality, $validModalities)) {
-        $error = 'La modalidad no es válida.';
+        $error = 'The work mode is not valid.';
     } else {
         $salaryMinVal = ($salaryMin !== '') ? (float) $salaryMin : null;
         $salaryMaxVal = ($salaryMax !== '') ? (float) $salaryMax : null;
 
         if ($salaryMinVal !== null && $salaryMaxVal !== null && $salaryMinVal > $salaryMaxVal) {
-            $error = 'El salario mínimo no puede ser mayor que el salario máximo.';
+            $error = 'The minimum salary cannot be greater than the maximum salary.';
         } else {
             // Al editar mantenemos el estado actual de la oferta
             $newStatus = $job['status'];
@@ -135,8 +135,8 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <section class="auth-box">
-    <h1>Editar oferta</h1>
-    <p>Los cambios se guardan manteniendo el estado actual de la oferta.</p>
+    <h1>Edit job listing</h1>
+    <p>Changes are saved while keeping the current status of the job listing.</p>
 
     <?php if ($error !== ''): ?>
         <div class="alert alert-error"><?= htmlspecialchars($error); ?></div>
@@ -145,28 +145,28 @@ require_once __DIR__ . '/../includes/header.php';
     <form method="post" action="<?= BASE_URL; ?>/company/job-edit.php?id=<?= $jobId; ?>" class="auth-form" novalidate id="form-job">
 
         <div class="form-group">
-            <label for="title">Título del puesto *</label>
+            <label for="title">Job title *</label>
             <input type="text" id="title" name="title"
                    value="<?= htmlspecialchars($formData['title'] ?? ''); ?>" required>
         </div>
 
         <div class="form-group">
-            <label for="description">Descripción *</label>
+            <label for="description">Description *</label>
             <textarea id="description" name="description" rows="6" required
                       style="width:100%; padding:0.5rem; border:1px solid #d1d5db; border-radius:6px; font-family:inherit; font-size:0.95rem;"
             ><?= htmlspecialchars($formData['description'] ?? ''); ?></textarea>
         </div>
 
         <div class="form-group">
-            <label for="location">Ubicación *</label>
+            <label for="location">Location *</label>
             <input type="text" id="location" name="location"
                    value="<?= htmlspecialchars($formData['location'] ?? ''); ?>" required>
         </div>
 
         <div class="form-group">
-            <label for="category_id">Categoría *</label>
+            <label for="category_id">Category *</label>
             <select id="category_id" name="category_id" required>
-                <option value="0">Selecciona una categoría</option>
+                <option value="0">Select a category</option>
                 <?php foreach ($categories as $cat): ?>
                     <option value="<?= $cat['id']; ?>"
                         <?= (int)($formData['category_id'] ?? 0) === (int)$cat['id'] ? 'selected' : ''; ?>>
@@ -177,51 +177,51 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
 
         <div class="form-group">
-            <label for="contract_type">Tipo de contrato *</label>
+            <label for="contract_type">Contract type *</label>
             <select id="contract_type" name="contract_type" required>
-                <option value="">Selecciona...</option>
-                <option value="permanent"  <?= ($formData['contract_type'] ?? '') === 'permanent'  ? 'selected' : ''; ?>>Indefinido</option>
-                <option value="temporary"  <?= ($formData['contract_type'] ?? '') === 'temporary'  ? 'selected' : ''; ?>>Temporal</option>
-                <option value="internship" <?= ($formData['contract_type'] ?? '') === 'internship' ? 'selected' : ''; ?>>Prácticas</option>
+                <option value="">Select...</option>
+                <option value="permanent"  <?= ($formData['contract_type'] ?? '') === 'permanent'  ? 'selected' : ''; ?>>Permanent</option>
+                <option value="temporary"  <?= ($formData['contract_type'] ?? '') === 'temporary'  ? 'selected' : ''; ?>>Temporary</option>
+                <option value="internship" <?= ($formData['contract_type'] ?? '') === 'internship' ? 'selected' : ''; ?>>Internship</option>
                 <option value="freelance"  <?= ($formData['contract_type'] ?? '') === 'freelance'  ? 'selected' : ''; ?>>Freelance</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="workday">Jornada *</label>
+            <label for="workday">Working hours *</label>
             <select id="workday" name="workday" required>
-                <option value="">Selecciona...</option>
-                <option value="full_time" <?= ($formData['workday'] ?? '') === 'full_time' ? 'selected' : ''; ?>>Jornada completa</option>
-                <option value="part_time" <?= ($formData['workday'] ?? '') === 'part_time' ? 'selected' : ''; ?>>Media jornada</option>
+                <option value="">Select...</option>
+                <option value="full_time" <?= ($formData['workday'] ?? '') === 'full_time' ? 'selected' : ''; ?>>Full-time</option>
+                <option value="part_time" <?= ($formData['workday'] ?? '') === 'part_time' ? 'selected' : ''; ?>>Part-time</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="modality">Modalidad *</label>
+            <label for="modality">Work mode *</label>
             <select id="modality" name="modality" required>
-                <option value="">Selecciona...</option>
-                <option value="onsite" <?= ($formData['modality'] ?? '') === 'onsite' ? 'selected' : ''; ?>>Presencial</option>
-                <option value="hybrid" <?= ($formData['modality'] ?? '') === 'hybrid' ? 'selected' : ''; ?>>Híbrido</option>
-                <option value="remote" <?= ($formData['modality'] ?? '') === 'remote' ? 'selected' : ''; ?>>Remoto</option>
+                <option value="">Select...</option>
+                <option value="onsite" <?= ($formData['modality'] ?? '') === 'onsite' ? 'selected' : ''; ?>>On-site</option>
+                <option value="hybrid" <?= ($formData['modality'] ?? '') === 'hybrid' ? 'selected' : ''; ?>>Hybrid</option>
+                <option value="remote" <?= ($formData['modality'] ?? '') === 'remote' ? 'selected' : ''; ?>>Remote</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label>Salario anual bruto (opcional)</label>
+            <label>Gross annual salary (optional)</label>
             <div style="display:flex; gap:1rem;">
                 <input type="number" id="salary_min" name="salary_min" min="0" step="1"
-                       placeholder="Mínimo (€)"
+                       placeholder="Minimum (€)"
                        value="<?= htmlspecialchars($formData['salary_min'] ?? ''); ?>"
                        style="flex:1; padding:0.5rem; border:1px solid #d1d5db; border-radius:6px;">
                 <input type="number" id="salary_max" name="salary_max" min="0" step="1"
-                       placeholder="Máximo (€)"
+                       placeholder="Maximum (€)"
                        value="<?= htmlspecialchars($formData['salary_max'] ?? ''); ?>"
                        style="flex:1; padding:0.5rem; border:1px solid #d1d5db; border-radius:6px;">
             </div>
         </div>
 
-        <button type="submit" class="btn-primary">Guardar cambios</button>
-        <a href="<?= BASE_URL; ?>/company/jobs.php" class="btn-link btn-cancel">Cancelar</a>
+        <button type="submit" class="btn-primary">Save changes</button>
+        <a href="<?= BASE_URL; ?>/company/jobs.php" class="btn-link btn-cancel">Cancel</a>
     </form>
 </section>
 
@@ -253,37 +253,37 @@ document.getElementById('form-job').addEventListener('submit', function (e) {
     const salaryMax = document.getElementById('salary_max');
 
     if (!title.value.trim())
-        error(title, 'El título del puesto es obligatorio.');
+        error(title, 'The job title is required.');
 
     if (!desc.value.trim())
-        error(desc, 'La descripción es obligatoria.');
+        error(desc, 'The description is required.');
 
     if (!location.value.trim())
-        error(location, 'La ubicación es obligatoria.');
+        error(location, 'The location is required.');
 
     if (category.value === '0')
-        error(category, 'Debes seleccionar una categoría.');
+        error(category, 'You must select a category.');
 
     if (!contract.value)
-        error(contract, 'Debes seleccionar un tipo de contrato.');
+        error(contract, 'You must select a contract type.');
 
     if (!workday.value)
-        error(workday, 'Debes seleccionar una jornada.');
+        error(workday, 'You must select working hours.');
 
     if (!modality.value)
-        error(modality, 'Debes seleccionar una modalidad.');
+        error(modality, 'You must select a work mode.');
 
     const minVal = salaryMin.value !== '' ? parseFloat(salaryMin.value) : null;
     const maxVal = salaryMax.value !== '' ? parseFloat(salaryMax.value) : null;
 
     if (minVal !== null && minVal < 0)
-        error(salaryMin, 'El salario mínimo no puede ser negativo.');
+        error(salaryMin, 'The minimum salary cannot be negative.');
 
     if (maxVal !== null && maxVal < 0)
-        error(salaryMax, 'El salario máximo no puede ser negativo.');
+        error(salaryMax, 'The maximum salary cannot be negative.');
 
     if (minVal !== null && maxVal !== null && minVal > maxVal)
-        error(salaryMin, 'El salario mínimo no puede ser mayor que el máximo.');
+        error(salaryMin, 'The minimum salary cannot be greater than the maximum.');
 
     if (!valid) e.preventDefault();
 });

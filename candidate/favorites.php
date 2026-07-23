@@ -41,45 +41,45 @@ $stmt->execute(['uid' => $user['id']]);
 $favorites = $stmt->fetchAll();
 
 $modalityLabels = [
-    'onsite' => 'Presencial',
-    'hybrid' => 'Híbrido',
-    'remote' => 'Remoto',
+    'onsite' => 'On-site',
+    'hybrid' => 'Hybrid',
+    'remote' => 'Remote',
 ];
 
 $contractLabels = [
-    'permanent'  => 'Indefinido',
-    'temporary'  => 'Temporal',
-    'internship' => 'Prácticas',
+    'permanent'  => 'Permanent',
+    'temporary'  => 'Temporary',
+    'internship' => 'Internship',
     'freelance'  => 'Freelance',
 ];
 
 $workdayLabels = [
-    'full_time' => 'Jornada completa',
-    'part_time' => 'Media jornada',
+    'full_time' => 'Full-time',
+    'part_time' => 'Part-time',
 ];
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/candidate/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver al panel
+    ← Back to dashboard
 </a>
 
 <section class="card" style="padding:16px 24px;">
-    <h1 style="margin:0 0 0.25rem;">Mis favoritos</h1>
-    <p style="color:#64748b; margin:0;">Ofertas que has guardado para revisar más tarde.</p>
+    <h1 style="margin:0 0 0.25rem;">My favourites</h1>
+    <p style="color:#64748b; margin:0;">Jobs you have saved to review later.</p>
 </section>
 
 <?php if (empty($favorites)): ?>
     <section class="card" style="margin-top:1rem;">
-        <p style="margin:0;">Todavía no has guardado ninguna oferta como favorita.</p>
+        <p style="margin:0;">You have not saved any jobs as favourites yet.</p>
         <a href="<?= BASE_URL; ?>/jobs.php" class="btn-primary" style="display:inline-block; margin-top:1rem;">
-            Explorar ofertas
+            Browse jobs
         </a>
     </section>
 <?php else: ?>
     <p style="margin:1rem 0; color:#64748b;">
-        <?= count($favorites); ?> oferta<?= count($favorites) !== 1 ? 's' : ''; ?> guardada<?= count($favorites) !== 1 ? 's' : ''; ?>
+        <?= count($favorites); ?> job<?= count($favorites) !== 1 ? 's' : ''; ?> saved
     </p>
 
     <?php foreach ($favorites as $job): ?>
@@ -106,7 +106,7 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
                 <?php if ($job['status'] === 'closed'): ?>
-                    <span class="badge badge-admin">Cerrada</span>
+                    <span class="badge badge-admin">Closed</span>
                 <?php else: ?>
                     <span class="badge badge-candidate"><?= htmlspecialchars($job['category_name']); ?></span>
                 <?php endif; ?>
@@ -127,16 +127,16 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="job-actions">
                 <?php if ($job['status'] === 'published'): ?>
                     <a href="<?= BASE_URL; ?>/job-detail.php?id=<?= $job['id']; ?>" class="btn-primary">
-                        Ver oferta
+                        View job
                     </a>
                 <?php else: ?>
-                    <span style="color:#94a3b8; font-size:0.88rem;">Oferta cerrada</span>
+                    <span style="color:#94a3b8; font-size:0.88rem;">Job closed</span>
                 <?php endif; ?>
 
                 <button class="btn-favorite" data-job-id="<?= $job['id']; ?>"
                         data-favorited="1"
                         style="background:none; border:none; cursor:pointer; color:#ef4444; font-size:1.2rem; margin-left:auto;"
-                        title="Quitar de favoritos">
+                        title="Remove from favourites">
                     <i class="fas fa-heart"></i>
                 </button>
             </div>

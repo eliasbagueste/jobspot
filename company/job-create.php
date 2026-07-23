@@ -53,19 +53,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validaciones obligatorias
     if ($title === '') {
-        $error = 'El título de la oferta es obligatorio.';
+        $error = 'The job title is required.';
     } elseif ($description === '') {
-        $error = 'La descripción es obligatoria.';
+        $error = 'The description is required.';
     } elseif ($location === '') {
-        $error = 'La ubicación es obligatoria.';
+        $error = 'The location is required.';
     } elseif ($categoryId === 0) {
-        $error = 'Debes seleccionar una categoría.';
+        $error = 'You must select a category.';
     } elseif (!in_array($contractType, $validContracts)) {
-        $error = 'El tipo de contrato no es válido.';
+        $error = 'The contract type is not valid.';
     } elseif (!in_array($workday, $validWorkdays)) {
-        $error = 'La jornada no es válida.';
+        $error = 'The working hours are not valid.';
     } elseif (!in_array($modality, $validModalities)) {
-        $error = 'La modalidad no es válida.';
+        $error = 'The work mode is not valid.';
     } else {
         // Convertimos salario a null si no se informó, o a float si se informó
         $salaryMinVal = ($salaryMin !== '') ? (float) $salaryMin : null;
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Comprobamos que el salario mínimo no supere al máximo
         if ($salaryMinVal !== null && $salaryMaxVal !== null && $salaryMinVal > $salaryMaxVal) {
-            $error = 'El salario mínimo no puede ser mayor que el salario máximo.';
+            $error = 'The minimum salary cannot be greater than the maximum salary.';
         } else {
             $stmtInsert = $pdo->prepare("
                 INSERT INTO jobs
@@ -107,12 +107,12 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/company/jobs.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver a mis ofertas
+    ← Back to my jobs
 </a>
 
 <section class="auth-box">
-    <h1>Crear nueva oferta</h1>
-    <p>La oferta se publicará de forma inmediata y será visible para los candidatos.</p>
+    <h1>Create new job listing</h1>
+    <p>The job listing will be published immediately and visible to candidates.</p>
 
     <?php if ($error !== ''): ?>
         <div class="alert alert-error"><?= htmlspecialchars($error); ?></div>
@@ -122,34 +122,34 @@ require_once __DIR__ . '/../includes/header.php';
 
         <!-- Título de la oferta -->
         <div class="form-group">
-            <label for="title">Título del puesto *</label>
+            <label for="title">Job title *</label>
             <input type="text" id="title" name="title"
                    value="<?= htmlspecialchars($_POST['title'] ?? ''); ?>"
-                   placeholder="Ej: Desarrollador PHP Junior" required>
+                   placeholder="e.g. Junior PHP Developer" required>
         </div>
 
         <!-- Descripción del puesto -->
         <div class="form-group">
-            <label for="description">Descripción del puesto *</label>
+            <label for="description">Job description *</label>
             <textarea id="description" name="description" rows="6" required
                       style="width:100%; padding:0.5rem; border:1px solid #d1d5db; border-radius:6px; font-family:inherit; font-size:0.95rem;"
-                      placeholder="Describe las funciones, requisitos y lo que ofreces..."
+                      placeholder="Describe the responsibilities, requirements and what you offer..."
             ><?= htmlspecialchars($_POST['description'] ?? ''); ?></textarea>
         </div>
 
         <!-- Ubicación -->
         <div class="form-group">
-            <label for="location">Ubicación *</label>
+            <label for="location">Location *</label>
             <input type="text" id="location" name="location"
                    value="<?= htmlspecialchars($_POST['location'] ?? ''); ?>"
-                   placeholder="Ej: Barcelona, Madrid, Remoto..." required>
+                   placeholder="e.g. Dublin, Cork, Remote..." required>
         </div>
 
         <!-- Categoría -->
         <div class="form-group">
-            <label for="category_id">Categoría *</label>
+            <label for="category_id">Category *</label>
             <select id="category_id" name="category_id" required>
-                <option value="0">Selecciona una categoría</option>
+                <option value="0">Select a category</option>
                 <?php foreach ($categories as $cat): ?>
                     <option value="<?= $cat['id']; ?>"
                         <?= ((int)($_POST['category_id'] ?? 0)) === (int)$cat['id'] ? 'selected' : ''; ?>>
@@ -161,54 +161,54 @@ require_once __DIR__ . '/../includes/header.php';
 
         <!-- Tipo de contrato -->
         <div class="form-group">
-            <label for="contract_type">Tipo de contrato *</label>
+            <label for="contract_type">Contract type *</label>
             <select id="contract_type" name="contract_type" required>
-                <option value="">Selecciona...</option>
-                <option value="permanent"  <?= ($_POST['contract_type'] ?? '') === 'permanent'  ? 'selected' : ''; ?>>Indefinido</option>
-                <option value="temporary"  <?= ($_POST['contract_type'] ?? '') === 'temporary'  ? 'selected' : ''; ?>>Temporal</option>
-                <option value="internship" <?= ($_POST['contract_type'] ?? '') === 'internship' ? 'selected' : ''; ?>>Prácticas</option>
+                <option value="">Select...</option>
+                <option value="permanent"  <?= ($_POST['contract_type'] ?? '') === 'permanent'  ? 'selected' : ''; ?>>Permanent</option>
+                <option value="temporary"  <?= ($_POST['contract_type'] ?? '') === 'temporary'  ? 'selected' : ''; ?>>Temporary</option>
+                <option value="internship" <?= ($_POST['contract_type'] ?? '') === 'internship' ? 'selected' : ''; ?>>Internship</option>
                 <option value="freelance"  <?= ($_POST['contract_type'] ?? '') === 'freelance'  ? 'selected' : ''; ?>>Freelance</option>
             </select>
         </div>
 
         <!-- Jornada -->
         <div class="form-group">
-            <label for="workday">Jornada *</label>
+            <label for="workday">Working hours *</label>
             <select id="workday" name="workday" required>
-                <option value="">Selecciona...</option>
-                <option value="full_time" <?= ($_POST['workday'] ?? '') === 'full_time' ? 'selected' : ''; ?>>Jornada completa</option>
-                <option value="part_time" <?= ($_POST['workday'] ?? '') === 'part_time' ? 'selected' : ''; ?>>Media jornada</option>
+                <option value="">Select...</option>
+                <option value="full_time" <?= ($_POST['workday'] ?? '') === 'full_time' ? 'selected' : ''; ?>>Full-time</option>
+                <option value="part_time" <?= ($_POST['workday'] ?? '') === 'part_time' ? 'selected' : ''; ?>>Part-time</option>
             </select>
         </div>
 
         <!-- Modalidad -->
         <div class="form-group">
-            <label for="modality">Modalidad *</label>
+            <label for="modality">Work mode *</label>
             <select id="modality" name="modality" required>
-                <option value="">Selecciona...</option>
-                <option value="onsite" <?= ($_POST['modality'] ?? '') === 'onsite' ? 'selected' : ''; ?>>Presencial</option>
-                <option value="hybrid" <?= ($_POST['modality'] ?? '') === 'hybrid' ? 'selected' : ''; ?>>Híbrido</option>
-                <option value="remote" <?= ($_POST['modality'] ?? '') === 'remote' ? 'selected' : ''; ?>>Remoto</option>
+                <option value="">Select...</option>
+                <option value="onsite" <?= ($_POST['modality'] ?? '') === 'onsite' ? 'selected' : ''; ?>>On-site</option>
+                <option value="hybrid" <?= ($_POST['modality'] ?? '') === 'hybrid' ? 'selected' : ''; ?>>Hybrid</option>
+                <option value="remote" <?= ($_POST['modality'] ?? '') === 'remote' ? 'selected' : ''; ?>>Remote</option>
             </select>
         </div>
 
         <!-- Salario (opcional) -->
         <div class="form-group">
-            <label>Salario anual bruto (opcional)</label>
+            <label>Gross annual salary (optional)</label>
             <div style="display:flex; gap:1rem;">
                 <input type="number" id="salary_min" name="salary_min" min="0" step="1"
-                       placeholder="Mínimo (€)"
+                       placeholder="Minimum (€)"
                        value="<?= htmlspecialchars($_POST['salary_min'] ?? ''); ?>"
                        style="flex:1; padding:0.5rem; border:1px solid #d1d5db; border-radius:6px;">
                 <input type="number" id="salary_max" name="salary_max" min="0" step="1"
-                       placeholder="Máximo (€)"
+                       placeholder="Maximum (€)"
                        value="<?= htmlspecialchars($_POST['salary_max'] ?? ''); ?>"
                        style="flex:1; padding:0.5rem; border:1px solid #d1d5db; border-radius:6px;">
             </div>
         </div>
 
-        <button type="submit" class="btn-primary">Publicar oferta</button>
-        <a href="<?= BASE_URL; ?>/company/jobs.php" class="btn-link btn-cancel">Cancelar</a>
+        <button type="submit" class="btn-primary">Publish job listing</button>
+        <a href="<?= BASE_URL; ?>/company/jobs.php" class="btn-link btn-cancel">Cancel</a>
     </form>
 </section>
 
@@ -241,37 +241,37 @@ document.getElementById('form-job').addEventListener('submit', function (e) {
     const salaryMax  = document.getElementById('salary_max');
 
     if (!title.value.trim())
-        error(title, 'El título del puesto es obligatorio.');
+        error(title, 'The job title is required.');
 
     if (!desc.value.trim())
-        error(desc, 'La descripción es obligatoria.');
+        error(desc, 'The description is required.');
 
     if (!location.value.trim())
-        error(location, 'La ubicación es obligatoria.');
+        error(location, 'The location is required.');
 
     if (category.value === '0')
-        error(category, 'Debes seleccionar una categoría.');
+        error(category, 'You must select a category.');
 
     if (!contract.value)
-        error(contract, 'Debes seleccionar un tipo de contrato.');
+        error(contract, 'You must select a contract type.');
 
     if (!workday.value)
-        error(workday, 'Debes seleccionar una jornada.');
+        error(workday, 'You must select working hours.');
 
     if (!modality.value)
-        error(modality, 'Debes seleccionar una modalidad.');
+        error(modality, 'You must select a work mode.');
 
     const minVal = salaryMin.value !== '' ? parseFloat(salaryMin.value) : null;
     const maxVal = salaryMax.value !== '' ? parseFloat(salaryMax.value) : null;
 
     if (minVal !== null && minVal < 0)
-        error(salaryMin, 'El salario mínimo no puede ser negativo.');
+        error(salaryMin, 'The minimum salary cannot be negative.');
 
     if (maxVal !== null && maxVal < 0)
-        error(salaryMax, 'El salario máximo no puede ser negativo.');
+        error(salaryMax, 'The maximum salary cannot be negative.');
 
     if (minVal !== null && maxVal !== null && minVal > maxVal)
-        error(salaryMin, 'El salario mínimo no puede ser mayor que el máximo.');
+        error(salaryMin, 'The minimum salary cannot be greater than the maximum.');
 
     if (!valid) e.preventDefault();
 });

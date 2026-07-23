@@ -48,11 +48,11 @@ $jobs = $stmtJobs->fetchAll();
 
 // Etiquetas y clases CSS para los estados de las ofertas
 $statusLabels = [
-    'draft'     => 'Borrador',
-    'pending'   => 'Pendiente',
-    'published' => 'Publicada',
-    'closed'    => 'Cerrada',
-    'rejected'  => 'Rechazada',
+    'draft'     => 'Draft',
+    'pending'   => 'Pending',
+    'published' => 'Published',
+    'closed'    => 'Closed',
+    'rejected'  => 'Rejected',
 ];
 
 $statusClass = [
@@ -64,16 +64,16 @@ $statusClass = [
 ];
 
 $contractLabels = [
-    'permanent'  => 'Indefinido',
-    'temporary'  => 'Temporal',
-    'internship' => 'Prácticas',
+    'permanent'  => 'Permanent',
+    'temporary'  => 'Temporary',
+    'internship' => 'Internship',
     'freelance'  => 'Freelance',
 ];
 
 $modalityLabels = [
-    'onsite' => 'Presencial',
-    'hybrid' => 'Híbrido',
-    'remote' => 'Remoto',
+    'onsite' => 'On-site',
+    'hybrid' => 'Hybrid',
+    'remote' => 'Remote',
 ];
 
 require_once __DIR__ . '/../includes/header.php';
@@ -81,39 +81,39 @@ require_once __DIR__ . '/../includes/header.php';
 
 <?php if (isset($_GET['edited'])): ?>
     <div class="alert alert-success" style="margin-bottom:1rem;">
-        Oferta actualizada correctamente.
+        Job updated successfully.
     </div>
 <?php endif; ?>
 <?php if (isset($_GET['created'])): ?>
     <div class="alert alert-success" style="margin-bottom:1rem;">
-        Oferta creada y publicada correctamente.
+        Job created and published successfully.
     </div>
 <?php endif; ?>
 
 <a href="<?= BASE_URL; ?>/company/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver al panel
+    ← Back to dashboard
 </a>
 
 <section class="card">
-    <h1 style="margin:0 0 0.4rem;">Mis ofertas</h1>
-    <p style="margin:0; color:#64748b; font-size:0.9rem;">Gestiona y revisa todas las ofertas de empleo que has publicado.</p>
+    <h1 style="margin:0 0 0.4rem;">My jobs</h1>
+    <p style="margin:0; color:#64748b; font-size:0.9rem;">Manage and review all the job listings you have published.</p>
 </section>
 
 <div style="margin:1.75rem 0;">
-    <a href="<?= BASE_URL; ?>/company/job-create.php" class="btn-edit" style="padding:14px 32px; font-size:1rem;">+ Crear nueva oferta</a>
+    <a href="<?= BASE_URL; ?>/company/job-create.php" class="btn-edit" style="padding:14px 32px; font-size:1rem;">+ Create new job listing</a>
 </div>
 
 <?php if (empty($jobs)): ?>
     <section class="card" style="margin-top:1rem;">
-        <p>Aún no has publicado ninguna oferta.</p>
+        <p>You have not published any jobs yet.</p>
         <a href="<?= BASE_URL; ?>/company/job-create.php" class="btn-primary" style="margin-top:1rem; display:inline-block;">
-            Crear primera oferta
+            Create first job listing
         </a>
     </section>
 
 <?php else: ?>
     <p style="margin: 1rem 0; color:#64748b;">
-        Total: <?= count($jobs); ?> oferta<?= count($jobs) !== 1 ? 's' : ''; ?>
+        Total: <?= count($jobs); ?> job<?= count($jobs) !== 1 ? 's' : ''; ?>
     </p>
 
     <?php foreach ($jobs as $job): ?>
@@ -126,7 +126,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <span>📍 <?= htmlspecialchars($job['location']); ?></span>
                     <span>📋 <?= $contractLabels[$job['contract_type']] ?? $job['contract_type']; ?></span>
                     <span>💻 <?= $modalityLabels[$job['modality']] ?? $job['modality']; ?></span>
-                    <span>👥 <?= $job['total_applications']; ?> candidatura<?= $job['total_applications'] != 1 ? 's' : ''; ?><?php if ($job['pending_applications'] > 0 && $job['status'] === 'published'): ?> <span style="color:#ef4444; font-weight:600;">(<?= $job['pending_applications']; ?> pendiente<?= $job['pending_applications'] != 1 ? 's' : ''; ?> de decisión)</span><?php endif; ?></span>
+                    <span>👥 <?= $job['total_applications']; ?> application<?= $job['total_applications'] != 1 ? 's' : ''; ?><?php if ($job['pending_applications'] > 0 && $job['status'] === 'published'): ?> <span style="color:#ef4444; font-weight:600;">(<?= $job['pending_applications']; ?> pending decision)</span><?php endif; ?></span>
                 </div>
             </div>
 
@@ -138,33 +138,33 @@ require_once __DIR__ . '/../includes/header.php';
                 <div style="display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:flex-end;">
                     <?php if ($job['total_applications'] > 0): ?>
                         <a href="<?= BASE_URL; ?>/company/applications.php?job=<?= $job['id']; ?>" class="btn-edit">
-                            Ver candidaturas
+                            View applications
                         </a>
                     <?php endif; ?>
                     <?php if (!in_array($job['status'], ['closed', 'rejected'])): ?>
                         <a href="<?= BASE_URL; ?>/company/job-edit.php?id=<?= $job['id']; ?>" class="btn-edit">
-                            Editar
+                            Edit
                         </a>
                     <?php endif; ?>
                     <?php if ($job['status'] === 'published'): ?>
                         <a href="<?= BASE_URL; ?>/company/job-delete.php?id=<?= $job['id']; ?>&action=close"
                            class="btn-delete"
-                           onclick="return confirm('¿Cerrar esta oferta? Los candidatos ya no podrán aplicar.');">
-                            Cerrar
+                           onclick="return confirm('Close this job listing? Candidates will no longer be able to apply.');">
+                            Close
                         </a>
                     <?php endif; ?>
                     <?php if ($job['status'] === 'closed'): ?>
                         <a href="<?= BASE_URL; ?>/company/job-delete.php?id=<?= $job['id']; ?>&action=reopen"
                            class="btn-edit"
-                           onclick="return confirm('¿Reabrir esta oferta? Volverá a estar visible para los candidatos.');">
-                            Reabrir
+                           onclick="return confirm('Reopen this job listing? It will become visible to candidates again.');">
+                            Reopen
                         </a>
                     <?php endif; ?>
                     <?php if (in_array($job['status'], ['draft', 'rejected'])): ?>
                         <a href="<?= BASE_URL; ?>/company/job-delete.php?id=<?= $job['id']; ?>&action=delete"
                            class="btn-delete"
-                           onclick="return confirm('¿Eliminar esta oferta definitivamente?');">
-                            Eliminar
+                           onclick="return confirm('Permanently delete this job listing?');">
+                            Delete
                         </a>
                     <?php endif; ?>
                 </div>

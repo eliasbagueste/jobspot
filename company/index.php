@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$company) {
 
     // Validación: nombre legal y nombre comercial son obligatorios
     if ($legalName === '' || $brandName === '') {
-        $error = 'El nombre legal y el nombre comercial son obligatorios.';
+        $error = 'Legal name and trading name are required.';
     } else {
         // Creamos el perfil de empresa vinculado al usuario actual
         // is_verified = 0 hasta que el administrador lo verifique
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$company) {
 
 // Mensaje de éxito tras redirección POST-GET
 if (isset($_GET['created'])) {
-    $success = 'Perfil de empresa creado correctamente. El administrador lo revisará pronto.';
+    $success = 'Company profile created successfully. The administrator will review it soon.';
 }
 
 // Inicializamos las variables del panel por si $company es false (empresa sin perfil todavía)
@@ -121,8 +121,8 @@ require_once __DIR__ . '/../includes/header.php';
 <?php if (!$company): ?>
     <!-- Formulario de configuración inicial: se muestra cuando aún no hay perfil de empresa -->
     <section class="card">
-        <h1>Configura tu empresa</h1>
-        <p>Para poder publicar ofertas primero debes completar el perfil de tu empresa.</p>
+        <h1>Set up your company</h1>
+        <p>To publish job listings you must first complete your company profile.</p>
 
         <?php if ($error !== ''): ?>
             <div class="alert alert-error"><?= htmlspecialchars($error); ?></div>
@@ -132,32 +132,32 @@ require_once __DIR__ . '/../includes/header.php';
             <form method="post" action="<?= BASE_URL; ?>/company/index.php" class="auth-form" novalidate>
 
                 <div class="form-group">
-                    <label for="legal_name">Nombre legal (razón social) *</label>
+                    <label for="legal_name">Legal name (registered business name) *</label>
                     <input type="text" id="legal_name" name="legal_name"
                            value="<?= htmlspecialchars($_POST['legal_name'] ?? ''); ?>">
                 </div>
 
                 <div class="form-group">
-                    <label for="brand_name">Nombre comercial *</label>
+                    <label for="brand_name">Trading name *</label>
                     <input type="text" id="brand_name" name="brand_name"
                            value="<?= htmlspecialchars($_POST['brand_name'] ?? ''); ?>">
                 </div>
 
                 <div class="form-group">
-                    <label for="location">Ubicación</label>
+                    <label for="location">Location</label>
                     <input type="text" id="location" name="location"
-                           placeholder="Ej: Barcelona, Madrid..."
+                           placeholder="e.g. Dublin, Cork..."
                            value="<?= htmlspecialchars($_POST['location'] ?? ''); ?>">
                 </div>
 
                 <div class="form-group">
-                    <label for="description">Descripción de la empresa</label>
+                    <label for="description">Company description</label>
                     <textarea id="description" name="description" rows="4"
                               style="width:100%; padding:0.5rem; border:1px solid #d1d5db; border-radius:6px; font-family:inherit;"
-                              placeholder="Cuéntanos a qué se dedica tu empresa..."><?= htmlspecialchars($_POST['description'] ?? ''); ?></textarea>
+                              placeholder="Tell us what your company does..."><?= htmlspecialchars($_POST['description'] ?? ''); ?></textarea>
                 </div>
 
-                <button type="submit" class="btn-primary">Crear perfil de empresa</button>
+                <button type="submit" class="btn-primary">Create company profile</button>
             </form>
 
             <script>
@@ -181,10 +181,10 @@ require_once __DIR__ . '/../includes/header.php';
                 const brandName = document.getElementById('brand_name');
 
                 if (!legalName.value.trim())
-                    error(legalName, 'El nombre legal es obligatorio.');
+                    error(legalName, 'Legal name is required.');
 
                 if (!brandName.value.trim())
-                    error(brandName, 'El nombre comercial es obligatorio.');
+                    error(brandName, 'Trading name is required.');
 
                 if (!valid) e.preventDefault();
             });
@@ -212,11 +212,11 @@ require_once __DIR__ . '/../includes/header.php';
 
         <div>
             <h1 style="margin:0;"><?= htmlspecialchars($company['brand_name']); ?></h1>
-            <p style="margin:0;">Panel de control</p>
+            <p style="margin:0;">Dashboard</p>
             <?php if (!(bool)$company['is_verified']): ?>
                 <div class="alert alert-error" style="margin-top:0.75rem;">
-                    Tu empresa está pendiente de verificación por el administrador.
-                    Podrás publicar ofertas una vez que sea aprobada.
+                    Your company is pending verification by the administrator.
+                    You will be able to publish jobs once it is approved.
                 </div>
             <?php endif; ?>
         </div>
@@ -228,21 +228,21 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="admin-stat-icon">📢</div>
             <div class="admin-stat-text">
                 <div class="admin-stat-value"><?= $publishedJobs; ?></div>
-                <div class="admin-stat-label">Ofertas publicadas</div>
+                <div class="admin-stat-label">Published jobs</div>
             </div>
         </div>
 <div class="admin-stat">
             <div class="admin-stat-icon">👥</div>
             <div class="admin-stat-text">
                 <div class="admin-stat-value"><?= $totalApplications; ?></div>
-                <div class="admin-stat-label">Candidaturas recibidas</div>
+                <div class="admin-stat-label">Applications received</div>
             </div>
         </div>
         <div class="admin-stat">
             <div class="admin-stat-icon">⏳</div>
             <div class="admin-stat-text">
                 <div class="admin-stat-value"><?= $pendingDecisionCount; ?></div>
-                <div class="admin-stat-label">Candidaturas pendientes de decisión</div>
+                <div class="admin-stat-label">Applications pending decision</div>
             </div>
         </div>
     </div>
@@ -251,18 +251,18 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="admin-grid" style="margin-top: 1rem;">
         <a href="<?= BASE_URL; ?>/company/job-create.php" class="admin-card">
             <div class="admin-card-icon">➕</div>
-            <h2>Crear oferta</h2>
-            <p>Publica una nueva oferta de empleo.</p>
+            <h2>Create job listing</h2>
+            <p>Publish a new job listing.</p>
         </a>
         <a href="<?= BASE_URL; ?>/company/jobs.php" class="admin-card">
             <div class="admin-card-icon">📋</div>
-            <h2>Mis ofertas</h2>
-            <p>Gestiona tus ofertas publicadas.</p>
+            <h2>My jobs</h2>
+            <p>Manage your published job listings.</p>
         </a>
         <a href="<?= BASE_URL; ?>/company/profile-edit.php" class="admin-card">
             <div class="admin-card-icon">🏢</div>
-            <h2>Editar perfil</h2>
-            <p>Actualiza los datos de tu empresa.</p>
+            <h2>Edit profile</h2>
+            <p>Update your company details.</p>
         </a>
     </div>
 <?php endif; ?>
@@ -271,28 +271,28 @@ require_once __DIR__ . '/../includes/header.php';
     <section class="card" style="margin-top:1.5rem;">
         <div class="card-header">
             <h2>
-                Candidaturas pendientes de revisar
+                Applications pending review
                 <?php if (count($appsPendingReview) > 0): ?>
                     <span class="notif-badge"><?= count($appsPendingReview); ?></span>
                 <?php endif; ?>
             </h2>
-            <a href="<?= BASE_URL; ?>/company/jobs.php" class="btn-link">Ver mis ofertas →</a>
+            <a href="<?= BASE_URL; ?>/company/jobs.php" class="btn-link">View my jobs →</a>
         </div>
 
         <table class="panel-table">
             <thead>
                 <tr>
-                    <th>Candidato</th>
-                    <th>Oferta</th>
-                    <th>Fecha</th>
-                    <th>Acción</th>
+                    <th>Candidate</th>
+                    <th>Job</th>
+                    <th>Date</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($appsPendingReview)): ?>
                     <tr>
                         <td colspan="4" style="text-align:center; color:#94a3b8;">
-                            No hay candidaturas pendientes de revisar.
+                            No applications pending review.
                         </td>
                     </tr>
                 <?php endif; ?>
@@ -307,7 +307,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <td>
                             <a href="<?= BASE_URL; ?>/company/applications.php?job=<?= $app['job_id']; ?>#app-<?= $app['application_id']; ?>"
                                class="btn-edit" style="font-size:0.82rem; padding:0.3rem 0.75rem;">
-                                Revisar
+                                Review
                             </a>
                         </td>
                     </tr>

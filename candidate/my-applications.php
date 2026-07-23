@@ -51,10 +51,10 @@ $applications = $stmt->fetchAll();
 // Etiquetas y clases CSS para cada estado de candidatura
 // Cada estado tiene un texto legible y un color diferente para identificarlo visualmente
 $statusLabels = [
-    'sent'     => 'Enviada',
-    'reviewed' => 'Revisada',
-    'accepted' => 'Aceptada',
-    'rejected' => 'Rechazada',
+    'sent'     => 'Sent',
+    'reviewed' => 'Reviewed',
+    'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
 ];
 
 // Clase CSS para colorear el badge según el estado
@@ -69,31 +69,31 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/candidate/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver al panel
+    ← Back to dashboard
 </a>
 <div class="admin-welcome">
-    <h1>Mis candidaturas</h1>
-    <p>Aquí puedes consultar el estado de todas las candidaturas que has enviado.</p>
+    <h1>My applications</h1>
+    <p>Here you can check the status of every application you have sent.</p>
 </div>
 
 <?php if (isset($_GET['withdrawn'])): ?>
     <div class="alert alert-success" style="margin-top:1rem;">
-        Candidatura retirada correctamente.
+        Application withdrawn successfully.
     </div>
 <?php endif; ?>
 
 <?php if (empty($applications)): ?>
     <!-- Todavía no ha enviado ninguna candidatura -->
     <section class="card" style="margin-top: 1rem;">
-        <p>Aún no has enviado ninguna candidatura.</p>
+        <p>You have not sent any applications yet.</p>
         <a href="<?= BASE_URL; ?>/jobs.php" class="btn-primary" style="margin-top: 1rem; display: inline-block;">
-            Ver ofertas disponibles
+            View available jobs
         </a>
     </section>
 
 <?php else: ?>
     <p style="margin: 1rem 0; color: #64748b;">
-        Total: <?= count($applications); ?> candidatura<?= count($applications) !== 1 ? 's' : ''; ?>
+        Total: <?= count($applications); ?> application<?= count($applications) !== 1 ? 's' : ''; ?>
     </p>
 
     <?php foreach ($applications as $app): ?>
@@ -113,7 +113,7 @@ require_once __DIR__ . '/../includes/header.php';
 
             <div class="job-meta">
                 <!-- Fecha en que se envió la candidatura -->
-                <span>📅 Enviada el <?= date('d/m/Y', strtotime($app['applied_at'])); ?></span>
+                <span>📅 Sent on <?= date('d/m/Y', strtotime($app['applied_at'])); ?></span>
                 <span>📍 <?= htmlspecialchars($app['job_location']); ?></span>
             </div>
 
@@ -121,7 +121,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php if (!empty($app['message'])): ?>
                 <details style="margin-top: 0.75rem;">
                     <summary style="cursor: pointer; color: #6366f1; font-size: 0.9rem;">
-                        Ver mensaje enviado
+                        View sent message
                     </summary>
                     <p style="margin-top: 0.5rem; color: #374151; white-space: pre-line; font-size: 0.9rem;">
                         <?= htmlspecialchars($app['message']); ?>
@@ -133,10 +133,10 @@ require_once __DIR__ . '/../includes/header.php';
             <?php if (in_array($app['status'], ['sent', 'reviewed'])): ?>
                 <form method="post" action="<?= BASE_URL; ?>/candidate/my-applications.php"
                       style="margin-top:0.75rem;"
-                      onsubmit="return confirm('¿Seguro que quieres retirar tu candidatura para «<?= htmlspecialchars($app['job_title']); ?>»? Esta acción no se puede deshacer.');">
+                      onsubmit="return confirm('Are you sure you want to withdraw your application for “<?= htmlspecialchars($app['job_title']); ?>”? This action cannot be undone.');">
                     <input type="hidden" name="withdraw_id" value="<?= $app['id']; ?>">
                     <button type="submit" class="btn-delete" style="font-size:0.85rem; padding:0.3rem 0.8rem;">
-                        Retirar candidatura
+                        Withdraw application
                     </button>
                 </form>
             <?php endif; ?>

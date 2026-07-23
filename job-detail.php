@@ -65,28 +65,28 @@ if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'candidate') {
 }
 
 $modalityLabels = [
-    'onsite' => 'Presencial',
-    'hybrid' => 'Híbrido',
-    'remote' => 'Remoto',
+    'onsite' => 'On-site',
+    'hybrid' => 'Hybrid',
+    'remote' => 'Remote',
 ];
 
 $contractLabels = [
-    'permanent'  => 'Indefinido',
-    'temporary'  => 'Temporal',
-    'internship' => 'Prácticas',
+    'permanent'  => 'Permanent',
+    'temporary'  => 'Temporary',
+    'internship' => 'Internship',
     'freelance'  => 'Freelance',
 ];
 
 $workdayLabels = [
-    'full_time' => 'Jornada completa',
-    'part_time' => 'Media jornada',
+    'full_time' => 'Full-time',
+    'part_time' => 'Part-time',
 ];
 
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div style="margin-bottom: 1rem;">
-    <a href="<?= BASE_URL; ?>/jobs.php" class="btn-link">← Volver a ofertas</a>
+    <a href="<?= BASE_URL; ?>/jobs.php" class="btn-link">← Back to jobs</a>
 </div>
 
 <div class="job-detail-layout">
@@ -109,7 +109,7 @@ require_once __DIR__ . '/includes/header.php';
                     </p>
                 </div>
                 <p style="margin:0; color:#94a3b8; font-size:0.82rem; white-space:nowrap;">
-                    Publicada el <?= date('d/m/Y', strtotime($job['published_at'])); ?>
+                    Published on <?= date('d/m/Y', strtotime($job['published_at'])); ?>
                 </p>
             </div>
 
@@ -123,7 +123,7 @@ require_once __DIR__ . '/includes/header.php';
                     <span>
                         💶 <?= number_format((float)$job['salary_min'], 0, ',', '.'); ?>
                         – <?= number_format((float)$job['salary_max'], 0, ',', '.'); ?>
-                        <?= htmlspecialchars($job['currency']); ?> brutos/año
+                        <?= htmlspecialchars($job['currency']); ?> gross/year
                     </span>
                 <?php endif; ?>
             </div>
@@ -131,7 +131,7 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- Descripción completa de la oferta -->
         <div class="card">
-            <h2 style="margin-top:0; font-size:1.05rem; color:#0b132b;">Descripción del puesto</h2>
+            <h2 style="margin-top:0; font-size:1.05rem; color:#0b132b;">Job description</h2>
             <div style="color:#374151; line-height:1.7; white-space:pre-line; font-size:0.95rem;">
                 <?= htmlspecialchars($job['description']); ?>
             </div>
@@ -145,14 +145,14 @@ require_once __DIR__ . '/includes/header.php';
         <div class="card" style="margin-bottom:16px; text-align:center;">
             <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'candidate'): ?>
                 <?php if ($alreadyApplied): ?>
-                    <p style="color:#166534; font-weight:600; margin:0 0 6px;">✓ Ya has aplicado</p>
+                    <p style="color:#166534; font-weight:600; margin:0 0 6px;">✓ You have already applied</p>
                     <p style="margin:0; color:#64748b; font-size:0.875rem;">
-                        Ver en <a href="<?= BASE_URL; ?>/candidate/my-applications.php" class="btn-link">Mis candidaturas</a>
+                        View in <a href="<?= BASE_URL; ?>/candidate/my-applications.php" class="btn-link">My applications</a>
                     </p>
                 <?php else: ?>
                     <a href="<?= BASE_URL; ?>/candidate/apply.php?job=<?= $job['id']; ?>"
                        class="btn-primary" style="width:100%; display:block; text-align:center; padding:12px;">
-                        Aplicar a esta oferta
+                        Apply to this job
                     </a>
                 <?php endif; ?>
 
@@ -160,23 +160,23 @@ require_once __DIR__ . '/includes/header.php';
                         data-favorited="<?= $isFavorite ? '1' : '0'; ?>"
                         style="background:none; border:none; cursor:pointer; font-size:0.9rem; color:<?= $isFavorite ? '#ef4444' : '#94a3b8'; ?>; margin-top:20px;">
                     <i class="<?= $isFavorite ? 'fas' : 'far'; ?> fa-heart"></i>
-                    <span><?= $isFavorite ? 'Guardada en favoritos' : 'Guardar en favoritos'; ?></span>
+                    <span><?= $isFavorite ? 'Saved to favourites' : 'Save to favourites'; ?></span>
                 </button>
             <?php elseif (isset($_SESSION['user'])): ?>
                 <p style="color:#64748b; font-size:0.9rem; margin:0;">
-                    Solo los candidatos pueden aplicar a ofertas.
+                    Only candidates can apply to jobs.
                 </p>
             <?php else: ?>
                 <p style="margin:0 0 12px; color:#374151; font-size:0.9rem;">
-                    Crea una cuenta como candidato para aplicar.
+                    Create a candidate account to apply.
                 </p>
                 <a href="<?= BASE_URL; ?>/register.php" class="btn-primary"
                    style="width:100%; display:block; text-align:center; padding:12px;">
-                    Registrarse y aplicar
+                    Sign up and apply
                 </a>
                 <a href="<?= BASE_URL; ?>/login.php" class="btn-link"
                    style="display:block; margin-top:10px; font-size:0.88rem;">
-                    ¿Ya tienes cuenta? Inicia sesión
+                    Already have an account? Log in
                 </a>
             <?php endif; ?>
         </div>
@@ -184,7 +184,7 @@ require_once __DIR__ . '/includes/header.php';
         <!-- Información sobre la empresa -->
         <?php if (!empty($job['company_description'])): ?>
             <div class="card">
-                <h3 style="margin-top:0; font-size:0.95rem; color:#0b132b;">Sobre la empresa</h3>
+                <h3 style="margin-top:0; font-size:0.95rem; color:#0b132b;">About the company</h3>
                 <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:8px;">
                     <div class="company-avatar">
                         <?php if (!empty($job['company_logo'])): ?>

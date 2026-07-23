@@ -25,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $role     = $_POST['role'] ?? '';
 
     if ($fullName === '' || $email === '' || $role === '') {
-        $error = 'Todos los campos son obligatorios.';
+        $error = 'All fields are required.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'El correo electrónico no es válido.';
+        $error = 'The email address is not valid.';
     } elseif (!in_array($role, ['admin', 'candidate', 'company'])) {
-        $error = 'El rol no es válido.';
+        $error = 'The role is not valid.';
     } else {
         $stmt = $pdo->prepare("
             UPDATE users SET full_name = :full_name, email = :email, role = :role
@@ -62,7 +62,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <section class="auth-box">
-    <h1>Editar usuario</h1>
+    <h1>Edit user</h1>
 
 <!-- Muestra el mensaje de error si algo ha fallado al guardar -->
     <?php if ($error !== ''): ?>
@@ -74,26 +74,26 @@ require_once __DIR__ . '/../includes/header.php';
     <form action="<?= BASE_URL; ?>/admin/user-edit.php?id=<?= $user['id']; ?>" method="post" class="auth-form" novalidate>
 
         <div class="form-group">
-            <label for="full_name">Nombre completo</label>
+            <label for="full_name">Full name</label>
             <input type="text" id="full_name" name="full_name" value="<?= htmlspecialchars($user['full_name']); ?>">
         </div>
 
         <div class="form-group">
-            <label for="email">Correo electrónico</label>
+            <label for="email">Email address</label>
             <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']); ?>">
         </div>
 
         <div class="form-group">
-            <label for="role">Rol</label>
+            <label for="role">Role</label>
             <select id="role" name="role">
                 <option value="admin"     <?= $user['role'] === 'admin'     ? 'selected' : ''; ?>>Admin</option>
-                <option value="candidate" <?= $user['role'] === 'candidate' ? 'selected' : ''; ?>>Candidato</option>
-                <option value="company"   <?= $user['role'] === 'company'   ? 'selected' : ''; ?>>Empresa</option>
+                <option value="candidate" <?= $user['role'] === 'candidate' ? 'selected' : ''; ?>>Candidate</option>
+                <option value="company"   <?= $user['role'] === 'company'   ? 'selected' : ''; ?>>Company</option>
             </select>
         </div>
 
-        <button type="submit" class="btn-primary">Guardar cambios</button>
-        <a href="<?= BASE_URL; ?>/admin/users.php" class="btn-link btn-cancel">Cancelar</a>
+        <button type="submit" class="btn-primary">Save changes</button>
+        <a href="<?= BASE_URL; ?>/admin/users.php" class="btn-link btn-cancel">Cancel</a>
     </form>
 
     <script>
@@ -118,16 +118,16 @@ require_once __DIR__ . '/../includes/header.php';
         const role     = document.getElementById('role');
 
         if (!fullName.value.trim())
-            error(fullName, 'El nombre completo es obligatorio.');
+            error(fullName, 'Full name is required.');
 
         if (!email.value.trim()) {
-            error(email, 'El correo electrónico es obligatorio.');
+            error(email, 'Email address is required.');
         } else if (!email.value.includes('@') || !email.value.includes('.')) {
-            error(email, 'Introduce un correo electrónico válido.');
+            error(email, 'Enter a valid email address.');
         }
 
         if (!role.value)
-            error(role, 'Debes seleccionar un rol.');
+            error(role, 'You must select a role.');
 
         if (!valid) e.preventDefault();
     });
@@ -135,7 +135,7 @@ require_once __DIR__ . '/../includes/header.php';
 
     <!-- Muestra la fecha de última modificación del usuario -->
     <p style="margin-top: 20px; color: #64748B; font-size: 0.85rem;">
-        Última modificación: <?= htmlspecialchars(date('d/m/Y H:i', strtotime($user['updated_at']))); ?>
+        Last modified: <?= htmlspecialchars(date('d/m/Y H:i', strtotime($user['updated_at']))); ?>
     </p>
 </section>
 

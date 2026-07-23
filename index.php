@@ -15,20 +15,20 @@ require_once __DIR__ . '/includes/header.php';
 <section class="home-hero">
     <div class="home-hero-inner">
         <h1 class="home-hero-title">
-            Encuentra tu próximo<br>
-            <span class="home-hero-accent">empleo</span>, hoy.
+            Find your next<br>
+            <span class="home-hero-accent">job</span>, today.
         </h1>
         <p class="home-hero-sub">
-            Conectamos candidatos con empresas locales de forma rápida,
-            sencilla y sin intermediarios.
+            We connect candidates with local companies quickly,
+            simply and without middlemen.
         </p>
         <div class="home-hero-actions">
             <a href="<?= BASE_URL; ?>/jobs.php" class="btn-hero-primary">
-                Ver ofertas de empleo
+                View job listings
             </a>
             <?php if (!isset($_SESSION['user'])): ?>
                 <a href="<?= BASE_URL; ?>/register.php" class="btn-hero-secondary">
-                    Crear cuenta gratis
+                    Create free account
                 </a>
             <?php endif; ?>
         </div>
@@ -51,67 +51,67 @@ require_once __DIR__ . '/includes/header.php';
 <section class="home-stats">
     <div class="home-stat">
         <span class="home-stat-num"><?= $totalJobs; ?></span>
-        <span class="home-stat-label">Ofertas activas</span>
+        <span class="home-stat-label">Active jobs</span>
     </div>
     <div class="home-stat-divider"></div>
     <div class="home-stat">
         <span class="home-stat-num"><?= $totalCompanies; ?></span>
-        <span class="home-stat-label">Empresas verificadas</span>
+        <span class="home-stat-label">Verified companies</span>
     </div>
     <div class="home-stat-divider"></div>
     <div class="home-stat">
         <span class="home-stat-num"><?= $totalCandidates; ?></span>
-        <span class="home-stat-label">Candidatos registrados</span>
+        <span class="home-stat-label">Registered candidates</span>
     </div>
 </section>
 
 <!-- Sección "¿Quién usa JobSpot?" con las tarjetas de candidato y empresa -->
 <section class="home-section">
-    <h2 class="home-section-title">¿Quién usa JobSpot?</h2>
-    <p class="home-section-sub">Una plataforma pensada para dos perfiles con un objetivo común.</p>
+    <h2 class="home-section-title">Who uses JobSpot?</h2>
+    <p class="home-section-sub">A platform designed for two profiles with a common goal.</p>
 
     <div class="home-cards">
 
         <div class="home-feature-card">
             <img src="https://images.unsplash.com/photo-1698047681432-006d2449c631?w=600&auto=format&fit=crop&q=80"
-                 alt="Candidata revisando un currículum"
+                 alt="Candidate reviewing a resume"
                  class="home-feature-img">
-            <h3>Candidatos</h3>
-            <p>Explora ofertas de empleo, aplica con un clic y lleva el seguimiento de todas tus candidaturas desde un panel centralizado.</p>
+            <h3>Candidates</h3>
+            <p>Explore job listings, apply with one click and track all your applications from a centralised dashboard.</p>
             <ul class="home-feature-list">
-                <li>✓ Búsqueda por categoría, modalidad y contrato</li>
-                <li>✓ Aplicación con mensaje personalizado</li>
-                <li>✓ Estado de cada candidatura en tiempo real</li>
+                <li>✓ Search by category, work mode and contract type</li>
+                <li>✓ Apply with a personalised message</li>
+                <li>✓ Real-time status for every application</li>
             </ul>
             <?php if (!isset($_SESSION['user'])): ?>
                 <a href="<?= BASE_URL; ?>/register.php" class="btn-feature">
-                    Registrarse como candidato →
+                    Sign up as a candidate →
                 </a>
             <?php else: ?>
                 <a href="<?= BASE_URL; ?>/jobs.php" class="btn-feature">
-                    Ver ofertas →
+                    View jobs →
                 </a>
             <?php endif; ?>
         </div>
 
         <div class="home-feature-card home-feature-card--dark">
             <img src="https://images.unsplash.com/photo-1698047681820-f26b00b6c639?w=600&auto=format&fit=crop&q=80"
-                 alt="Empresa en proceso de selección"
+                 alt="Company during a hiring process"
                  class="home-feature-img home-feature-img--dark">
-            <h3>Empresas</h3>
-            <p>Publica tus vacantes, revisa las candidaturas recibidas y gestiona todo el proceso de selección desde tu panel de empresa.</p>
+            <h3>Companies</h3>
+            <p>Post your vacancies, review the applications you receive and manage the whole hiring process from your company dashboard.</p>
             <ul class="home-feature-list">
-                <li>✓ Crea y edita ofertas en minutos</li>
-                <li>✓ Recibe candidaturas directamente</li>
-                <li>✓ Acepta o rechaza con un solo clic</li>
+                <li>✓ Create and edit job listings in minutes</li>
+                <li>✓ Receive applications directly</li>
+                <li>✓ Accept or reject with a single click</li>
             </ul>
             <?php if (!isset($_SESSION['user'])): ?>
                 <a href="<?= BASE_URL; ?>/register.php" class="btn-feature btn-feature--light">
-                    Registrar empresa →
+                    Register your company →
                 </a>
             <?php else: ?>
                 <a href="<?= BASE_URL; ?>/jobs.php" class="btn-feature btn-feature--light">
-                    Ver ofertas →
+                    View jobs →
                 </a>
             <?php endif; ?>
         </div>
@@ -121,26 +121,26 @@ require_once __DIR__ . '/includes/header.php';
 
 <!-- Sección "¿Cómo funciona?" con los tres pasos del proceso -->
 <section class="home-section home-section--gray">
-    <h2 class="home-section-title">¿Cómo funciona?</h2>
-    <p class="home-section-sub">Tres pasos para encontrar trabajo o cubrir una vacante.</p>
+    <h2 class="home-section-title">How does it work?</h2>
+    <p class="home-section-sub">Three steps to find a job or fill a vacancy.</p>
 
     <div class="home-steps">
         <div class="home-step">
             <div class="home-step-num">1</div>
-            <h4>Crea tu cuenta</h4>
-            <p>Regístrate como candidato o empresa. Es gratis y solo tarda un minuto.</p>
+            <h4>Create your account</h4>
+            <p>Sign up as a candidate or company. It's free and only takes a minute.</p>
         </div>
         <div class="home-step-arrow">→</div>
         <div class="home-step">
             <div class="home-step-num">2</div>
-            <h4>Explora o publica</h4>
-            <p>Los candidatos buscan y filtran ofertas. Las empresas crean sus vacantes.</p>
+            <h4>Explore or post</h4>
+            <p>Candidates search and filter jobs. Companies create their vacancies.</p>
         </div>
         <div class="home-step-arrow">→</div>
         <div class="home-step">
             <div class="home-step-num">3</div>
-            <h4>Conecta</h4>
-            <p>Los candidatos aplican y las empresas gestionan el proceso desde su panel.</p>
+            <h4>Connect</h4>
+            <p>Candidates apply and companies manage the process from their dashboard.</p>
         </div>
     </div>
 </section>
@@ -148,14 +148,14 @@ require_once __DIR__ . '/includes/header.php';
 <!-- CTA final: solo se muestra si el usuario no tiene sesión iniciada -->
 <?php if (!isset($_SESSION['user'])): ?>
 <section class="home-cta">
-    <h2>¿Listo para empezar?</h2>
-    <p>Únete a JobSpot y da el siguiente paso en tu carrera o en tu empresa.</p>
+    <h2>Ready to get started?</h2>
+    <p>Join JobSpot and take the next step in your career or your company.</p>
     <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px;">
         <a href="<?= BASE_URL; ?>/register.php" class="btn-hero-primary">
-            Crear cuenta gratis
+            Create free account
         </a>
         <a href="<?= BASE_URL; ?>/jobs.php" class="btn-hero-secondary">
-            Ver ofertas
+            View jobs
         </a>
     </div>
 </section>

@@ -40,7 +40,7 @@ if (APP_ENV === 'local' || APP_ENV === 'dev') {
 $envFile = __DIR__ . '/env.php';
 
 if (!file_exists($envFile)) {
-    die('Falta el archivo de configuración: config/env.php');
+    die('Missing configuration file: config/env.php');
 }
 
 require_once $envFile;

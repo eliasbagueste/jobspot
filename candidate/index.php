@@ -64,10 +64,10 @@ $myApplications = $stmtApps->fetchAll();
 
 // Texto legible para cada estado de candidatura (para mostrar en la tabla)
 $statusLabels = [
-    'sent'     => 'Enviada',
-    'reviewed' => 'Revisada',
-    'accepted' => 'Aceptada',
-    'rejected' => 'Rechazada',
+    'sent'     => 'Sent',
+    'reviewed' => 'Reviewed',
+    'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
 ];
 
 // Clase CSS para el badge de color según el estado
@@ -80,9 +80,9 @@ $statusClass = [
 
 // Texto legible para la modalidad de trabajo
 $modalityLabels = [
-    'onsite' => 'Presencial',
-    'hybrid' => 'Híbrido',
-    'remote' => 'Remoto',
+    'onsite' => 'On-site',
+    'hybrid' => 'Hybrid',
+    'remote' => 'Remote',
 ];
 
 require_once __DIR__ . '/../includes/header.php';
@@ -90,8 +90,8 @@ require_once __DIR__ . '/../includes/header.php';
 
 <!-- Saludo personalizado con el nombre del candidato -->
 <div class="admin-welcome">
-    <h1>Panel de candidato</h1>
-    <p>Bienvenido, <?= htmlspecialchars($user['full_name']); ?></p>
+    <h1>Candidate dashboard</h1>
+    <p>Welcome, <?= htmlspecialchars($user['full_name']); ?></p>
 </div>
 
 <!-- Tarjetas de resumen rápido: candidaturas enviadas, pendientes y aceptadas -->
@@ -101,7 +101,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="admin-stat-icon">📨</div>
         <div class="admin-stat-text">
             <div class="admin-stat-value"><?= $totalApplications; ?></div>
-            <div class="admin-stat-label">Candidaturas enviadas</div>
+            <div class="admin-stat-label">Applications sent</div>
         </div>
     </div>
 
@@ -109,7 +109,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="admin-stat-icon">⏳</div>
         <div class="admin-stat-text">
             <div class="admin-stat-value"><?= $pendingApplications; ?></div>
-            <div class="admin-stat-label">Pendientes de respuesta</div>
+            <div class="admin-stat-label">Awaiting response</div>
         </div>
     </div>
 
@@ -117,7 +117,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="admin-stat-icon">✅</div>
         <div class="admin-stat-text">
             <div class="admin-stat-value"><?= $acceptedApplications; ?></div>
-            <div class="admin-stat-label">Candidaturas aceptadas</div>
+            <div class="admin-stat-label">Applications accepted</div>
         </div>
     </div>
 
@@ -127,43 +127,43 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="admin-grid" style="margin-top: 1rem;">
     <a href="<?= BASE_URL; ?>/jobs.php" class="admin-card">
         <div class="admin-card-icon">🔍</div>
-        <h2>Explorar ofertas</h2>
-        <p>Busca y filtra todas las ofertas disponibles.</p>
+        <h2>Browse jobs</h2>
+        <p>Search and filter all available job listings.</p>
     </a>
     <a href="<?= BASE_URL; ?>/candidate/my-applications.php" class="admin-card">
         <div class="admin-card-icon">📋</div>
-        <h2>Mis candidaturas</h2>
-        <p>Consulta el estado de tus candidaturas enviadas.</p>
+        <h2>My applications</h2>
+        <p>Check the status of your submitted applications.</p>
     </a>
     <a href="<?= BASE_URL; ?>/candidate/profile-edit.php" class="admin-card">
         <div class="admin-card-icon">👤</div>
-        <h2>Mi perfil</h2>
-        <p>Actualiza tus datos personales y tu CV.</p>
+        <h2>My profile</h2>
+        <p>Update your personal details and CV.</p>
     </a>
 </div>
 
 <!-- Últimas candidaturas enviadas por el candidato -->
 <section class="card" style="margin-top: 1.5rem;">
     <div class="card-header">
-        <h2>Resumen</h2>
+        <h2>Summary</h2>
         <?php if (!empty($myApplications)): ?>
-            <a href="<?= BASE_URL; ?>/candidate/my-applications.php" class="btn-link">Ver todas →</a>
+            <a href="<?= BASE_URL; ?>/candidate/my-applications.php" class="btn-link">View all →</a>
         <?php endif; ?>
     </div>
 
     <?php if (empty($myApplications)): ?>
-        <p style="color:#64748b;">Todavía no has aplicado a ninguna oferta.</p>
+        <p style="color:#64748b;">You have not applied to any jobs yet.</p>
         <a href="<?= BASE_URL; ?>/jobs.php" class="btn-primary" style="margin-top:0.75rem; display:inline-block;">
-            Explorar ofertas
+            Browse jobs
         </a>
     <?php else: ?>
         <table class="panel-table">
             <thead>
                 <tr>
-                    <th>Oferta</th>
-                    <th>Empresa</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
+                    <th>Job</th>
+                    <th>Company</th>
+                    <th>Date</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>

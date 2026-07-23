@@ -84,28 +84,28 @@ if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'candidate') {
 
 // Traduzco los valores ENUM de la BD a texto legible en español
 $modalityLabels = [
-    'onsite' => 'Presencial',
-    'hybrid' => 'Híbrido',
-    'remote' => 'Remoto',
+    'onsite' => 'On-site',
+    'hybrid' => 'Hybrid',
+    'remote' => 'Remote',
 ];
 
 $contractLabels = [
-    'permanent'  => 'Indefinido',
-    'temporary'  => 'Temporal',
-    'internship' => 'Prácticas',
+    'permanent'  => 'Permanent',
+    'temporary'  => 'Temporary',
+    'internship' => 'Internship',
     'freelance'  => 'Freelance',
 ];
 
 $workdayLabels = [
-    'full_time' => 'Jornada completa',
-    'part_time' => 'Media jornada',
+    'full_time' => 'Full-time',
+    'part_time' => 'Part-time',
 ];
 
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="card">
-    <h1 style="margin-top:0;">Ofertas de empleo</h1>
+    <h1 style="margin-top:0;">Job listings</h1>
 
     <!-- Formulario de filtros por GET para que la URL sea compartible y se pueda guardar o compartir -->
     <form method="get" action="<?= BASE_URL; ?>/jobs.php" class="filter-form">
@@ -114,14 +114,14 @@ require_once __DIR__ . '/includes/header.php';
             <input
                 type="text"
                 name="search"
-                placeholder="Buscar oferta..."
+                placeholder="Search jobs..."
                 value="<?= htmlspecialchars($search); ?>"
             >
         </div>
 
         <div class="form-group">
             <select name="category">
-                <option value="">Todas las categorías</option>
+                <option value="">All categories</option>
                 <?php foreach ($categories as $cat): ?>
                     <!-- selected mantiene el filtro activo si el usuario ya había elegido esa categoría -->
                     <option
@@ -136,7 +136,7 @@ require_once __DIR__ . '/includes/header.php';
 
         <div class="form-group">
             <select name="modality">
-                <option value="">Cualquier modalidad</option>
+                <option value="">Any work mode</option>
                 <?php foreach ($modalityLabels as $val => $label): ?>
                     <option value="<?= $val; ?>" <?= $modality === $val ? 'selected' : ''; ?>>
                         <?= $label; ?>
@@ -147,7 +147,7 @@ require_once __DIR__ . '/includes/header.php';
 
         <div class="form-group">
             <select name="contract">
-                <option value="">Cualquier contrato</option>
+                <option value="">Any contract type</option>
                 <?php foreach ($contractLabels as $val => $label): ?>
                     <option value="<?= $val; ?>" <?= $contractType === $val ? 'selected' : ''; ?>>
                         <?= $label; ?>
@@ -156,23 +156,23 @@ require_once __DIR__ . '/includes/header.php';
             </select>
         </div>
 
-        <button type="submit" class="btn-primary">Filtrar</button>
+        <button type="submit" class="btn-primary">Filter</button>
 
         <!-- El enlace de limpiar solo aparece si hay algún filtro activo -->
         <?php if ($search !== '' || $categorySlug !== '' || $modality !== '' || $contractType !== ''): ?>
-            <a href="<?= BASE_URL; ?>/jobs.php" class="btn-link">Limpiar filtros</a>
+            <a href="<?= BASE_URL; ?>/jobs.php" class="btn-link">Clear filters</a>
         <?php endif; ?>
     </form>
 </section>
 
 <?php if (empty($jobs)): ?>
     <section class="card">
-        <p>No se han encontrado ofertas con los filtros seleccionados.</p>
+        <p>No jobs found matching the selected filters.</p>
     </section>
 <?php else: ?>
     <!-- Mostramos cuántas ofertas ha encontrado la búsqueda -->
     <p style="margin-bottom: 1rem; color: #64748b;">
-        <?= count($jobs); ?> oferta<?= count($jobs) !== 1 ? 's' : ''; ?> encontrada<?= count($jobs) !== 1 ? 's' : ''; ?>
+        <?= count($jobs); ?> job<?= count($jobs) !== 1 ? 's' : ''; ?> found
     </p>
 
     <?php foreach ($jobs as $job): ?>
@@ -221,13 +221,13 @@ require_once __DIR__ . '/includes/header.php';
                           <?= htmlspecialchars($job['currency']); ?></span>
                 <?php endif; ?>
                 <span style="margin-left:auto; white-space:nowrap;">
-                    Publicada: <?= date('d/m/Y', strtotime($job['published_at'])); ?>
+                    Published: <?= date('d/m/Y', strtotime($job['published_at'])); ?>
                 </span>
             </div>
 
             <div class="job-actions">
                 <a href="<?= BASE_URL; ?>/job-detail.php?id=<?= $job['id']; ?>" class="btn-primary">
-                    Ver oferta
+                    View job
                 </a>
 
                 <!-- El botón de favoritos solo aparece para candidatos con sesión iniciada -->
@@ -239,7 +239,7 @@ require_once __DIR__ . '/includes/header.php';
                     -->
                     <button class="btn-favorite" data-job-id="<?= $job['id']; ?>"
                             data-favorited="<?= in_array($job['id'], $favoriteIds) ? '1' : '0'; ?>"
-                            title="<?= in_array($job['id'], $favoriteIds) ? 'Quitar de favoritos' : 'Añadir a favoritos'; ?>"
+                            title="<?= in_array($job['id'], $favoriteIds) ? 'Remove from favourites' : 'Add to favourites'; ?>"
                             style="background:none; border:none; cursor:pointer; font-size:1.2rem; color:<?= in_array($job['id'], $favoriteIds) ? '#ef4444' : '#cbd5e1'; ?>; padding:0; line-height:1; margin-left:auto;">
                         <i class="<?= in_array($job['id'], $favoriteIds) ? 'fas' : 'far'; ?> fa-heart"></i>
                     </button>

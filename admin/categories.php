@@ -41,16 +41,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = trim($_POST['name'] ?? '');
 
         if ($name === '') {
-            $error = 'El nombre de la categoría es obligatorio.';
+            $error = 'The category name is required.';
         } elseif (mb_strlen($name) > 100) {
-            $error = 'El nombre no puede superar los 100 caracteres.';
+            $error = 'The name cannot exceed 100 characters.';
         } else {
             // Comprobamos si ya existe una categoría con ese nombre (sin distinguir mayúsculas)
             $stmtCheck = $pdo->prepare("SELECT id FROM categories WHERE LOWER(name) = LOWER(:name)");
             $stmtCheck->execute(['name' => $name]);
 
             if ($stmtCheck->fetch()) {
-                $error = 'Ya existe una categoría con ese nombre.';
+                $error = 'A category with that name already exists.';
             } else {
                 $slug = makeSlug($name);
 
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     INSERT INTO categories (name, slug, is_active) VALUES (:name, :slug, 1)
                 ");
                 $stmtInsert->execute(['name' => $name, 'slug' => $slug]);
-                $success = 'Categoría «' . htmlspecialchars($name) . '» creada correctamente.';
+                $success = 'Category “' . htmlspecialchars($name) . '” created successfully.';
             }
         }
     }
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 UPDATE categories SET is_active = NOT is_active WHERE id = :id
             ");
             $stmtToggle->execute(['id' => $catId]);
-            $success = 'Estado de la categoría actualizado.';
+            $success = 'Category status updated.';
         }
     }
 
@@ -91,11 +91,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($jobCount > 0) {
                 // No permitimos borrar si hay ofertas asociadas
                 // Así protegemos la integridad referencial de la base de datos
-                $error = "No se puede eliminar: esta categoría tiene {$jobCount} oferta(s) asociada(s).";
+                $error = "Cannot delete: this category has {$jobCount} job(s) associated with it.";
             } else {
                 $stmtDelete = $pdo->prepare("DELETE FROM categories WHERE id = :id");
                 $stmtDelete->execute(['id' => $catId]);
-                $success = 'Categoría eliminada correctamente.';
+                $success = 'Category deleted successfully.';
             }
         }
     }
@@ -134,12 +134,12 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/admin/index.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver al panel
+    ← Back to dashboard
 </a>
 
 <section class="card" style="padding:16px 24px;">
-    <h1 style="margin:0 0 0.25rem;">Categorías</h1>
-    <p style="color:#64748b; margin:0;">Gestiona las categorías disponibles para las ofertas de trabajo.</p>
+    <h1 style="margin:0 0 0.25rem;">Categories</h1>
+    <p style="color:#64748b; margin:0;">Manage the categories available for job listings.</p>
 </section>
 
 <?php if ($success !== ''): ?>
@@ -154,18 +154,18 @@ require_once __DIR__ . '/../includes/header.php';
 <!-- Formulario para crear una nueva categoría             -->
 <!-- ────────────────────────────────────────────────────── -->
 <section class="card" style="padding:16px 24px;">
-    <h2 style="margin:0 0 1rem;">Nueva categoría</h2>
+    <h2 style="margin:0 0 1rem;">New category</h2>
     <form method="post" action="<?= BASE_URL; ?>/admin/categories.php"
           id="form-category" novalidate
           style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:flex-end;">
         <input type="hidden" name="action" value="create">
         <div class="form-group" style="margin:0; flex:1; min-width:200px;">
-            <label for="name">Nombre *</label>
+            <label for="name">Name *</label>
             <input type="text" id="name" name="name" maxlength="100"
-                   placeholder="Ej: Tecnología, Hostelería..."
+                   placeholder="e.g. Technology, Hospitality..."
                    style="width:100%;">
         </div>
-        <button type="submit" class="btn-primary">Añadir categoría</button>
+        <button type="submit" class="btn-primary">Add category</button>
     </form>
 
     <script>
@@ -178,7 +178,7 @@ require_once __DIR__ . '/../includes/header.php';
             name.classList.add('input-error');
             const span = document.createElement('span');
             span.className = 'field-error';
-            span.textContent = 'El nombre de la categoría es obligatorio.';
+            span.textContent = 'The category name is required.';
             name.closest('.form-group').appendChild(span);
             e.preventDefault();
         }
@@ -191,22 +191,22 @@ require_once __DIR__ . '/../includes/header.php';
 <!-- ────────────────────────────────────────────────────── -->
 <section class="card" style="margin-top:1rem;">
     <h2 style="margin-bottom:1rem;">
-        Categorías existentes
-        <small style="font-weight:normal; color:#64748b;">(<?= count($categories); ?> en total)</small>
+        Existing categories
+        <small style="font-weight:normal; color:#64748b;">(<?= count($categories); ?> total)</small>
     </h2>
 
     <?php if (empty($categories)): ?>
-        <p>No hay categorías todavía. Crea la primera usando el formulario de arriba.</p>
+        <p>No categories yet. Create the first one using the form above.</p>
 
     <?php else: ?>
         <div style="overflow-x:auto;">
             <table style="width:100%; border-collapse:collapse; font-size:0.95rem;">
                 <thead>
                     <tr style="border-bottom:2px solid #e5e7eb; text-align:left;">
-                        <th style="padding:0.5rem 0.75rem;">Nombre</th>
-                        <th style="padding:0.5rem 0.75rem; text-align:center;">Ofertas</th>
-                        <th style="padding:0.5rem 0.75rem; text-align:center;">Estado</th>
-                        <th style="padding:0.5rem 0.75rem; text-align:right;">Acciones</th>
+                        <th style="padding:0.5rem 0.75rem;">Name</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:center;">Jobs</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:center;">Status</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:right;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -220,9 +220,9 @@ require_once __DIR__ . '/../includes/header.php';
                             </td>
                             <td style="padding:0.75rem; text-align:center;">
                                 <?php if ($cat['is_active']): ?>
-                                    <span class="badge badge-active">Activa</span>
+                                    <span class="badge badge-active">Active</span>
                                 <?php else: ?>
-                                    <span class="badge badge-rejected">Inactiva</span>
+                                    <span class="badge badge-rejected">Inactive</span>
                                 <?php endif; ?>
                             </td>
                             <td style="padding:0.75rem; text-align:right;">
@@ -233,7 +233,7 @@ require_once __DIR__ . '/../includes/header.php';
                                         <input type="hidden" name="action" value="toggle">
                                         <input type="hidden" name="category_id" value="<?= $cat['id']; ?>">
                                         <button type="submit" class="btn-edit">
-                                            <?= $cat['is_active'] ? 'Desactivar' : 'Activar'; ?>
+                                            <?= $cat['is_active'] ? 'Deactivate' : 'Activate'; ?>
                                         </button>
                                     </form>
 
@@ -241,17 +241,17 @@ require_once __DIR__ . '/../includes/header.php';
                                     <?php if ($cat['total_jobs'] > 0): ?>
                                         <!-- Tooltip explicativo cuando no se puede borrar -->
                                         <button class="btn-delete" disabled
-                                                title="No se puede eliminar: tiene <?= $cat['total_jobs']; ?> oferta(s) asociada(s)"
+                                                title="Cannot delete: it has <?= $cat['total_jobs']; ?> job(s) associated with it"
                                                 style="opacity:0.4; cursor:not-allowed;">
-                                            Eliminar
+                                            Delete
                                         </button>
                                     <?php else: ?>
                                         <form method="post" action="<?= BASE_URL; ?>/admin/categories.php" style="display:inline;">
                                             <input type="hidden" name="action" value="delete">
                                             <input type="hidden" name="category_id" value="<?= $cat['id']; ?>">
                                             <button type="submit" class="btn-delete"
-                                                    onclick="return confirm('¿Eliminar la categoría «<?= htmlspecialchars($cat['name']); ?>»?');">
-                                                Eliminar
+                                                    onclick="return confirm('Delete the category “<?= htmlspecialchars($cat['name']); ?>”?');">
+                                                Delete
                                             </button>
                                         </form>
                                     <?php endif; ?>

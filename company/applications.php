@@ -90,10 +90,10 @@ $applications = $stmtApps->fetchAll();
 
 // Etiquetas y clases para los estados de candidatura
 $statusLabels = [
-    'sent'     => 'Enviada',
-    'reviewed' => 'Revisada',
-    'accepted' => 'Aceptada',
-    'rejected' => 'Rechazada',
+    'sent'     => 'Sent',
+    'reviewed' => 'Reviewed',
+    'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
 ];
 
 $statusClass = [
@@ -107,17 +107,17 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <a href="<?= BASE_URL; ?>/company/jobs.php" class="btn-link" style="display:inline-block; margin-bottom:1rem;">
-    ← Volver a mis ofertas
+    ← Back to my jobs
 </a>
 
 <section class="card">
-    <h1>Candidaturas para «<?= htmlspecialchars($job['title']); ?>»</h1>
-    <p><?= count($applications); ?> candidatura<?= count($applications) !== 1 ? 's' : ''; ?> recibida<?= count($applications) !== 1 ? 's' : ''; ?></p>
+    <h1>Applications for “<?= htmlspecialchars($job['title']); ?>”</h1>
+    <p><?= count($applications); ?> application<?= count($applications) !== 1 ? 's' : ''; ?> received</p>
 </section>
 
 <?php if (empty($applications)): ?>
     <section class="card" style="margin-top:1rem;">
-        <p>Todavía no hay candidaturas para esta oferta.</p>
+        <p>There are no applications for this job yet.</p>
     </section>
 
 <?php else: ?>
@@ -136,13 +136,13 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
 
             <div class="job-meta">
-                <span>📅 Aplicó el <?= date('d/m/Y', strtotime($app['applied_at'])); ?></span>
+                <span>📅 Applied on <?= date('d/m/Y', strtotime($app['applied_at'])); ?></span>
                 <?php if (!empty($app['cv_pdf_path'])): ?>
                     <a href="<?= BASE_URL . '/' . htmlspecialchars($app['cv_pdf_path']); ?>"
                        target="_blank"
                        class="btn-edit"
                        style="font-size:0.8rem; padding:0.2rem 0.6rem;">
-                        📄 Descargar CV
+                        📄 Download CV
                     </a>
                 <?php endif; ?>
             </div>
@@ -151,7 +151,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php if (!empty($app['message'])): ?>
                 <details style="margin-top:0.75rem;">
                     <summary style="cursor:pointer; color:#6366f1; font-size:0.9rem;">
-                        Ver mensaje del candidato
+                        View candidate's message
                     </summary>
                     <p style="margin-top:0.5rem; color:#374151; white-space:pre-line; font-size:0.9rem;">
                         <?= htmlspecialchars($app['message']); ?>
@@ -168,20 +168,20 @@ require_once __DIR__ . '/../includes/header.php';
 
                     <?php if ($app['status'] === 'sent'): ?>
                         <button type="submit" name="status" value="reviewed" class="btn-edit">
-                            Marcar como revisada
+                            Mark as reviewed
                         </button>
                     <?php endif; ?>
 
                     <?php if (in_array($app['status'], ['sent', 'reviewed'])): ?>
                         <button type="submit" name="status" value="accepted"
                                 class="btn-accept"
-                                onclick="return confirm('¿Aceptar la candidatura de <?= htmlspecialchars(addslashes($app['candidate_name'])); ?>?');">
-                            Aceptar
+                                onclick="return confirm('Accept the application from <?= htmlspecialchars(addslashes($app['candidate_name'])); ?>?');">
+                            Accept
                         </button>
                         <button type="submit" name="status" value="rejected"
                                 class="btn-delete"
-                                onclick="return confirm('¿Rechazar la candidatura de <?= htmlspecialchars(addslashes($app['candidate_name'])); ?>?');">
-                            Rechazar
+                                onclick="return confirm('Reject the application from <?= htmlspecialchars(addslashes($app['candidate_name'])); ?>?');">
+                            Reject
                         </button>
                     <?php endif; ?>
                 </form>
