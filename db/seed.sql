@@ -1,28 +1,28 @@
 -- db/seed.sql
 -- =========================================================
--- DATOS DE PRUEBA COMPLETOS PARA JOBSPOT
+-- FULL TEST DATA FOR JOBSPOT
 -- =========================================================
--- Contraseña de TODOS los usuarios: Test1234
+-- Password for ALL users: Test1234
 --
--- USUARIOS:
---   admin@jobspot.local           → Administrador
---   atlantic@jobspot.local        → Empresa (Atlantic Digital - verificada)
---   restaurante@jobspot.local     → Empresa (Grupo El Rincón - verificada)
---   corrib@jobspot.local          → Empresa (Corrib Construction - verificada)
---   learning@jobspot.local        → Empresa (Galway Learning Centre - verificada)
---   sinverificar@jobspot.local    → Empresa (StartupXYZ - SIN verificar, sin ofertas)
---   ana.garcia@jobspot.local      → Candidata
---   carlos.lopez@jobspot.local    → Candidato
---   maria.martinez@jobspot.local  → Candidata
---   pedro.sanchez@jobspot.local   → Candidato
---   lucia.fernandez@jobspot.local → Candidata
---   david.romero@jobspot.local    → Candidato
+-- USERS:
+--   admin@jobspot.local           → Admin
+--   atlantic@jobspot.local        → Company (Atlantic Digital - verified)
+--   restaurante@jobspot.local     → Company (El Rincón Group - verified)
+--   corrib@jobspot.local          → Company (Corrib Construction - verified)
+--   learning@jobspot.local        → Company (Galway Learning Centre - verified)
+--   sinverificar@jobspot.local    → Company (StartupXYZ - NOT verified, no jobs)
+--   ana.garcia@jobspot.local      → Candidate
+--   carlos.lopez@jobspot.local    → Candidate
+--   maria.martinez@jobspot.local  → Candidate
+--   pedro.sanchez@jobspot.local   → Candidate
+--   lucia.fernandez@jobspot.local → Candidate
+--   david.romero@jobspot.local    → Candidate
 --
--- OFERTAS: 10 (published y closed únicamente)
--- CANDIDATURAS: 17 (sent, reviewed, accepted, rejected)
+-- JOBS: 10 (published and closed only)
+-- APPLICATIONS: 17 (sent, reviewed, accepted, rejected)
 --
--- ADVERTENCIA: Borra TODOS los datos existentes.
--- Nunca ejecutes esto en producción.
+-- WARNING: Deletes ALL existing data.
+-- Never run this in production.
 -- =========================================================
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -37,7 +37,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 -- =========================================================
--- 1. USUARIOS  (IDs 1-12)
+-- 1. USERS  (IDs 1-12)
 -- =========================================================
 -- password_hash('Test1234', PASSWORD_BCRYPT)
 
@@ -57,364 +57,364 @@ INSERT INTO users (id, full_name, email, password_hash, role, is_active) VALUES
 
 
 -- =========================================================
--- 2. PERFILES DE CANDIDATO
+-- 2. CANDIDATE PROFILES
 -- =========================================================
 
 INSERT INTO candidate_profiles (user_id, phone, city, profile_summary) VALUES
-(7,  '612 345 678', 'Latin Quarter (Galway)', 'Desarrolladora full-stack con 3 años de experiencia en PHP y Vue.js. Apasionada por el diseño de interfaces limpias y el código bien estructurado.'),
-(8,  '623 456 789', 'Salthill (Galway)',      'Profesional de hostelería con 4 años de experiencia en restaurantes de nivel medio-alto. También con formación previa como delineante técnico.'),
-(9,  '634 567 890', 'Bohermore (Galway)',     'Camarera con amplia experiencia en sala y barra. Nivel de inglés B2, carné de manipulador de alimentos en vigor.'),
-(10, '645 678 901', 'Knocknacarra (Galway)',  'Diseñador UX/UI con portfolio en Behance. Manejo Figma y Adobe XD. También he trabajado en obra como peón durante dos veranos.'),
-(11, '656 789 012', 'Newcastle (Galway)',     'Profesora de matemáticas con 5 años de experiencia en enseñanza secundaria y academia. Grado en Matemáticas por la University of Galway.'),
-(12, '667 890 123', 'Mervue (Galway)',        'Aparejador colegiado con 6 años en obra residencial y rehabilitación. Experiencia en dirección de ejecución y coordinación de equipos.');
+(7,  '612 345 678', 'Latin Quarter (Galway)', 'Full-stack developer with 3 years of experience in PHP and Vue.js. Passionate about clean interface design and well-structured code.'),
+(8,  '623 456 789', 'Salthill (Galway)',      'Hospitality professional with 4 years of experience in mid-to-upscale restaurants. Also previously trained as a technical draughtsman.'),
+(9,  '634 567 890', 'Bohermore (Galway)',     'Waitress with extensive front-of-house and bar experience. English level B2, valid food handler''s certificate.'),
+(10, '645 678 901', 'Knocknacarra (Galway)',  'UX/UI designer with a portfolio on Behance. Skilled in Figma and Adobe XD. Also worked as a construction labourer for two summers.'),
+(11, '656 789 012', 'Newcastle (Galway)',     'Maths teacher with 5 years of experience in secondary education and tutoring academies. Degree in Mathematics from the University of Galway.'),
+(12, '667 890 123', 'Mervue (Galway)',        'Chartered building surveyor with 6 years in residential construction and refurbishment. Experience in site management and team coordination.');
 
 
 -- =========================================================
--- 3. CATEGORÍAS  (IDs 1-8)
+-- 3. CATEGORIES  (IDs 1-8)
 -- =========================================================
 
 INSERT INTO categories (id, name, slug, is_active) VALUES
-(1, 'Tecnología',     'tecnologia',     1),
-(2, 'Hostelería',     'hosteleria',     1),
-(3, 'Administración', 'administracion', 1),
-(4, 'Comercio',       'comercio',       1),
-(5, 'Construcción',   'construccion',   1),
-(6, 'Educación',      'educacion',      1),
-(7, 'Sanidad',        'sanidad',        1),
-(8, 'Transporte',     'transporte',     1);
+(1, 'Technology',     'technology',     1),
+(2, 'Hospitality',    'hospitality',    1),
+(3, 'Administration',  'administration', 1),
+(4, 'Retail',         'retail',         1),
+(5, 'Construction',   'construction',   1),
+(6, 'Education',      'education',      1),
+(7, 'Healthcare',     'healthcare',     1),
+(8, 'Transport',      'transport',      1);
 
 
 -- =========================================================
--- 4. EMPRESAS  (IDs 1-5)
+-- 4. COMPANIES  (IDs 1-5)
 -- =========================================================
 
 INSERT INTO companies (id, owner_user_id, legal_name, brand_name, tax_id, location, description, is_verified) VALUES
-(1, 2, 'Atlantic Digital Ltd.',              'Atlantic Digital',       'B12345678', 'Latin Quarter (Galway)', 'Empresa tecnológica especializada en desarrollo web y soluciones digitales para pymes. Equipo de 15 personas distribuidas entre Galway, Dublín y Londres.', 1),
-(2, 3, 'Grupo Gastronómico El Rincón S.L.',  'El Rincón',              'B23456789', 'Salthill (Galway)',      'Restaurante español con más de 15 años de trayectoria en Galway. Cocina mediterránea y tapas de autor en el barrio de Salthill, uno de los rincones más animados de la ciudad.', 1),
-(3, 4, 'Corrib Construction Ltd.',           'Corrib Construction',    'A34567890', 'Westside (Galway)',      'Constructora con 20 años de experiencia en obra civil y edificación residencial en Connacht y el oeste de Irlanda.', 1),
-(4, 5, 'Galway Learning Centre Ltd.',        'Galway Learning Centre', 'B45678901', 'Newcastle (Galway)',     'Centro de formación reglada y extraescolar con más de 800 alumnos. Especialistas en refuerzo escolar y preparación de exámenes del estado.', 1),
-(5, 6, 'StartupXYZ S.L.',                    'StartupXYZ',             NULL,        'Eyre Square (Galway)',  'Startup tecnológica en fase seed dedicada al desarrollo de una app de movilidad urbana sostenible.', 0);
+(1, 2, 'Atlantic Digital Ltd.',       'Atlantic Digital',       'B12345678', 'Latin Quarter (Galway)', 'Technology company specialising in web development and digital solutions for SMEs. Team of 15 people spread across Galway, Dublin and London.', 1),
+(2, 3, 'El Rincón Restaurant Group Ltd.', 'El Rincón',          'B23456789', 'Salthill (Galway)',      'Spanish restaurant with over 15 years in Galway. Mediterranean cuisine and signature tapas in the Salthill neighbourhood, one of the liveliest spots in the city.', 1),
+(3, 4, 'Corrib Construction Ltd.',    'Corrib Construction',    'A34567890', 'Westside (Galway)',      'Construction company with 20 years of experience in civil works and residential building across Connacht and the west of Ireland.', 1),
+(4, 5, 'Galway Learning Centre Ltd.', 'Galway Learning Centre', 'B45678901', 'Newcastle (Galway)',     'Centre for accredited and after-school tuition with over 800 students. Specialists in school support and state exam preparation.', 1),
+(5, 6, 'StartupXYZ Ltd.',             'StartupXYZ',             NULL,        'Eyre Square (Galway)',  'Seed-stage tech startup building a sustainable urban mobility app.', 0);
 
 
 -- =========================================================
--- 5. OFERTAS DE TRABAJO  (IDs 1-10)
+-- 5. JOB LISTINGS  (IDs 1-10)
 -- =========================================================
--- Solo estados published y closed, coherentes con el flujo actual.
+-- Only published and closed statuses, consistent with the current flow.
 --
--- Atlantic Digital:       3 publicadas + 1 cerrada
--- El Rincón:              2 publicadas + 1 cerrada
--- Corrib Construction:    2 publicadas
--- Galway Learning Centre: 1 publicada
--- StartupXYZ:             sin ofertas (empresa sin verificar)
+-- Atlantic Digital:       3 published + 1 closed
+-- El Rincón:              2 published + 1 closed
+-- Corrib Construction:    2 published
+-- Galway Learning Centre: 1 published
+-- StartupXYZ:             no jobs (unverified company)
 
 INSERT INTO jobs (id, company_id, category_id, title, description, location, contract_type, workday, modality, salary_min, salary_max, status, published_at) VALUES
 
 -- Atlantic Digital
-(1, 1, 1, 'Desarrollador/a PHP',
-'Buscamos un/a Desarrollador/a PHP con experiencia real en proyectos en producción para incorporarse a nuestro equipo de backend.
+(1, 1, 1, 'PHP Developer',
+'We are looking for a PHP Developer with real experience in production projects to join our backend team.
 
-FUNCIONES:
-- Desarrollo de nuevas funcionalidades en PHP (Laravel 10/11) siguiendo principios SOLID
-- Diseño e implementación de APIs RESTful consumidas por frontends en React
-- Optimización de consultas SQL sobre bases de datos MySQL y PostgreSQL
-- Revisiones de código y pair programming
-- Integración con Stripe, Redsys y APIs de terceros
-- Tests unitarios y de integración con PHPUnit y Pest
+RESPONSIBILITIES:
+- Developing new features in PHP (Laravel 10/11) following SOLID principles
+- Designing and implementing RESTful APIs consumed by React frontends
+- Optimising SQL queries on MySQL and PostgreSQL databases
+- Code reviews and pair programming
+- Integration with Stripe, Redsys and third-party APIs
+- Unit and integration testing with PHPUnit and Pest
 
-REQUISITOS:
-- Experiencia mínima de 2 años con PHP en entornos profesionales
-- Dominio de Laravel o Symfony
-- Conocimientos sólidos de MySQL: índices, relaciones, transacciones
-- Familiaridad con Git y metodologías ágiles
+REQUIREMENTS:
+- At least 2 years of professional PHP experience
+- Strong command of Laravel or Symfony
+- Solid MySQL knowledge: indexes, relationships, transactions
+- Familiarity with Git and agile methodologies
 
-OFRECEMOS:
-- Contrato indefinido
-- 100% remoto con reuniones semanales
-- Flexibilidad horaria
-- 1.000 €/año para formación
-- Hardware a elegir: MacBook Pro M3 o ThinkPad con Linux',
+WHAT WE OFFER:
+- Permanent contract
+- 100% remote with weekly meetings
+- Flexible hours
+- €1,000/year training budget
+- Choice of hardware: MacBook Pro M3 or ThinkPad with Linux',
 'Latin Quarter (Galway)', 'permanent', 'full_time', 'remote', 26000.00, 34000.00, 'published', '2026-04-01 09:00:00'),
 
-(2, 1, 1, 'Administrador/a de Sistemas',
-'Empresa de desarrollo de software busca Administrador/a de Sistemas para reforzar su departamento de infraestructura.
+(2, 1, 1, 'Systems Administrator',
+'Software development company looking for a Systems Administrator to strengthen its infrastructure department.
 
-FUNCIONES:
-- Administración de servidores Linux (Debian/Ubuntu) y Windows Server
-- Gestión de entornos de virtualización con VMware y Proxmox
-- Configuración de redes: VLANs, firewalls, VPN OpenVPN y WireGuard
-- Administración de Apache, Nginx, MySQL, PostgreSQL, Redis
-- Implementación de pipelines CI/CD con GitLab CI y GitHub Actions
-- Gestión de contenedores con Docker
+RESPONSIBILITIES:
+- Administration of Linux servers (Debian/Ubuntu) and Windows Server
+- Managing virtualisation environments with VMware and Proxmox
+- Network configuration: VLANs, firewalls, OpenVPN and WireGuard VPN
+- Administration of Apache, Nginx, MySQL, PostgreSQL, Redis
+- Implementing CI/CD pipelines with GitLab CI and GitHub Actions
+- Container management with Docker
 
-REQUISITOS:
-- CFGS ASIR o Ingeniería Informática
-- Experiencia mínima de 2 años administrando sistemas Linux en producción
-- Conocimientos de redes: TCP/IP, DNS, DHCP, HTTP/S
-- Scripting en Bash y/o Python
+REQUIREMENTS:
+- Higher Vocational Training in Network Systems Administration (ASIR) or Computer Engineering
+- At least 2 years administering Linux systems in production
+- Networking knowledge: TCP/IP, DNS, DHCP, HTTP/S
+- Scripting in Bash and/or Python
 
-OFRECEMOS:
-- Contrato indefinido
-- Modalidad híbrida: 3 días remoto, 2 días en oficina
-- 23 días de vacaciones
-- Presupuesto anual para formación y certificaciones',
+WHAT WE OFFER:
+- Permanent contract
+- Hybrid: 3 days remote, 2 days in the office
+- 23 days of holidays
+- Annual budget for training and certifications',
 'Latin Quarter (Galway)', 'permanent', 'full_time', 'hybrid', 28000.00, 36000.00, 'published', '2026-04-05 10:00:00'),
 
-(3, 1, 1, 'Diseñador/a UX/UI',
-'Buscamos un/a Diseñador/a UX/UI para sumarse al equipo de producto y mejorar la experiencia de nuestras aplicaciones.
+(3, 1, 1, 'UX/UI Designer',
+'We are looking for a UX/UI Designer to join our product team and improve the experience of our applications.
 
-FUNCIONES:
-- Diseño de interfaces para aplicaciones web y móvil con Figma
-- Creación de prototipos interactivos y flujos de usuario
-- Tests de usabilidad con usuarios reales
-- Colaboración estrecha con el equipo de desarrollo frontend
-- Mantenimiento y evolución del Design System
+RESPONSIBILITIES:
+- Designing interfaces for web and mobile applications with Figma
+- Creating interactive prototypes and user flows
+- Usability testing with real users
+- Close collaboration with the frontend development team
+- Maintaining and evolving the Design System
 
-REQUISITOS:
-- Portfolio con proyectos UX/UI (imprescindible)
-- Dominio de Figma
-- Conocimientos de principios de accesibilidad (WCAG)
-- Se valorará conocimiento básico de HTML y CSS
+REQUIREMENTS:
+- Portfolio with UX/UI projects (required)
+- Strong command of Figma
+- Knowledge of accessibility principles (WCAG)
+- Basic HTML and CSS knowledge is a plus
 
-OFRECEMOS:
-- Contrato indefinido
-- Trabajo presencial en el Latin Quarter
-- Horario flexible
-- Presupuesto para eventos y conferencias de diseño',
+WHAT WE OFFER:
+- Permanent contract
+- On-site work in the Latin Quarter
+- Flexible hours
+- Budget for design events and conferences',
 'Latin Quarter (Galway)', 'permanent', 'full_time', 'onsite', 24000.00, 30000.00, 'published', '2026-04-10 11:00:00'),
 
 (4, 1, 1, 'DevOps Engineer',
-'Oferta cerrada. Posición ya cubierta.
+'This position has been filled.
 
-Buscábamos un/a DevOps Engineer para modernizar nuestra infraestructura en AWS y automatizar los procesos de despliegue.
+We were looking for a DevOps Engineer to modernise our AWS infrastructure and automate our deployment processes.
 
-REQUISITOS:
-- Experiencia con AWS (EC2, RDS, S3, ECS)
-- Terraform e Infraestructura como Código
-- Kubernetes y Helm
-- Pipelines CI/CD
+REQUIREMENTS:
+- Experience with AWS (EC2, RDS, S3, ECS)
+- Terraform and Infrastructure as Code
+- Kubernetes and Helm
+- CI/CD pipelines
 
-Gracias a todos los candidatos que aplicaron.',
+Thank you to everyone who applied.',
 'Latin Quarter (Galway)', 'permanent', 'full_time', 'remote', 32000.00, 42000.00, 'closed', '2026-03-01 09:00:00'),
 
 -- El Rincón
-(5, 2, 2, 'Camarero/a de sala',
-'Buscamos incorporar un/a Camarero/a de sala para nuestro restaurante en el corazón de Salthill.
+(5, 2, 2, 'Waiter/Waitress',
+'We are looking to hire a Waiter/Waitress for our restaurant in the heart of Salthill.
 
-FUNCIONES:
-- Atención y asesoramiento a los clientes durante toda su estancia
-- Toma de comandas y gestión de pedidos a través de TPV
-- Servicio de bebidas y alimentos en mesa
-- Preparación y mantenimiento de la sala: mise en place
-- Coordinación con el equipo de cocina
+RESPONSIBILITIES:
+- Serving and advising customers throughout their visit
+- Taking orders and managing them through the POS system
+- Serving food and drinks at the table
+- Preparing and maintaining the floor: mise en place
+- Coordinating with the kitchen team
 
-REQUISITOS:
-- Experiencia mínima de 1 año en puesto similar
-- Nivel básico de inglés (se valorará francés)
-- Carné de manipulador de alimentos en vigor
-- Capacidad de trabajar en equipo y bajo presión
+REQUIREMENTS:
+- At least 1 year of experience in a similar role
+- Basic English (French is a plus)
+- Valid food handler''s certificate
+- Ability to work as part of a team and under pressure
 
-OFRECEMOS:
-- Contrato temporal con posibilidad de conversión a indefinido
-- Propinas distribuidas equitativamente
-- Comida de personal incluida
-- Dos días libres consecutivos a la semana',
+WHAT WE OFFER:
+- Temporary contract with the possibility of becoming permanent
+- Tips shared equally
+- Staff meals included
+- Two consecutive days off per week',
 'Salthill (Galway)', 'temporary', 'full_time', 'onsite', 17000.00, 20000.00, 'published', '2026-04-08 09:00:00'),
 
-(6, 2, 2, 'Barista — Cafetería de especialidad',
-'Cafetería de especialidad busca un/a Barista apasionado/a por el café de calidad.
+(6, 2, 2, 'Barista — Specialty Coffee Shop',
+'Specialty coffee shop looking for a Barista passionate about quality coffee.
 
-FUNCIONES:
-- Preparación de espressos, cappuccinos, flat whites y carta de bebidas
-- Latte art a nivel medio (roseta, tulipán, corazón)
-- Ajuste de parámetros de molienda y extracción por variedad
-- Atención personalizada y asesoramiento sobre origen y perfil de sabor
-- Mantenimiento de maquinaria: espresso, molinillo, V60, Chemex
+RESPONSIBILITIES:
+- Preparing espressos, cappuccinos, flat whites and the drinks menu
+- Intermediate-level latte art (rosetta, tulip, heart)
+- Adjusting grind and extraction settings by variety
+- Personalised service and advice on origin and flavour profile
+- Maintaining equipment: espresso machine, grinder, V60, Chemex
 
-REQUISITOS:
-- Experiencia mínima de 6 meses como barista o en hostelería
-- Conocimientos de métodos de extracción: espresso, filtro, cold brew
-- Actitud proactiva y orientada al detalle
-- Se valorará formación SCA
+REQUIREMENTS:
+- At least 6 months of experience as a barista or in hospitality
+- Knowledge of extraction methods: espresso, filter, cold brew
+- Proactive, detail-oriented attitude
+- SCA training is a plus
 
-OFRECEMOS:
-- Contrato a jornada parcial con posibilidad de ampliación
-- Formación continua a cargo de la empresa
-- Descuento en consumiciones
-- Horario de mañanas: 7:00 – 14:00',
+WHAT WE OFFER:
+- Part-time contract with possibility of extended hours
+- Ongoing training provided by the company
+- Staff discount on drinks
+- Morning shift: 7:00 – 14:00',
 'Salthill (Galway)', 'permanent', 'part_time', 'onsite', 15000.00, 18000.00, 'published', '2026-04-12 10:00:00'),
 
-(7, 2, 2, 'Jefe/a de cocina',
-'Oferta cerrada. Posición cubierta internamente.
+(7, 2, 2, 'Head Chef',
+'This position has been filled internally.
 
-Buscábamos un/a Jefe/a de cocina con experiencia demostrable en restaurante de cocina mediterránea para liderar nuestro equipo de 6 personas.',
+We were looking for a Head Chef with proven experience in Mediterranean cuisine restaurants to lead our team of 6.',
 'Salthill (Galway)', 'permanent', 'full_time', 'onsite', 28000.00, 35000.00, 'closed', '2026-03-15 09:00:00'),
 
 -- Corrib Construction
-(8, 3, 5, 'Aparejador/a de obra',
-'Constructora con 20 años de trayectoria busca Aparejador/a colegiado/a para incorporación inmediata.
+(8, 3, 5, 'Building Surveyor',
+'Construction company with 20 years of experience is looking for a chartered Building Surveyor for immediate start.
 
-FUNCIONES:
-- Dirección de ejecución de obras de edificación residencial
-- Control de calidad de materiales y procesos constructivos
-- Coordinación de subcontratas y proveedores en obra
-- Elaboración de mediciones y certificaciones mensuales
+RESPONSIBILITIES:
+- Overseeing execution of residential building works
+- Quality control of materials and construction processes
+- Coordinating subcontractors and suppliers on site
+- Preparing monthly measurements and certifications
 
-REQUISITOS:
-- Titulación en Arquitectura Técnica o Ingeniería de Edificación
-- Colegiación vigente (imprescindible)
-- Experiencia mínima de 3 años en dirección de obra residencial
-- Carné de conducir B
-- Conocimientos de AutoCAD y Presto
+REQUIREMENTS:
+- Degree in Building Surveying/Technical Architecture or Building Engineering
+- Current professional accreditation (required)
+- At least 3 years of experience in residential site management
+- Category B driving licence
+- Knowledge of AutoCAD and Presto
 
-OFRECEMOS:
-- Contrato indefinido
-- Vehículo de empresa para desplazamientos a obra
-- 24 días de vacaciones
-- Proyectos estables con financiación asegurada',
+WHAT WE OFFER:
+- Permanent contract
+- Company vehicle for site travel
+- 24 days of holidays
+- Stable, fully-funded projects',
 'Westside (Galway)', 'permanent', 'full_time', 'onsite', 30000.00, 38000.00, 'published', '2026-04-03 09:00:00'),
 
-(9, 3, 5, 'Peón de construcción',
-'Se necesita peón de construcción para obra en Westside con incorporación inmediata.
+(9, 3, 5, 'Construction Labourer',
+'Construction labourer needed for a site in Westside, immediate start.
 
-FUNCIONES:
-- Apoyo general en tareas de obra: carga y descarga de materiales, limpieza
-- Manejo de herramientas manuales y eléctricas básicas
-- Ayuda a oficiales en trabajos de albañilería y encofrado
-- Cumplimiento estricto de las normas de seguridad en obra
+RESPONSIBILITIES:
+- General site support: loading and unloading materials, cleaning
+- Using basic hand and power tools
+- Assisting tradespeople with bricklaying and formwork
+- Strict compliance with site safety regulations
 
-REQUISITOS:
-- No se requiere experiencia previa (se valorará)
-- Carné de conducir B (deseable)
-- Disponibilidad inmediata
+REQUIREMENTS:
+- No previous experience required (a plus if you have it)
+- Category B driving licence (desirable)
+- Immediate availability
 
-OFRECEMOS:
-- Contrato temporal de 3 meses con posibilidad de prórroga
-- Salario según convenio de la construcción
-- Equipo de protección individual a cargo de la empresa',
+WHAT WE OFFER:
+- 3-month temporary contract with possibility of extension
+- Salary per construction industry agreement
+- Personal protective equipment provided by the company',
 'Westside (Galway)', 'temporary', 'full_time', 'onsite', 16000.00, 19000.00, 'published', '2026-04-15 09:00:00'),
 
 -- Galway Learning Centre
-(10, 4, 6, 'Profesor/a de Matemáticas',
-'Academia de refuerzo escolar busca profesor/a de matemáticas para clases presenciales en Newcastle.
+(10, 4, 6, 'Maths Teacher',
+'School support academy looking for a Maths Teacher for in-person classes in Newcastle.
 
-FUNCIONES:
-- Impartir clases de matemáticas a alumnos de ESO, Bachillerato y Universidad
-- Preparación personalizada de exámenes y pruebas de acceso
-- Seguimiento y reporte del progreso de cada alumno
+RESPONSIBILITIES:
+- Teaching maths to secondary school, Leaving Cert and university students
+- Personalised exam and entrance test preparation
+- Tracking and reporting on each student''s progress
 
-REQUISITOS:
-- Grado en Matemáticas, Física o equivalente (imprescindible)
-- Experiencia docente mínima de 1 año
-- Habilidades comunicativas y paciencia
-- Se valorará formación pedagógica (Máster de Profesorado)
+REQUIREMENTS:
+- Degree in Mathematics, Physics or equivalent (required)
+- At least 1 year of teaching experience
+- Strong communication skills and patience
+- Teaching qualification is a plus
 
-OFRECEMOS:
-- Contrato indefinido a jornada parcial (tardes: 16:00 – 20:00)
-- Posibilidad de ampliar horas según demanda
-- Buen ambiente de trabajo en equipo consolidado',
+WHAT WE OFFER:
+- Permanent part-time contract (afternoons: 16:00 – 20:00)
+- Possibility of more hours depending on demand
+- Good working environment in an established team',
 'Newcastle (Galway)', 'permanent', 'part_time', 'onsite', 14000.00, 18000.00, 'published', '2026-04-18 10:00:00');
 
 
 -- =========================================================
--- 6. CANDIDATURAS  (17 en total, todos los estados)
+-- 6. APPLICATIONS  (17 total, all statuses)
 -- =========================================================
 --
---  job | oferta        | candidaturas
---  ----+---------------+----------------------------------------------
---   1  | PHP           | Ana(reviewed), Carlos(rejected), Lucía(sent)
---   2  | Sysadmin      | Ana(sent), María(reviewed), David(accepted)
---   3  | UX/UI         | Ana(accepted), Pedro(rejected)
---   5  | Camarero      | Carlos(sent), María(accepted), David(rejected)
---   6  | Barista       | María(sent), Pedro(reviewed)
---   8  | Aparejador    | Carlos(sent), David(reviewed)
---   9  | Peón          | Pedro(sent)
---  10  | Profesor mat. | Lucía(sent)
---  ----+---------------+----------------------------------------------
---  Sin candidaturas: 4 (DevOps-cerrada), 7 (Jefe cocina-cerrada)
+--  job | listing        | applications
+--  ----+----------------+----------------------------------------------
+--   1  | PHP            | Ana(reviewed), Carlos(rejected), Lucía(sent)
+--   2  | Sysadmin       | Ana(sent), María(reviewed), David(accepted)
+--   3  | UX/UI          | Ana(accepted), Pedro(rejected)
+--   5  | Waiter         | Carlos(sent), María(accepted), David(rejected)
+--   6  | Barista        | María(sent), Pedro(reviewed)
+--   8  | Bldg Surveyor  | Carlos(sent), David(reviewed)
+--   9  | Labourer       | Pedro(sent)
+--  10  | Maths teacher  | Lucía(sent)
+--  ----+----------------+----------------------------------------------
+--  No applications: 4 (DevOps-closed), 7 (Head Chef-closed)
 
 INSERT INTO applications (job_id, candidate_user_id, status, message, applied_at) VALUES
 
 -- Ana García → PHP (reviewed)
 (1, 7, 'reviewed',
-'Hola, me llamo Ana García y llevo 3 años desarrollando con PHP y Laravel en una agencia del Latin Quarter. He trabajado con MySQL, APIs REST y Vue.js en el frontend. Estoy buscando un proyecto más técnico donde seguir creciendo. Tengo portfolio en GitHub con varios proyectos propios.',
+'Hi, my name is Ana García and I''ve spent the last 3 years developing with PHP and Laravel at an agency in the Latin Quarter. I''ve worked with MySQL, REST APIs and Vue.js on the frontend. I''m looking for a more technical project where I can keep growing. I have a GitHub portfolio with several of my own projects.',
 '2026-04-10 10:30:00'),
 
 -- Ana García → Sysadmin (sent)
 (2, 7, 'sent',
-'Buenos días, aunque mi perfil es más de desarrollo, tengo formación en administración de sistemas Linux y he gestionado los servidores de los proyectos en los que he participado. Me interesa mucho esta posición.',
+'Good morning, although my background is mainly in development, I have training in Linux systems administration and have managed the servers for the projects I''ve worked on. I''m very interested in this position.',
 '2026-04-15 09:15:00'),
 
 -- Ana García → UX/UI (accepted)
 (3, 7, 'accepted',
-'Soy desarrolladora con fuerte interés en el diseño de interfaces. Manejo Figma a diario para crear prototipos antes de implementar. Adjunto enlace a mi portfolio: behance.net/anagarcia.',
+'I''m a developer with a strong interest in interface design. I use Figma daily to build prototypes before implementation. Here''s a link to my portfolio: behance.net/anagarcia.',
 '2026-04-12 11:00:00'),
 
 -- Carlos López → PHP (rejected)
 (1, 8, 'rejected',
-'Hola, soy Carlos López. Tengo un año de experiencia con PHP vanilla y algo de CodeIgniter. Me estoy formando en Laravel por mi cuenta y me gustaría dar el salto a un equipo más grande.',
+'Hi, I''m Carlos López. I have a year of experience with vanilla PHP and some CodeIgniter. I''m currently learning Laravel on my own and would like to move to a bigger team.',
 '2026-04-11 16:45:00'),
 
--- Carlos López → Camarero (sent)
+-- Carlos López → Waiter (sent)
 (5, 8, 'sent',
-'Buenas tardes, tengo 4 años de experiencia en restaurantes de nivel medio-alto en Galway. Estoy acostumbrado a trabajar en sala con alto volumen de clientes y tengo el carné de manipulador de alimentos en vigor.',
+'Good afternoon, I have 4 years of experience in mid-to-upscale restaurants in Galway. I''m used to working the floor with high customer volume and hold a valid food handler''s certificate.',
 '2026-04-17 12:00:00'),
 
--- Carlos López → Aparejador (sent)
+-- Carlos López → Building Surveyor (sent)
 (8, 8, 'sent',
-'Aunque mi trayectoria principal es en hostelería, tengo formación como delineante técnico y he trabajado dos veranos como ayudante en obra. Me gustaría retomar esa vía profesional.',
+'Although my main background is in hospitality, I trained as a technical draughtsman and worked two summers as a site assistant. I''d like to get back into that field.',
 '2026-04-20 10:30:00'),
 
 -- María Martínez → Sysadmin (reviewed)
 (2, 9, 'reviewed',
-'Buenos días, soy María Martínez. Tengo 2 años de experiencia administrando servidores Linux en una empresa de logística de Galway. Gestiono entornos Ubuntu Server, Apache y MySQL. Me estoy formando en Docker y tengo el LPIC-1.',
+'Good morning, I''m María Martínez. I have 2 years of experience administering Linux servers at a logistics company in Galway. I manage Ubuntu Server, Apache and MySQL environments. I''m currently learning Docker and hold the LPIC-1.',
 '2026-04-08 09:00:00'),
 
--- María Martínez → Camarero (accepted)
+-- María Martínez → Waiter (accepted)
 (5, 9, 'accepted',
-'Hola, llevo 3 años trabajando en sala en diferentes restaurantes de Galway y Dublín. Tengo inglés nivel B2, que me ha permitido atender a clientela internacional. Busco estabilidad en Galway.',
+'Hi, I''ve spent 3 years working front-of-house in various restaurants in Galway and Dublin. My English is B2 level, which has let me serve international customers. I''m looking for stability in Galway.',
 '2026-04-18 14:00:00'),
 
 -- María Martínez → Barista (sent)
 (6, 9, 'sent',
-'Me encanta el mundo del café de especialidad y llevo tiempo formándome por mi cuenta. Tengo experiencia en máquinas espresso semiprofesionales y conozco los métodos de filtro más habituales.',
+'I love specialty coffee and have been training myself for a while. I have experience with semi-professional espresso machines and know the most common filter methods.',
 '2026-04-21 11:30:00'),
 
 -- Pedro Sánchez → UX/UI (rejected)
 (3, 10, 'rejected',
-'Soy diseñador gráfico con interés en el UX. Tengo experiencia en Photoshop e Illustrator pero llevo solo 6 meses aprendiendo Figma. Mi portfolio incluye rediseños de apps conocidas como ejercicio.',
+'I''m a graphic designer with an interest in UX. I have experience with Photoshop and Illustrator but have only been learning Figma for 6 months. My portfolio includes redesigns of well-known apps as practice exercises.',
 '2026-04-13 17:00:00'),
 
 -- Pedro Sánchez → Barista (reviewed)
 (6, 10, 'reviewed',
-'Hola, llevo 2 años trabajando como barista en una cafetería de Galway. Manejo máquina espresso La Cimbali y he hecho un curso básico de latte art. Me interesa trabajar en un entorno más profesional.',
+'Hi, I''ve been working as a barista in a Galway coffee shop for 2 years. I use a La Cimbali espresso machine and have done a basic latte art course. I''m interested in working in a more professional environment.',
 '2026-04-16 10:00:00'),
 
--- Pedro Sánchez → Peón (sent)
+-- Pedro Sánchez → Labourer (sent)
 (9, 10, 'sent',
-'Buenos días, estoy disponible para incorporación inmediata. He trabajado como peón en dos obras durante el verano de 2024 y 2025. Tengo carné de conducir B y estoy acostumbrado a trabajar en exterior.',
+'Good morning, I''m available for immediate start. I worked as a labourer on two sites during the summers of 2024 and 2025. I hold a category B driving licence and am used to working outdoors.',
 '2026-04-22 08:30:00'),
 
 -- Lucía Fernández → PHP (sent)
 (1, 11, 'sent',
-'Me llamo Lucía Fernández, soy profesora de matemáticas pero en paralelo he estado aprendiendo desarrollo web. Tengo conocimientos de PHP, JavaScript y algo de Laravel mediante cursos y proyectos personales.',
+'My name is Lucía Fernández, I''m a maths teacher but have been learning web development on the side. I have knowledge of PHP, JavaScript and some Laravel through courses and personal projects.',
 '2026-04-19 09:45:00'),
 
--- Lucía Fernández → Profesor matemáticas (sent)
+-- Lucía Fernández → Maths Teacher (sent)
 (10, 11, 'sent',
-'Hola, soy Lucía Fernández, profesora de matemáticas con 5 años de experiencia en academia y clases particulares. Tengo el Grado en Matemáticas por la University of Galway y el Máster de Profesorado. Busco estabilidad en Galway.',
+'Hi, I''m Lucía Fernández, a maths teacher with 5 years of experience in tutoring academies and secondary education. I hold a Degree in Mathematics from the University of Galway and a teaching qualification. I''m looking for stability in Galway.',
 '2026-04-19 16:00:00'),
 
 -- David Romero → Sysadmin (accepted)
 (2, 12, 'accepted',
-'Buenos días, soy David Romero. Llevo 4 años gestionando la infraestructura IT de mi empresa actual: servidores Linux, VPN, backups y monitorización con Zabbix. Busco una posición dedicada a tiempo completo en el área de sistemas.',
+'Good morning, I''m David Romero. I''ve spent 4 years managing my current company''s IT infrastructure: Linux servers, VPN, backups and monitoring with Zabbix. I''m looking for a full-time position dedicated to systems.',
 '2026-04-07 10:00:00'),
 
--- David Romero → Aparejador (reviewed)
+-- David Romero → Building Surveyor (reviewed)
 (8, 12, 'reviewed',
-'Soy David Romero, aparejador colegiado con 6 años de experiencia en obra residencial y rehabilitación. He llevado proyectos de hasta 30 viviendas como director de ejecución. Manejo AutoCAD y Presto con soltura.',
+'I''m David Romero, a chartered building surveyor with 6 years of experience in residential construction and refurbishment. I''ve managed projects of up to 30 homes as site manager. I''m proficient with AutoCAD and Presto.',
 '2026-04-14 11:30:00'),
 
--- David Romero → Camarero (rejected)
+-- David Romero → Waiter (rejected)
 (5, 12, 'rejected',
-'Buenas, sé que mi perfil no encaja exactamente con lo que pedís, pero tuve una temporada trabajando en sala hace unos años y me gustaría volver mientras busco trabajo en mi sector.',
+'Hi, I know my background doesn''t quite fit what you''re looking for, but I spent a season working front-of-house a few years ago and would like to return to it while I look for work in my field.',
 '2026-04-20 18:00:00');
